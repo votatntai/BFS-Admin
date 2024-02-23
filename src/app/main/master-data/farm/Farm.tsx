@@ -1,8 +1,7 @@
-import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
-import { useTranslation } from 'react-i18next';
 import { styled } from '@mui/material/styles';
-
+import FarmContent from './FarmContent'
+import FarmHeader from './FarmHeader';
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
 		backgroundColor: theme.palette.background.paper,
@@ -15,25 +14,14 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-sidebarContent': {}
 }));
 
-function Example() {
-	const { t } = useTranslation('examplePage');
+function Farm() {
 
-	return (
-		<Root
-			header={
-				<div className="p-24">
-					<h4>{t('TITLE')}</h4>
-				</div>
-			}
-			content={
-				<div className="p-24">
-					<h4>Content</h4>
-					<br />
-					<DemoContent />
-				</div>
-			}
-		/>
-	);
+	return (<Root
+	header={<FarmHeader/>}
+	content={
+			<FarmContent />
+	}
+/>)
 }
 
-export default Example;
+export default Farm;

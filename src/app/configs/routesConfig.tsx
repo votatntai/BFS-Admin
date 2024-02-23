@@ -7,10 +7,15 @@ import SignInConfig from '../main/sign-in/SignInConfig';
 import SignUpConfig from '../main/sign-up/SignUpConfig';
 import SignOutConfig from '../main/sign-out/SignOutConfig';
 import Error404Page from '../main/404/Error404Page';
-import ExampleConfig from '../main/example/ExampleConfig';
 import Error404Config from '../main/404/Error404Config';
+import AccountConfig from '../main/account/AccountConfig';
+import BirdConfig from '../main/master-data/bird/BirdConfig';
+import BirdCategoryConfig from '../main/master-data/bird-category/BirdCategoryConfig';
+import FarmConfig from '../main/master-data/farm/FarmConfig';
+import AreaConfig from '../main/master-data/area/AreaConfig';
 
-const routeConfigs: FuseRouteConfigsType = [ExampleConfig, SignOutConfig, SignInConfig, SignUpConfig, Error404Config];
+const routeConfigs: FuseRouteConfigsType = [AccountConfig, AreaConfig, FarmConfig, BirdConfig, BirdCategoryConfig,
+	SignOutConfig, SignInConfig, SignUpConfig, Error404Config];
 
 /**
  * The routes of the application.
@@ -19,7 +24,7 @@ const routes: FuseRoutesType = [
 	...FuseUtils.generateRoutesFromConfigs(routeConfigs, settingsConfig.defaultAuth),
 	{
 		path: '/',
-		element: <Navigate to="/example" />,
+		element: <Navigate to="/account" />,
 		auth: settingsConfig.defaultAuth
 	},
 	{
