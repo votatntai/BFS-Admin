@@ -3,15 +3,18 @@ import Dialog from '@mui/material/Dialog';
 import Stack from '@mui/material/Stack';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import InputAdornment from '@mui/material/InputAdornment';
 import Autocomplete from '@mui/material/Autocomplete';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { ObjectAreaToCreate } from '../../type/area.type';
 import { useAppDispatch,useAppSelector } from 'app/store';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { addArea, areaReducerState, getAreaData } from './slice/areaSlice';
+import IconButton from '@mui/material/IconButton';
 import { farmReducerState, getFarmData } from '../farm/slice/farmSlice';
-const CreateModal=({handleClose, show})=>{
+const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackbar})=>{
     const [area, setArea] =useState<ObjectAreaToCreate>({
       name: '',
       thumbnailUrl: '',
@@ -19,8 +22,6 @@ const CreateModal=({handleClose, show})=>{
         label: "", value: ""
       },
     })
-    const [value, setValue] = useState(null);
-    const [inputValue, setInputValue] = useState('');
     const formData = new FormData()
     const [file, setFile] =useState(null)
     const [checkName, setCheckName] = useState(false)
@@ -33,9 +34,9 @@ const CreateModal=({handleClose, show})=>{
     const checkValid= () =>{
       let check: boolean = true
       if(area.name.trim() === '') {setCheckName(true)} else setCheckName(false)
-      if(area.farmId === null) { setCheckFarmId(true)} else setCheckFarmId(false)
+      if(area.farmId.value === "") { setCheckFarmId(true)} else setCheckFarmId(false)
       if(area.thumbnailUrl.trim() === '') { setCheckThumbnailURL(true)} else setCheckThumbnailURL(false)
-      if(area.name.trim() === '' || area.farmId === null || area.thumbnailUrl.trim() === ''){
+      if(area.name.trim() === '' || area.farmId.value === "" || area.thumbnailUrl.trim() === ''){
           check = false
       }
       return check;
@@ -49,8 +50,9 @@ const CreateModal=({handleClose, show})=>{
         formData.append('farmId',area.farmId.value)
         await dispatch(addArea(formData))
         await dispatch(getAreaData({pageNumber: pageNumber, pageSize: pageSize}))
+        setOpenSuccessSnackbar(true)
         handleClose()
-      } else console.log('add failed')
+      } else setOpenFailSnackbar(true)
     }  
 
     const [comboboxList,setComboboxList] = useState([]);
@@ -94,12 +96,24 @@ const CreateModal=({handleClose, show})=>{
             }}
             options={comboboxList} size='small'
             fullWidth
-            renderInput={(params) => <TextField {...params} label={'Farm'} />}
+            renderInput={(params) => <TextField {...params} label={'Farm'} helperText={checkFarmId ? "This field is required" : false}  
+            error={checkFarmId ? true : false}/>}
           />
       
       <TextField helperText={checkThumbnailURL ? "This field is required" : false}  
       error={checkThumbnailURL ? true : false} value={area.thumbnailUrl} type="file"
-      inputProps={{ accept: "image/png, image/jpeg, image/jpg" }}
+      inputProps={{ accept: "image/png, image/jpeg, image/jpg" }} InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            {file && <IconButton onClick={()=>{
+              setArea(prev => ({...prev, thumbnailUrl: "" }))
+              setFile(null)
+              }}>
+                <FuseSvgIcon>heroicons-outline:x-circle</FuseSvgIcon>
+              </IconButton>}
+          </InputAdornment>
+        ),
+      }}
       onChange={(e: any) => {
         setArea(prev => ({...prev, thumbnailUrl: e.target.value}))
         setFile(e.target.files[0])

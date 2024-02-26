@@ -3,9 +3,6 @@ import axios from "axios";
 const instance = axios.create({
   baseURL: "https://bfs.monoinfinity.net/api",
 });
-// const instance = axios.create({
-//   baseURL: "https://jsonplaceholder.typicode.com",
-// });
 
 // Add a request interceptor
 instance.interceptors.request.use(
@@ -28,10 +25,8 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
   function (response) {
-    //console.log('check response');
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    //console.log(response.data.data)
     return response.data;
   },
   function (error) {

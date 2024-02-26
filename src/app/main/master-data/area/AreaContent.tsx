@@ -10,14 +10,12 @@ import TableRow from '@mui/material/TableRow';
 import {useEffect, useState } from 'react';
 import { areaReducerState, getAreaData, setPaginPageNumber,setPaginPageSize } from './slice/areaSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
-// import EditModal from './EditModal';
+import EditModal from './EditModal';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 const FarmContent = ()=>{
     const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
     const [openEditFailNotify, setOpenEditFailNotify] = useState(false);
-    const [openCreateSuccessNotify, setOpenCreateSuccessNotify] = useState(false);
-    const [openCreateFailNotify, setOpenCreateFailNotify] = useState(false);
 	const [showEdit, setShowEdit] =useState(false)
 	const [editValue, setEditValue] =useState({})
     const dispatch = useAppDispatch()
@@ -25,9 +23,10 @@ const FarmContent = ()=>{
     const pageNumber  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.pageNumber)
     const pageSize  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.pageSize)
     const totalRow =  useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.totalRow)
+    const searchValue = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.searchText)
     useEffect(()=>{
-        dispatch(getAreaData({pageNumber: pageNumber, pageSize: pageSize}))
-    },[dispatch])
+        dispatch(getAreaData({name:searchValue, pageNumber: pageNumber, pageSize: pageSize}))
+    },[pageNumber, pageSize])
     
     return <div className="w-full flex flex-col min-h-full bg-white">
     <FuseScrollbars className="grow overflow-x-auto">
@@ -94,7 +93,7 @@ const FarmContent = ()=>{
           Edit failed
         </Alert>
       </Snackbar>
-    {/* {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />} */}
+    {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
 </div>
 }
 export default FarmContent

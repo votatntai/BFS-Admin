@@ -8,24 +8,25 @@ import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {useEffect, useState } from 'react';
-import { farmReducerState, getFarmData, setPaginPageNumber,setPaginPageSize } from './slice/farmSlice';
+import { caremodeReducerState, getCaremodeData, setPaginPageNumber,setPaginPageSize } from './slice/caremodeSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
-import EditModal from './EditModal';
+// import EditModal from './EditModal';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 const FarmContent = ()=>{
     const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
     const [openEditFailNotify, setOpenEditFailNotify] = useState(false);
-    
 	const [showEdit, setShowEdit] =useState(false)
 	const [editValue, setEditValue] =useState({})
     const dispatch = useAppDispatch()
-    const farms  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.data)
-    const pageNumber  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageNumber)
-    const pageSize  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageSize)
-    const totalRow =  useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.totalRow)
+    const caremodes  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.data)
+    const pageNumber  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.pageNumber)
+    const pageSize  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.pageSize)
+    const totalRow =  useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.totalRow)
+    const searchValue =  useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.searchText)
+    
     useEffect(()=>{
-        dispatch(getFarmData({pageNumber: pageNumber, pageSize: pageSize}))
+        dispatch(getCaremodeData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize}))
     },[pageNumber, pageSize])
     
     return <div className="w-full flex flex-col min-h-full bg-white">
@@ -35,32 +36,24 @@ const FarmContent = ()=>{
   <TableRow>
     <TableCell align="center"><span className='font-semibold'>ID</span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Name</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Thumbnail</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Address</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Phone</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Manager</span></TableCell>
+    {/* <TableCell align="left"><span className='font-semibold'>Priority</span></TableCell> */}
+    <TableCell align="left"><span className='font-semibold'>Create at</span></TableCell>
     <TableCell align="left"><span className='font-semibold'></span></TableCell>
   </TableRow>
 </TableHead>
-    {farms && farms.length > 0 && <TableBody>
-        {farms.map((item) => (<TableRow key={item.id} >
+    {caremodes && caremodes.length > 0 && <TableBody>
+        {caremodes.map((item) => (<TableRow key={item.id} >
         <TableCell align='center'>{item.id}</TableCell>
         <TableCell align='left'>{item.name}</TableCell>
-        <TableCell align='left'>
-            {item.thumbnailUrl === null ? <></> :<a href={item.thumbnailUrl} target="_blank" rel="noopener noreferrer">
-                <img width='150px' height='150px' src={item.thumbnailUrl} alt='thumbnail' />
-            </a>}
-            </TableCell>
-        <TableCell align='left'>{item.address}</TableCell>
-        <TableCell align='left'>{item.phone}</TableCell>
-        <TableCell align='left'>{item.manager.name}</TableCell>
+        {/* <TableCell align='left'>{item.priority}</TableCell> */}
+        <TableCell align='left'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
         <TableCell align='left'>
             <Button variant='contained' color='success' onClick={()=>{setShowEdit(true); setEditValue(item)}}>edit</Button>
         </TableCell>
     </TableRow>))}
         </TableBody>}
         </Table>
-    {farms && farms.length===0 && <Stack className='mt-36' direction='row' alignItems={"center"} justifyContent={"center"}>
+    {caremodes && caremodes.length===0 && <Stack className='mt-36' direction='row' alignItems={"center"} justifyContent={"center"}>
         <h2 style={{color:"gray"}}>No matching result</h2></Stack> }
     </FuseScrollbars>
 
@@ -97,7 +90,7 @@ const FarmContent = ()=>{
           Edit failed
         </Alert>
       </Snackbar>
-    {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
+    {/* {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />} */}
 </div>
 }
 export default FarmContent

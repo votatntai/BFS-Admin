@@ -10,7 +10,7 @@ import TextField from '@mui/material/TextField';
 import { ObjectFarmToCreate } from '../../type/farm.type';
 import { useAppDispatch } from 'app/store';
 import { addFarm } from './slice/farmSlice';
-const CreateModal=({handleClose, show})=>{
+const CreateModal=({handleClose, show,setOpenFailSnackbar,setOpenSuccessSnackbar})=>{
     const [farm, setFarm] =useState<ObjectFarmToCreate>({
       name: '',
       thumbnailUrl: '',
@@ -46,8 +46,9 @@ const CreateModal=({handleClose, show})=>{
         formData.append('phone',farm.phone)
         formData.append('managerId',farm.managerId)
         await dispatch(addFarm(formData))
+        setOpenSuccessSnackbar(true)
         handleClose()
-      } else console.log('add failed')
+      } else setOpenFailSnackbar(true)
     }  
     return <Dialog fullWidth
     open={show}

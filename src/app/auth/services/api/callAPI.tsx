@@ -21,8 +21,12 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  export const updateArea= (id: string, formData: FormData) => axios.put(`/areas/${id}`,formData);
 
 /**
- * Account
+ * Care mode
  */
+ export const getCaremodes = (object: Object) => axios.get(`/care-modes`,{params: object});
+ export const createCaremode = (formData: FormData) => axios.post('/care-modes',formData);
+ export const updateCaremode = (id: string, formData: FormData) => axios.put(`/care-modes/${id}`,formData);
+
 /**
  * Account
  */

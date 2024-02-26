@@ -8,10 +8,13 @@ import { useState } from 'react';
 import CreateModal from './CreateModal';
 import { useAppDispatch, useAppSelector } from 'app/store';
 import { farmReducerState, getFarmData, setSearchText } from './slice/farmSlice';
-
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 const FarmHeader = ()=>{
     const [showAdd, setShowAdd] =useState(false)
     const dispatch = useAppDispatch()
+    const [openCreateSuccessNotify, setOpenCreateSuccessNotify] = useState(false);
+    const [openCreateFailNotify, setOpenCreateFailNotify] = useState(false);
     const searchValue = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.searchText)
     const pageNumber  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageNumber)
     const pageSize  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageSize)
@@ -23,7 +26,7 @@ const FarmHeader = ()=>{
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}
     >
-        <Typography className="text-24 md:text-32 font-extrabold tracking-tight">Farm</Typography>
+        <Typography className="text-24 md:text-32 font-extrabold tracking-tight">Farms</Typography>
     </motion.span>
     <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
     <Paper
@@ -33,7 +36,7 @@ const FarmHeader = ()=>{
             className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
         >
             <Input
-                placeholder="Search birds"
+                placeholder="Search farms"
                 disableUnderline
                 fullWidth
                 value={searchValue}
@@ -66,7 +69,19 @@ const FarmHeader = ()=>{
             </Button>
         </motion.div>
 </div>
-    {showAdd && <CreateModal handleClose={()=> setShowAdd(false)} show={showAdd} />}
+<Snackbar open={openCreateSuccessNotify} autoHideDuration={3000} onClose={()=>{setOpenCreateSuccessNotify(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={()=>{setOpenCreateSuccessNotify(false)}}
+          severity="success" variant="filled" sx={{ width: '100%' }}>
+          Add successfully
+        </Alert>
+      </Snackbar>
+    <Snackbar open={openCreateFailNotify} autoHideDuration={3000} onClose={()=>{setOpenCreateFailNotify(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={()=>{setOpenCreateFailNotify(false)}}
+          severity="error" variant="filled" sx={{ width: '100%' }}>
+          Add failed
+        </Alert>
+      </Snackbar>
+    {showAdd && <CreateModal handleClose={()=> setShowAdd(false)} show={showAdd} setOpenFailSnackbar={setOpenCreateFailNotify} setOpenSuccessSnackbar={setOpenCreateSuccessNotify}/>}
 </div>
 }
 export default FarmHeader

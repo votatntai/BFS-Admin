@@ -91,5 +91,5 @@ const areaSlice = createSlice({
 });
 
 export const {setSearchText,setPaginPageNumber,setPaginPageSize,setPaginTotalRow} = areaSlice.actions
-const farmReducer = areaSlice.reducer;
-export default farmReducer
+const areaReducer = areaSlice.reducer;
+export default areaReducer

@@ -45,6 +45,13 @@ const navigationConfig: FuseNavigationType = [
 						end: true
 					},
 					{
+						id: 'master-data-care-mode',
+						title: 'Care mode',
+						type: 'item',
+						url: 'master-data/care-mode',
+						end: true
+					},
+					{
 						id: 'master-data-food',
 						title: 'Food',
 						type: 'item',
