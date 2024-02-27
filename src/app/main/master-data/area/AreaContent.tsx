@@ -13,6 +13,8 @@ import { useAppDispatch,useAppSelector } from 'app/store';
 import EditModal from './EditModal';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+
 const FarmContent = ()=>{
     const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
     const [openEditFailNotify, setOpenEditFailNotify] = useState(false);
@@ -33,25 +35,25 @@ const FarmContent = ()=>{
         <Table className="min-w-x" aria-labelledby="tableTitle" >
         <TableHead style={{background:'rgb(250, 251, 254)'}}>
   <TableRow>
-    <TableCell align="center"><span className='font-semibold'>ID</span></TableCell>
+    <TableCell align="left"><span className='font-semibold'></span></TableCell>
+    <TableCell align="left" ><span className='font-semibold'></span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Name</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Thumbnail</span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Create at</span></TableCell>
     <TableCell align="left"><span className='font-semibold'></span></TableCell>
   </TableRow>
 </TableHead>
     {areas && areas.length > 0 && <TableBody>
         {areas.map((item) => (<TableRow key={item.id} >
-        <TableCell align='center'>{item.id}</TableCell>
-        <TableCell align='left'>{item.name}</TableCell>
-        <TableCell align='left'>
+            <TableCell></TableCell>
+        <TableCell align="center" className="w-52" component="th" scope="row" padding="none">
             {item.thumbnailUrl === null ? <></> :<a href={item.thumbnailUrl} target="_blank" rel="noopener noreferrer">
-                <img width='150px' height='150px' src={item.thumbnailUrl} alt='thumbnail' />
+                <img className="w-full block rounded"  src={item.thumbnailUrl} alt='thumbnail' />
             </a>}
             </TableCell>
+        <TableCell align='left'>{item.name}</TableCell>
         <TableCell align='left'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
         <TableCell align='left'>
-            <Button variant='contained' color='success' onClick={()=>{setShowEdit(true); setEditValue(item)}}>edit</Button>
+        <FuseSvgIcon className="text-48" size={24} color="action" style={{cursor:'pointer'}} onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
         </TableCell>
     </TableRow>))}
         </TableBody>}

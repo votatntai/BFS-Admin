@@ -8,9 +8,10 @@ import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {useEffect, useState } from 'react';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { caremodeReducerState, getCaremodeData, setPaginPageNumber,setPaginPageSize } from './slice/caremodeSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
-// import EditModal from './EditModal';
+import EditModal from './EditModal';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 const FarmContent = ()=>{
@@ -34,8 +35,7 @@ const FarmContent = ()=>{
         <Table className="min-w-x" aria-labelledby="tableTitle" >
         <TableHead style={{background:'rgb(250, 251, 254)'}}>
   <TableRow>
-    <TableCell align="center"><span className='font-semibold'>ID</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Name</span></TableCell>
+    <TableCell align="center"><span className='font-semibold'>Name</span></TableCell>
     {/* <TableCell align="left"><span className='font-semibold'>Priority</span></TableCell> */}
     <TableCell align="left"><span className='font-semibold'>Create at</span></TableCell>
     <TableCell align="left"><span className='font-semibold'></span></TableCell>
@@ -43,12 +43,11 @@ const FarmContent = ()=>{
 </TableHead>
     {caremodes && caremodes.length > 0 && <TableBody>
         {caremodes.map((item) => (<TableRow key={item.id} >
-        <TableCell align='center'>{item.id}</TableCell>
-        <TableCell align='left'>{item.name}</TableCell>
+        <TableCell align='center'>{item.name}</TableCell>
         {/* <TableCell align='left'>{item.priority}</TableCell> */}
         <TableCell align='left'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
         <TableCell align='left'>
-            <Button variant='contained' color='success' onClick={()=>{setShowEdit(true); setEditValue(item)}}>edit</Button>
+        <FuseSvgIcon className="text-48" size={24} style={{cursor:'pointer'}} color="action" onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
         </TableCell>
     </TableRow>))}
         </TableBody>}
@@ -90,7 +89,7 @@ const FarmContent = ()=>{
           Edit failed
         </Alert>
       </Snackbar>
-    {/* {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />} */}
+    {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
 </div>
 }
 export default FarmContent

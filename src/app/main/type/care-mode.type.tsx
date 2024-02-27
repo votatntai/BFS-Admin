@@ -12,5 +12,5 @@ export interface ObjectCaremodeToCreate{
 export interface ObjectCaremodeToEdit{
     "id": string,
     "name": string,
-    "priority": number,
+    // "priority": number,
   }

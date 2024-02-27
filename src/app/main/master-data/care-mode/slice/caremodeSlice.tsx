@@ -49,7 +49,7 @@ const caremodeSlice = createSlice({
         caremodes: {
 			pagination:{
 				"pageNumber": 0,
-				"pageSize": 5,
+				"pageSize": 8,
 				"totalRow": 0
 			},
 			data: []

@@ -1,5 +1,4 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -11,6 +10,7 @@ import {useEffect, useState } from 'react';
 import { farmReducerState, getFarmData, setPaginPageNumber,setPaginPageSize } from './slice/farmSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
 import EditModal from './EditModal';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 const FarmContent = ()=>{
@@ -33,9 +33,9 @@ const FarmContent = ()=>{
         <Table className="min-w-x" aria-labelledby="tableTitle" >
         <TableHead style={{background:'rgb(250, 251, 254)'}}>
   <TableRow>
-    <TableCell align="center"><span className='font-semibold'>ID</span></TableCell>
+    <TableCell></TableCell>
+    <TableCell></TableCell>
     <TableCell align="left"><span className='font-semibold'>Name</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Thumbnail</span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Address</span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Phone</span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Manager</span></TableCell>
@@ -44,18 +44,18 @@ const FarmContent = ()=>{
 </TableHead>
     {farms && farms.length > 0 && <TableBody>
         {farms.map((item) => (<TableRow key={item.id} >
-        <TableCell align='center'>{item.id}</TableCell>
-        <TableCell align='left'>{item.name}</TableCell>
-        <TableCell align='left'>
+            <TableCell></TableCell>
+        <TableCell className="w-52" component="th" scope="row" padding="none">
             {item.thumbnailUrl === null ? <></> :<a href={item.thumbnailUrl} target="_blank" rel="noopener noreferrer">
-                <img width='150px' height='150px' src={item.thumbnailUrl} alt='thumbnail' />
+                <img className="w-full block rounded" src={item.thumbnailUrl} alt='thumbnail' />
             </a>}
             </TableCell>
+        <TableCell align='left'>{item.name}</TableCell>
         <TableCell align='left'>{item.address}</TableCell>
         <TableCell align='left'>{item.phone}</TableCell>
         <TableCell align='left'>{item.manager.name}</TableCell>
         <TableCell align='left'>
-            <Button variant='contained' color='success' onClick={()=>{setShowEdit(true); setEditValue(item)}}>edit</Button>
+        <FuseSvgIcon className="text-48" size={24} color="action" style={{cursor:'pointer'}} onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
         </TableCell>
     </TableRow>))}
         </TableBody>}
