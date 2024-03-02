@@ -7,19 +7,20 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useState } from 'react';
 import CreateModal from './CreateModal';
 import { useAppDispatch, useAppSelector } from 'app/store';
-import { areaReducerState, getAreaData, setPaginPageNumber, setSearchText } from './slice/areaSlice';
+import { foodCategoryReducerState, getFoodCategoryData,setSearchText } from './slice/foodCategorySlice';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-const AreaHeader = ()=>{
+const FoodCategoryHeader = ()=>{
     const [showAdd, setShowAdd] =useState(false)
     const [openCreateSuccessNotify, setOpenCreateSuccessNotify] = useState(false);
     const [openCreateFailNotify, setOpenCreateFailNotify] = useState(false);
     const dispatch = useAppDispatch()
     const [searchValue, setSearchValue] = useState('')
-    const pageSize  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.pageSize)
-    const handleSearch= async()=>{
+    const pageNumber  = useAppSelector((state: foodCategoryReducerState) => state.foodCategoryReducer.foodCategorySlice.foodCategories.pagination.pageNumber)
+    const pageSize  = useAppSelector((state: foodCategoryReducerState) => state.foodCategoryReducer.foodCategorySlice.foodCategories.pagination.pageSize)
+    const handleSearch = async()=>{
         dispatch(setSearchText(searchValue))
-        await dispatch(getAreaData({name: searchValue, pageNumber: 0, pageSize: pageSize}))
+        await dispatch(getFoodCategoryData({name: searchValue, pageNumber: 0, pageSize: pageSize}))        
         dispatch(setSearchText(""))
     }
     return <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
@@ -27,7 +28,7 @@ const AreaHeader = ()=>{
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}
     >
-        <Typography className="text-24 md:text-32 font-extrabold tracking-tight">Areas</Typography>
+        <Typography className="text-24 md:text-32 font-extrabold tracking-tight">Food categories</Typography>
     </motion.span>
     <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
     <Paper
@@ -37,10 +38,11 @@ const AreaHeader = ()=>{
             className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
         >
             <Input
-                placeholder="Search areas"
+                placeholder="Search food categories"
                 disableUnderline
                 fullWidth
-                value={searchValue} onKeyPress={e => {if(e.key==='Enter') handleSearch()}}
+                value={searchValue}
+                onKeyPress={e => {if(e.key === 'Enter') handleSearch()}}
                 inputProps={{
                     'aria-label': 'Search'
                 }}
@@ -56,7 +58,7 @@ const AreaHeader = ()=>{
                 variant="contained" className='me-12'
                 color="secondary"
                 startIcon={<FuseSvgIcon>heroicons-outline:search</FuseSvgIcon>}
-                onClick={()=>{handleSearch();setSearchValue('')}}
+                onClick={handleSearch}
             >
                 Search
             </Button>
@@ -85,4 +87,4 @@ const AreaHeader = ()=>{
     {showAdd && <CreateModal handleClose={()=> setShowAdd(false)} show={showAdd} setOpenFailSnackbar={setOpenCreateFailNotify} setOpenSuccessSnackbar={setOpenCreateSuccessNotify} />}
 </div>
 }
-export default AreaHeader
+export default FoodCategoryHeader

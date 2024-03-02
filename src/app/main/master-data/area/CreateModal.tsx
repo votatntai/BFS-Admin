@@ -35,8 +35,8 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
       let check: boolean = true
       if(area.name.trim() === '') {setCheckName(true)} else setCheckName(false)
       if(area.farmId.value === "") { setCheckFarmId(true)} else setCheckFarmId(false)
-      if(area.thumbnailUrl.trim() === '') { setCheckThumbnailURL(true)} else setCheckThumbnailURL(false)
-      if(area.name.trim() === '' || area.farmId.value === "" || area.thumbnailUrl.trim() === ''){
+      if(area.thumbnailUrl === '') { setCheckThumbnailURL(true)} else setCheckThumbnailURL(false)
+      if(area.name.trim() === '' || area.farmId.value === "" || area.thumbnailUrl === ''){
           check = false
       }
       return check;

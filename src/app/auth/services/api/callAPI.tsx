@@ -28,9 +28,15 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  export const updateCaremode = (id: string, formData: FormData) => axios.put(`/care-modes/${id}`,formData);
 
 /**
- * Account
+ * Food
  */
+ export const getFoods = (object: Object) => axios.get(`/foods`,{params: object});
+ export const createFood = (formData: FormData) => axios.post('/foods',formData);
+ export const updateFood = (id: string, formData: FormData) => axios.put(`/foods/${id}`,formData);
 
 /**
- * Account
+ * Food category
  */
+ export const getFoodCategories = (object: Object) => axios.get(`/food-categories`,{params: object});
+ export const createFoodCategory = (formData: FormData) => axios.post('/food-categories',formData);
+ export const updateFoodCategory = (id: string, formData: FormData) => axios.put(`/food-categories/${id}`,formData);

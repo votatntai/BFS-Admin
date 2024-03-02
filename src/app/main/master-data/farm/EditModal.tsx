@@ -83,26 +83,23 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
        onChange={e => setFarm(prev => ({...prev, phone: e.target.value}))} label='Phone' 
        placeholder='Enter phone number' size='small' variant="outlined" />
 
-      <TextField helperText={checkThumbnailURL ? "This field is required" : false}  
-      error={checkThumbnailURL ? true : false} value={farm.thumbnailUrl} type="file"
-      inputProps={{ accept: "image/png, image/jpeg, image/jpg" }} InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            {file && <IconButton onClick={()=>{
-              setFarm(prev => ({...prev, thumbnailUrl: "" }))
-              setFile(null)
-              }}>
-                <FuseSvgIcon>heroicons-outline:x-circle</FuseSvgIcon>
-              </IconButton>}
-          </InputAdornment>
-        ),
-      }}
-      onChange={(e: any) => {
-        setFarm(prev => ({...prev, thumbnailUrl: e.target.value}))
-        setFile(e.target.files[0])
-        setLocalFile(URL.createObjectURL(e.target.files[0]))
-      }} 
-      size='small' variant="outlined" />
+<Stack direction="row" spacing={2}>
+              <Button variant='contained' onClick={()=>document.getElementById('fileInput').click()}>
+                  <FuseSvgIcon>heroicons-outline:cloud-upload</FuseSvgIcon>
+                  Upload image
+              </Button>
+              <input id="fileInput" type="file" hidden={true} onChange={(e: any) => {
+              setFarm(prev => ({...prev, thumbnailUrl: "có thumbnail"}))
+              setFile(e.target.files[0])
+              setLocalFile(URL.createObjectURL(e.target.files[0]))
+            }} />
+            {file && <Button variant='contained' onClick={()=>{setFarm(prev => ({...prev, thumbnailUrl: "" }))
+                    setFile(null)}}>
+                  <FuseSvgIcon>heroicons-outline:x-circle</FuseSvgIcon>
+                  Clear image
+            </Button>}
+            </Stack>
+            {checkThumbnailURL &&<div style={{color:'red'}}>Thumbnail is required!</div>}
       {file && <img src={localFile!==null ? localFile : file} alt="Selected Image" style={{ marginTop: '10px', maxWidth: '100%' }} />}
         </Stack>
     </DialogContent>

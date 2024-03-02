@@ -15,7 +15,7 @@ import { editArea, areaReducerState, getAreaData } from './slice/areaSlice';
 
 const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFailSnackbar})=>{
   const [farm, setFarm] =useState<ObjectAreaToEdit>({
-    id: object.id,
+    id: object.id,      
     name: object.name,
     thumbnailUrl: object.thumbnailURL,
   }) 
@@ -65,28 +65,24 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
       onChange={e => setFarm(prev => ({...prev, name: e.target.value}))} label='Name' 
       placeholder='Enter name' size='small' variant="outlined" />
 
-      <TextField helperText={checkThumbnailURL ? "This field is required" : false}  
-      error={checkThumbnailURL ? true : false} value={farm.thumbnailUrl} type="file"
-      inputProps={{ accept: "image/png, image/jpeg, image/jpg" }} InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            {file && <IconButton onClick={()=>{
-              setFarm(prev => ({...prev, thumbnailUrl: "" }))
-              setFile(null)
-              }}>
-                <FuseSvgIcon>heroicons-outline:x-circle</FuseSvgIcon>
-              </IconButton>}
-          </InputAdornment>
-        ),
-      }}
-      onChange={(e: any) => {
-        setFarm(prev => ({...prev, thumbnailUrl: e.target.value}))
-        setFile(e.target.files[0])
-        setLocalFile(URL.createObjectURL(e.target.files[0]))
-      }} 
-      size='small' variant="outlined" />
-      {file && <img src={localFile!==null ? localFile : file} alt="Selected Image" style={{ marginTop: '10px', maxWidth: '100%' }} />}
-        </Stack>
+            <Stack direction="row" spacing={2}>
+              <Button variant='contained' onClick={()=>document.getElementById('fileInput').click()}>
+                  <FuseSvgIcon>heroicons-outline:cloud-upload</FuseSvgIcon>
+                  Upload image
+              </Button>
+              <input id="fileInput" type="file" hidden={true} onChange={(e: any) => {
+              setFarm(prev => ({...prev, thumbnailUrl: "có thumbnail"}))
+              setFile(e.target.files[0])
+              setLocalFile(URL.createObjectURL(e.target.files[0]))
+            }} />
+            {file && <Button variant='contained' onClick={()=>{setFarm(prev => ({...prev, thumbnailUrl: "" }))
+                    setFile(null)}}>
+                  <FuseSvgIcon>heroicons-outline:x-circle</FuseSvgIcon>
+                  Clear image
+            </Button>}
+            </Stack>
+            {checkThumbnailURL &&<div style={{color:'red'}}>Thumbnail is required!</div>}
+            {file && <img src={localFile!==null ? localFile : file} alt="Selected Image" style={{ marginTop: '10px', maxWidth: '100%' }} />}        </Stack>
     </DialogContent>
     <DialogActions>
       <Button variant='contained' onClick={handleClose}>Cancel</Button>

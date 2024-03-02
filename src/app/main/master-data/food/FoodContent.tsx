@@ -1,4 +1,5 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -7,25 +8,26 @@ import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {useEffect, useState } from 'react';
-import { farmReducerState, getFarmData, setPaginPageNumber,setPaginPageSize } from './slice/farmSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { foodReducerState, getFoodData, setPaginPageNumber,setPaginPageSize } from './slice/foodSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
 import EditModal from './EditModal';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-const FarmContent = ()=>{
+const FoodContent = ()=>{
     const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
     const [openEditFailNotify, setOpenEditFailNotify] = useState(false);
-    
 	const [showEdit, setShowEdit] =useState(false)
 	const [editValue, setEditValue] =useState({})
     const dispatch = useAppDispatch()
-    const farms  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.data)
-    const pageNumber  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageNumber)
-    const pageSize  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageSize)
-    const totalRow =  useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.totalRow)
+    const foods  = useAppSelector((state: foodReducerState) => state.foodReducer.foodSlice.foods.data)
+    const pageNumber  = useAppSelector((state: foodReducerState) => state.foodReducer.foodSlice.foods.pagination.pageNumber)
+    const pageSize  = useAppSelector((state: foodReducerState) => state.foodReducer.foodSlice.foods.pagination.pageSize)
+    const totalRow =  useAppSelector((state: foodReducerState) => state.foodReducer.foodSlice.foods.pagination.totalRow)
+    const searchValue =  useAppSelector((state: foodReducerState) => state.foodReducer.foodSlice.searchText)
+    
     useEffect(()=>{
-        dispatch(getFarmData({pageNumber: pageNumber, pageSize: pageSize}))
+        dispatch(getFoodData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize}))
     },[pageNumber, pageSize])
     
     return <div className="w-full flex flex-col min-h-full bg-white">
@@ -33,41 +35,44 @@ const FarmContent = ()=>{
         <Table className="min-w-x" aria-labelledby="tableTitle" >
         <TableHead style={{background:'rgb(250, 251, 254)'}}>
   <TableRow>
-    <TableCell></TableCell>
-    <TableCell></TableCell>
+    <TableCell align="left"><span className='font-semibold'></span></TableCell>
+    <TableCell align="left"><span className='font-semibold'></span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Name</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Address</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Phone</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'>Manager</span></TableCell>
+    <TableCell align="left"><span className='font-semibold'>Category</span></TableCell>
+    <TableCell align="left"><span className='font-semibold'>Quantity</span></TableCell>
+    <TableCell align="left"><span className='font-semibold'>Create at</span></TableCell>
+    <TableCell align="left"><span className='font-semibold'>Status</span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Action</span></TableCell>
   </TableRow>
 </TableHead>
-    {farms && farms.length > 0 && <TableBody>
-        {farms.map((item) => (<TableRow key={item.id} >
-            <TableCell></TableCell>
-        <TableCell className="w-52" component="th" scope="row" padding="none">
+    {foods && foods.length > 0 && <TableBody>
+        {foods.map((item) => (<TableRow key={item.id} >
+            <TableCell/>
+            <TableCell className="w-52" component="th" scope="row" padding="none">
             {item.thumbnailUrl === null ? <></> :<a href={item.thumbnailUrl} target="_blank" rel="noopener noreferrer">
-                <img className="w-full block rounded" src={item.thumbnailUrl} alt='thumbnail' />
+                <img className="w-full block rounded"  src={item.thumbnailUrl} alt='thumbnail' />
             </a>}
             </TableCell>
         <TableCell align='left'>{item.name}</TableCell>
-        <TableCell align='left'>{item.address}</TableCell>
-        <TableCell align='left'>{item.phone}</TableCell>
-        <TableCell align='left'>{item.manager.name}</TableCell>
-        <TableCell>
-        <FuseSvgIcon className="text-48 ms-10" size={24} color="action" style={{cursor:'pointer'}} onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
+        <TableCell align='left'>{item.foodCategory.name}</TableCell>
+        <TableCell align='left'>{item.quantity} {item.unitOfMeasurement.name}</TableCell>
+        <TableCell align='left'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
+        <TableCell align='left' >{item.status === 'Available' ? <Button style={{pointerEvents: "none"}} variant='contained' color='success'>Available</Button> : <Button style={{pointerEvents: "none"}} variant='contained' color='error'>Disable</Button>}</TableCell>
+        <TableCell align='left'>
+        <FuseSvgIcon className="text-48" size={24} style={{cursor:'pointer'}} color="action" onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
+            
         </TableCell>
     </TableRow>))}
         </TableBody>}
         </Table>
-    {farms && farms.length===0 && <Stack className='mt-36' direction='row' alignItems={"center"} justifyContent={"center"}>
+    {foods && foods.length===0 && <Stack className='mt-36' direction='row' alignItems={"center"} justifyContent={"center"}>
         <h2 style={{color:"gray"}}>No matching result</h2></Stack> }
     </FuseScrollbars>
 
     <TablePagination
         className="shrink-0 border-t-1"
         component="div"
-        rowsPerPageOptions={[5,10]}
+        rowsPerPageOptions={[8,16,32]}
         count={totalRow}
         rowsPerPage={pageSize}
         page={pageNumber}
@@ -100,4 +105,4 @@ const FarmContent = ()=>{
     {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
 </div>
 }
-export default FarmContent
+export default FoodContent

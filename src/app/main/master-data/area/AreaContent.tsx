@@ -39,7 +39,7 @@ const FarmContent = ()=>{
     <TableCell align="left" ><span className='font-semibold'></span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Name</span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Create at</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'></span></TableCell>
+    <TableCell align="left"><span className='font-semibold'>Action</span></TableCell>
   </TableRow>
 </TableHead>
     {areas && areas.length > 0 && <TableBody>
@@ -52,8 +52,8 @@ const FarmContent = ()=>{
             </TableCell>
         <TableCell align='left'>{item.name}</TableCell>
         <TableCell align='left'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
-        <TableCell align='left'>
-        <FuseSvgIcon className="text-48" size={24} color="action" style={{cursor:'pointer'}} onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
+        <TableCell>
+        <FuseSvgIcon className="text-48 ms-10" size={24} color="action" style={{cursor:'pointer'}} onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
         </TableCell>
     </TableRow>))}
         </TableBody>}
@@ -65,7 +65,7 @@ const FarmContent = ()=>{
     <TablePagination
         className="shrink-0 border-t-1"
         component="div"
-        rowsPerPageOptions={[5,10]}
+        rowsPerPageOptions={[8,16,32]}
         count={totalRow}
         rowsPerPage={pageSize}
         page={pageNumber}
