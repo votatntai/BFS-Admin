@@ -1,5 +1,5 @@
 import { FoodCategory } from "./food-category.type"
-import { UnitOfMeasurement } from "./unit-of-measurement.type.type"
+import { UnitOfMeasurement } from "./unit-of-measurement.type"
 
 export interface Food{
     "id": string

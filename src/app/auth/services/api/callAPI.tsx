@@ -40,3 +40,10 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  export const getFoodCategories = (object: Object) => axios.get(`/food-categories`,{params: object});
  export const createFoodCategory = (formData: FormData) => axios.post('/food-categories',formData);
  export const updateFoodCategory = (id: string, formData: FormData) => axios.put(`/food-categories/${id}`,formData);
+
+ /**
+ * Unit of measurement
+ */
+ export const getUnit = (object: Object) => axios.get(`/unit-of-measurements`,{params: object});
+ export const createUnit = (formData: FormData) => axios.post('/unit-of-measurements',formData);
+ export const updateUnit = (id: string, formData: FormData) => axios.put(`/unit-of-measurements/${id}`,formData);

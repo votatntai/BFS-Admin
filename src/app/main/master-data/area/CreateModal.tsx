@@ -100,27 +100,24 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
             error={checkFarmId ? true : false}/>}
           />
       
-      <TextField helperText={checkThumbnailURL ? "This field is required" : false}  
-      error={checkThumbnailURL ? true : false} value={area.thumbnailUrl} type="file"
-      inputProps={{ accept: "image/png, image/jpeg, image/jpg" }} InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            {file && <IconButton onClick={()=>{
-              setArea(prev => ({...prev, thumbnailUrl: "" }))
-              setFile(null)
-              }}>
-                <FuseSvgIcon>heroicons-outline:x-circle</FuseSvgIcon>
-              </IconButton>}
-          </InputAdornment>
-        ),
-      }}
-      onChange={(e: any) => {
-        setArea(prev => ({...prev, thumbnailUrl: e.target.value}))
-        setFile(e.target.files[0])
-      }} 
-      size='small' variant="outlined" />
-      {file && <img src={URL.createObjectURL(file)} alt="Selected Image" style={{ marginTop: '10px', maxWidth: '100%' }} />}
-        </Stack>
+      <Stack direction="row" spacing={2}>
+              <Button variant='contained' onClick={()=>document.getElementById('fileInput').click()}>
+                  <FuseSvgIcon>heroicons-outline:cloud-upload</FuseSvgIcon>
+                  Upload image
+              </Button>
+              <input id="fileInput" type="file" hidden={true} onChange={(e: any) => {
+              setArea(prev => ({...prev, thumbnailUrl: "có thumbnail"}))
+              setFile(e.target.files[0])
+            }} />
+            {file && <Button variant='contained' onClick={()=>{setArea(prev => ({...prev, thumbnailUrl: "" }))
+                    setFile(null)}}>
+                  <FuseSvgIcon>heroicons-outline:x-circle</FuseSvgIcon>
+                  Clear image
+            </Button>}
+            </Stack>
+            {checkThumbnailURL &&<div style={{color:'red'}}>Thumbnail is required!</div>}
+            {file && <img src={URL.createObjectURL(file)} alt="Selected Image" style={{ marginTop: '10px', maxWidth: '100%' }} />}        
+            </Stack>
     </DialogContent>
     <DialogActions>
       <Button variant='contained' onClick={handleClose}>cancel</Button>

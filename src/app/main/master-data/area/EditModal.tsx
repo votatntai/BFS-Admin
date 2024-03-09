@@ -82,7 +82,8 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
             </Button>}
             </Stack>
             {checkThumbnailURL &&<div style={{color:'red'}}>Thumbnail is required!</div>}
-            {file && <img src={localFile!==null ? localFile : file} alt="Selected Image" style={{ marginTop: '10px', maxWidth: '100%' }} />}        </Stack>
+            {file && <img src={localFile!==null ? localFile : file} alt="Selected Image" style={{ marginTop: '10px', maxWidth: '100%' }} />}        
+            </Stack>
     </DialogContent>
     <DialogActions>
       <Button variant='contained' onClick={handleClose}>Cancel</Button>

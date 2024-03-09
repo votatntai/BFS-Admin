@@ -22,21 +22,21 @@ export const getFarmData = createAsyncThunk('farmReducer/getFarms', async (objec
 	  const response = await getFarms(object);
 	  return response;
 	} catch (error) {
-	  console.error(error);
+	  console.log(error);
 	}
   });
 export const addFarm = createAsyncThunk('farmReducer/addFarm', async (formData: FormData) => {
 	try {
 	  await createFarm(formData);
 	} catch (error) {
-	  console.error(error);
+	  console.log(error);
 	}
   });
 export const editFarm = createAsyncThunk('farmReducer/editFarm', async ({id, formData}: {id: string, formData: FormData}) => {
 	try {
 	  await updateFarm(id, formData);
 	} catch (error) {
-	  console.error(error);
+	  console.log(error);
 	}
   });
 

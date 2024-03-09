@@ -66,6 +66,13 @@ const navigationConfig: FuseNavigationType = [
 						end: true
 					},
 					{
+						id: 'master-data-unit',
+						title: 'Unit',
+						type: 'item',
+						url: 'master-data/unit',
+						end: true
+					},
+					{
 						id: 'master-data-cage',
 						title: 'Cage',
 						type: 'item',

@@ -6,25 +6,22 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { ObjectCaremodeToCreate } from '../../type/care-mode.type';
+import { ObjectUnitToCreate } from '../../type/unit-of-measurement.type';
 import { useAppDispatch,useAppSelector } from 'app/store';
-import { addCaremode, caremodeReducerState, getCaremodeData } from './slice/caremodeSlice';
+import { addUnit, unitReducerState, getUnitData } from './slice/unitSlice';
 const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackbar})=>{
-    const [caremode, setCaremode] =useState<ObjectCaremodeToCreate>({
+    const [unit, setUnit] =useState<ObjectUnitToCreate>({
       name: '',
-      priority: 0,
     })
     const formData = new FormData()
     const [checkName, setCheckName] = useState(false)
-    const [checkPriority, setCheckPriority] = useState(false)
     const dispatch = useAppDispatch()
-    const pageNumber  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.pageNumber)
-    const pageSize  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.pageSize)
+    const pageNumber  = useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.units.pagination.pageNumber)
+    const pageSize  = useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.units.pagination.pageSize)
     const checkValid= () =>{
       let check: boolean = true
-      if(caremode.name.trim() === '') {setCheckName(true)} else setCheckName(false)
-      if(caremode.priority === 0 || caremode.priority <= 0) { setCheckPriority(true)} else setCheckPriority(false)
-      if(caremode.name.trim() === '' || caremode.priority === 0 || caremode.priority <= 0){
+      if(unit.name.trim() === '') {setCheckName(true)} else setCheckName(false)
+      if(unit.name.trim() === ''){
           check = false
       }
       return check;
@@ -33,10 +30,9 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
     const add = async() => {
       const validate = checkValid()
       if(validate) {
-        formData.append('name',caremode.name)
-        formData.append('priority', caremode.priority.toString())
-        await dispatch(addCaremode(formData))
-        await dispatch(getCaremodeData({pageNumber: pageNumber, pageSize: pageSize}))
+        formData.append('name',unit.name)
+        await dispatch(addUnit(formData))
+        await dispatch(getUnitData({pageNumber: pageNumber, pageSize: pageSize}))
         setOpenSuccessSnackbar(true)
         handleClose()
       } else setOpenFailSnackbar(true)
@@ -54,16 +50,10 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
     <DialogContent>
         <Stack direction='column' spacing={2} className='pt-5'>
       <TextField helperText={checkName ? "This field is required" : false} 
-      error={checkName ? true : false} value={caremode.name}
-      onChange={e => setCaremode(prev => ({...prev, name: e.target.value}))} label='Name' 
+      error={checkName ? true : false} value={unit.name}
+      onChange={e => setUnit(prev => ({...prev, name: e.target.value}))} label='Name' 
       placeholder='Enter name' size='small' variant="outlined" />
-      
-      <TextField helperText={checkPriority ? "This field is required and can not smaller than 0" : false} 
-      error={checkPriority ? true : false} value={caremode.priority} type="number"
-      onChange={e => setCaremode(prev => ({...prev, priority: parseInt(e.target.value)}))} label='Priority' 
-      placeholder='Enter name' size='small' variant="outlined" />
-
-        </Stack>
+      </Stack>
     </DialogContent>
     <DialogActions>
       <Button variant='contained' onClick={handleClose}>cancel</Button>

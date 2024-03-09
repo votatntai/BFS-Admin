@@ -39,10 +39,11 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
     const checkValid= () =>{
       let check: boolean = true
       if(food.name.trim() === '') {setCheckName(true)} else setCheckName(false)
-      if(food.foodCategoryId.value === '') {setCheckFoodCategory(true)} else setCheckFoodCategory(false)
+      if(food.foodCategoryId === null || food.foodCategoryId.value === '' ) {setCheckFoodCategory(true)} else setCheckFoodCategory(false)
       if(food.thumbnail.trim() === '') { setCheckThumbnail(true)} else setCheckThumbnail(false)
-      if(food.unitOfMeasurementId.value === '') { setCheckUnit(true)} else setCheckUnit(false)
-      if(food.name.trim() === '' || food.foodCategoryId.value === '' || food.thumbnail === '' || food.unitOfMeasurementId.value === ''){
+      if(food.unitOfMeasurementId === null || food.unitOfMeasurementId.value==='') { setCheckUnit(true)} else setCheckUnit(false)
+      if(food.name.trim() === '' || food.foodCategoryId === null || food.foodCategoryId.value === ''
+      || food.thumbnail === '' || food.unitOfMeasurementId === null || food.unitOfMeasurementId.value === ''){
           check = false
       }
       return check;
