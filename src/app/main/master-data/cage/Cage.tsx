@@ -1,8 +1,7 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
-import BirdCategoryHeader from './BirdCategoryHeader';
-import BirdCategoryTable from './BirdCategoryTable';
-import FusePageCarded from '@fuse/core/FusePageCarded';
+import CagesTable from './CagesTable';
+import CagesHeader from './CagesHeader';
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
 		backgroundColor: theme.palette.background.paper,
@@ -15,13 +14,13 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-sidebarContent': {}
 }));
 
-function BirdCategory() {
-
-	return (<FusePageCarded
-		header={<BirdCategoryHeader />}
-		content={<BirdCategoryTable />}
-
-	/>)
+function Cage() {
+	return (<Root
+	header={<CagesHeader/>}
+	content={
+			<CagesTable />
+	}
+/>)
 }
 
-export default BirdCategory;
+export default Cage;

@@ -18,9 +18,12 @@ import FoodCategoryConfig from '../main/master-data/food-category/FoodCategoryCo
 import FoodConfig from '../main/master-data/food/FoodConfig';
 import UnitConfig from '../main/master-data/unit/UnitConfig';
 import MenuSampleConfig from '../main/master-data/menu-sample/MenuSampleConfig';
-
-const routeConfigs: FuseRouteConfigsType = [MenuSampleConfig,UnitConfig,AccountConfig, FoodCategoryConfig,FoodConfig,CaremodeConfig,AreaConfig, FarmConfig, BirdConfig, BirdCategoryConfig,
-	SignOutConfig, SignInConfig, SignUpConfig, Error404Config];
+import SpciesConfig from '../main/master-data/species/SpciesConfig';
+import CageConfig from '../main/master-data/cage/CageConfig';
+const routeConfigs: FuseRouteConfigsType = [MenuSampleConfig,UnitConfig,
+	SpciesConfig,AccountConfig, FoodCategoryConfig,FoodConfig,
+	CaremodeConfig,AreaConfig, FarmConfig, BirdConfig, BirdCategoryConfig,CageConfig,
+	SignOutConfig, SignInConfig, SignUpConfig, Error404Config];[]
 
 /**
  * The routes of the application.
