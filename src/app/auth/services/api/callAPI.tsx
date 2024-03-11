@@ -27,6 +27,10 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  export const createCaremode = (formData: FormData) => axios.post('/care-modes',formData);
  export const updateCaremode = (id: string, formData: FormData) => axios.put(`/care-modes/${id}`,formData);
 
+ /**
+ * BirdCategory
+ */
+ 
 /**
  * Account
  */

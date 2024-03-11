@@ -22,7 +22,8 @@ const AreaHeader = ()=>{
         dispatch(setSearchText(searchValue))
         dispatch(getAreaData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize}))
     }
-    return <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
+    return
+     <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
     <motion.span
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}

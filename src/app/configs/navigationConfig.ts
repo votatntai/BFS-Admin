@@ -45,6 +45,20 @@ const navigationConfig: FuseNavigationType = [
 						end: true
 					},
 					{
+						id: 'master-data-species',
+						title: 'Species',
+						type: 'item',
+						url: 'master-data/species',
+						end: true
+					},
+					{
+						id: 'master-data-cages',
+						title: 'Cages',
+						type: 'item',
+						url: 'master-data/cage',
+						end: true
+					},
+					{
 						id: 'master-data-care-mode',
 						title: 'Care mode',
 						type: 'item',

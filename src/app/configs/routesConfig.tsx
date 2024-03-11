@@ -14,8 +14,12 @@ import BirdCategoryConfig from '../main/master-data/bird-category/BirdCategoryCo
 import FarmConfig from '../main/master-data/farm/FarmConfig';
 import AreaConfig from '../main/master-data/area/AreaConfig';
 import CaremodeConfig from '../main/master-data/care-mode/CaremodeConfig';
+import SpciesConfig from '../main/master-data/species/SpciesConfig';
+import CageConfig from '../main/master-data/cage/CageConfig';
 
-const routeConfigs: FuseRouteConfigsType = [AccountConfig, CaremodeConfig,AreaConfig, FarmConfig, BirdConfig, BirdCategoryConfig,
+const routeConfigs: FuseRouteConfigsType = [
+	AccountConfig, CaremodeConfig,AreaConfig,CageConfig,
+	 FarmConfig, BirdConfig, BirdCategoryConfig,SpciesConfig,
 	SignOutConfig, SignInConfig, SignUpConfig, Error404Config];
 
 /**

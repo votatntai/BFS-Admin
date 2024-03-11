@@ -7,21 +7,21 @@ import { useAppDispatch, useAppSelector } from 'app/store';
 import { Link } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { ChangeEvent } from 'react';
-import { selectBirdCategorySearchText, setBirdCategorySearchText } from './store/birdCategorySlice';
+import { selectSpeciesSearchText, setSpeciesSearchText } from './store/SpecisesSlice';
 
 /**
  * The products header.
  */
-function BirdCategoryHeader() {
+function SpeciesHeader() {
 	const dispatch = useAppDispatch();
-	const searchText = useAppSelector(selectBirdCategorySearchText);
+	const searchText = useAppSelector(selectSpeciesSearchText);
 	return (
 		<div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
 			<motion.span
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Bird Category</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Species</Typography>
 			</motion.span>
 			<div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
 				<Paper
@@ -42,7 +42,7 @@ function BirdCategoryHeader() {
 							'aria-label': 'Search'
 						}}
 						onChange={(ev: ChangeEvent<HTMLInputElement>) =>
-							dispatch(setBirdCategorySearchText(ev.target.value))
+							dispatch(setSpeciesSearchText(ev.target.value))
 						}
 					/>
 				</Paper>
@@ -53,7 +53,8 @@ function BirdCategoryHeader() {
 				>
 					<Button
 						component={Link}
-						to="/master-data/bird-category/new"
+						to="/master-data/species
+						/new"
 						variant="contained"
 						color="secondary"
 						startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
@@ -66,4 +67,4 @@ function BirdCategoryHeader() {
 	);
 }
 
-export default BirdCategoryHeader;
+export default SpeciesHeader;
