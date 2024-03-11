@@ -7,6 +7,7 @@ import caremodeSlice from '../care-mode/slice/caremodeSlice'
 import foodCategorySlice from '../food-category/slice/foodCategorySlice'
 import foodSlice from '../food/slice/foodSlice'
 import unitSlice from '../unit/slice/unitSlice'
+import menuSampleSlice from '../menu-sample/slice/menuSampleSlice'
 const reducer = combineReducers({
     birdSlice,
     farmSlice,
@@ -14,7 +15,8 @@ const reducer = combineReducers({
     caremodeSlice,
     foodCategorySlice,
     foodSlice,
-    unitSlice
+    unitSlice,
+    menuSampleSlice
 })
 
 export default reducer

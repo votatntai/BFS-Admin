@@ -47,3 +47,10 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  export const getUnit = (object: Object) => axios.get(`/unit-of-measurements`,{params: object});
  export const createUnit = (formData: FormData) => axios.post('/unit-of-measurements',formData);
  export const updateUnit = (id: string, formData: FormData) => axios.put(`/unit-of-measurements/${id}`,formData);
+
+ /**
+ * Menu sample
+ */
+ export const getMenuSample = (object: Object) => axios.get(`/menu-samples`,{params: object});
+ export const createMenuSample = (formData: FormData) => axios.post('/menu-samples',formData);
+ export const updateMenuSample = (id: string, formData: FormData) => axios.put(`/menu-samples/${id}`,formData);

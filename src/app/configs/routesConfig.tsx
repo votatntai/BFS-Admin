@@ -17,8 +17,9 @@ import CaremodeConfig from '../main/master-data/care-mode/CaremodeConfig';
 import FoodCategoryConfig from '../main/master-data/food-category/FoodCategoryConfig';
 import FoodConfig from '../main/master-data/food/FoodConfig';
 import UnitConfig from '../main/master-data/unit/UnitConfig';
+import MenuSampleConfig from '../main/master-data/menu-sample/MenuSampleConfig';
 
-const routeConfigs: FuseRouteConfigsType = [UnitConfig,AccountConfig, FoodCategoryConfig,FoodConfig,CaremodeConfig,AreaConfig, FarmConfig, BirdConfig, BirdCategoryConfig,
+const routeConfigs: FuseRouteConfigsType = [MenuSampleConfig,UnitConfig,AccountConfig, FoodCategoryConfig,FoodConfig,CaremodeConfig,AreaConfig, FarmConfig, BirdConfig, BirdCategoryConfig,
 	SignOutConfig, SignInConfig, SignUpConfig, Error404Config];
 
 /**
