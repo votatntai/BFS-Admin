@@ -1,3 +1,6 @@
+import { CareMode } from "./care-mode.type"
+import { Species } from "./species.type"
+
 export interface ObjectMenuSampleToCreate{
     "name": string,
     "speciesId": {
@@ -26,7 +29,7 @@ export interface ObjectMenuSampleToEdit{
 export interface menuSample{
     "id":string,
     "name": string,
-    "speciesId": string,
-    "careModeId": string,
+    "species": Species,
+    "careMode": CareMode,
     "createAt": string
 }

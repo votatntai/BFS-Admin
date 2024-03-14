@@ -45,8 +45,8 @@ const MenuSampleContent = ()=>{
     {menuSamples && menuSamples.length > 0 && <TableBody>
         {menuSamples.map((item) => (<TableRow key={item.id} >
         <TableCell align='center'>{item.name}</TableCell>
-        <TableCell align='center'>{item.speciesId}</TableCell>
-        <TableCell align='center'>{item.careModeId}</TableCell>
+        <TableCell align='center'>{item.species.name}</TableCell>
+        <TableCell align='center'>{item.careMode.name}</TableCell>
         <TableCell align='center'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
         <TableCell align='center'>
         <FuseSvgIcon className="text-48 ms-10" size={24} color="action" style={{cursor:'pointer'}} onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>

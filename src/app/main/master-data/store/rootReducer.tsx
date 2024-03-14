@@ -13,6 +13,7 @@ import foodCategorySlice from '../food-category/slice/foodCategorySlice'
 import foodSlice from '../food/slice/foodSlice'
 import unitSlice from '../unit/slice/unitSlice'
 import menuSampleSlice from '../menu-sample/slice/menuSampleSlice'
+import menuMealSampleSlice from '../menu-meal-sample/slice/menuMealSampleSlice';
 const reducer = combineReducers({
     cage,
     cages,
@@ -27,7 +28,8 @@ const reducer = combineReducers({
     foodCategorySlice,
     foodSlice,
     unitSlice,
-    menuSampleSlice
+    menuSampleSlice,
+    menuMealSampleSlice
 })
 
 export default reducer

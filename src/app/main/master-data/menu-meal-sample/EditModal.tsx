@@ -4,25 +4,25 @@ import Stack from '@mui/material/Stack';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { ObjectUnitToEdit } from '../../type/unit-of-measurement.type';
 import { useAppDispatch, useAppSelector } from 'app/store';
-import { editUnit, unitReducerState, getUnitData } from './slice/unitSlice';
+import { editMenuMealSample, menuMealSampleReducerState, getMenuMealSampleData } from './slice/menuMealSampleSlice';
+import { ObjectFoodCategoryToEdit } from '../../type/food-category.type';
 
 const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFailSnackbar})=>{
-  const [farm, setFarm] =useState<ObjectUnitToEdit>({
-    id: object.id,      
+  const [foodCategory, setfoodCategory] =useState<ObjectFoodCategoryToEdit>({
+    id: object.id,
     name: object.name,
   }) 
     const [checkName, setCheckName] = useState(false)
-    const pageNumber  = useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.units.pagination.pageNumber)
-    const pageSize  = useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.units.pagination.pageSize)
+    const pageNumber  = useAppSelector((state: menuMealSampleReducerState) => state.menuMealSampleReducer.menuMealSampleSlice.menuMealSamples.pagination.pageNumber)
+    const pageSize  = useAppSelector((state: menuMealSampleReducerState) => state.menuMealSampleReducer.menuMealSampleSlice.menuMealSamples.pagination.pageSize)
     const dispatch = useAppDispatch()
     const checkValid= () =>{
       let check: boolean = true
-      if(farm.name.trim() === '') {setCheckName(true)} else setCheckName(false)
-      if(farm.name.trim() === ''){
+      if(foodCategory.name.trim() === '') {setCheckName(true)} else setCheckName(false)
+      if(foodCategory.name.trim() === ''){
           check = false
       }
       return check;
@@ -32,10 +32,10 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
       const validate = checkValid()
       const formData = new FormData()
       if(validate) {
-        const id:string = farm.id
-        formData.append('name', farm.name.trim())
-        await dispatch(editUnit({id, formData}))
-        await dispatch(getUnitData({pageNumber: pageNumber, pageSize: pageSize}))
+        const id:string = foodCategory.id
+        formData.append('name', foodCategory.name)
+        await dispatch(editMenuMealSample({id, formData}))
+        await dispatch(getMenuMealSampleData({pageNumber: pageNumber, pageSize: pageSize}))
         setOpenSuccessSnackbar(true)
         handleClose()
       }else setOpenFailSnackbar(true)
@@ -52,8 +52,8 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
     <DialogContent>
         <Stack direction='column' spacing={2} className='pt-5'>
       <TextField helperText={checkName ? "This field is required" : false} 
-      error={checkName ? true : false} value={farm.name}
-      onChange={e => setFarm(prev => ({...prev, name: e.target.value}))} label='Name' 
+      error={checkName ? true : false} value={foodCategory.name} onKeyPress={e => {if(e.key === 'Enter') edit()}}
+      onChange={e => setfoodCategory(prev => ({...prev, name: e.target.value}))} label='Name' 
       placeholder='Enter name' size='small' variant="outlined" />
         </Stack>
     </DialogContent>

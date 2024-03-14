@@ -8,26 +8,26 @@ import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {useEffect, useState } from 'react';
-import { unitReducerState, getUnitData, setPaginPageNumber,setPaginPageSize } from './slice/unitSlice';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import { menuMealSampleReducerState, getMenuMealSampleData, setPaginPageNumber,setPaginPageSize } from './slice/menuMealSampleSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
 import EditModal from './EditModal';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-
-const UnitContent = ()=>{
+const MenuMealSampleContent = ()=>{
     const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
     const [openEditFailNotify, setOpenEditFailNotify] = useState(false);
 	const [showEdit, setShowEdit] =useState(false)
 	const [editValue, setEditValue] =useState({})
     const dispatch = useAppDispatch()
-    const units  = useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.units.data)
-    const pageNumber  = useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.units.pagination.pageNumber)
-    const pageSize  = useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.units.pagination.pageSize)
-    const totalRow =  useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.units.pagination.totalRow)
-    const searchValue = useAppSelector((state: unitReducerState) => state.unitReducer.unitSlice.searchText)
+    const menuMealSamples  = useAppSelector((state: menuMealSampleReducerState) => state.menuMealSampleReducer.menuMealSampleSlice.menuMealSamples.data)
+    const pageNumber  = useAppSelector((state: menuMealSampleReducerState) => state.menuMealSampleReducer.menuMealSampleSlice.menuMealSamples.pagination.pageNumber)
+    const pageSize  = useAppSelector((state: menuMealSampleReducerState) => state.menuMealSampleReducer.menuMealSampleSlice.menuMealSamples.pagination.pageSize)
+    const totalRow =  useAppSelector((state: menuMealSampleReducerState) => state.menuMealSampleReducer.menuMealSampleSlice.menuMealSamples.pagination.totalRow)
+    const searchValue =  useAppSelector((state: menuMealSampleReducerState) => state.menuMealSampleReducer.menuMealSampleSlice.searchText)
+    
     useEffect(()=>{
-        dispatch(getUnitData({name:searchValue, pageNumber: pageNumber, pageSize: pageSize}))
+        dispatch(getMenuMealSampleData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize}))
     },[pageNumber, pageSize])
     
     return <div className="w-full flex flex-col min-h-full bg-white">
@@ -36,21 +36,25 @@ const UnitContent = ()=>{
         <TableHead style={{background:'rgb(250, 251, 254)'}}>
   <TableRow>
     <TableCell align="center"><span className='font-semibold'>Name</span></TableCell>
-    <TableCell align="center"><span className='font-semibold'>Create at</span></TableCell>
+    <TableCell align="center"><span className='font-semibold'>From</span></TableCell>
+    <TableCell align="center"><span className='font-semibold'>To</span></TableCell>
+    <TableCell align="left"><span className='font-semibold'>Create at</span></TableCell>
     <TableCell align="left"><span className='font-semibold'>Action</span></TableCell>
   </TableRow>
 </TableHead>
-    {units && units.length > 0 && <TableBody>
-        {units.map((item) => (<TableRow key={item.id} >
+    {menuMealSamples && menuMealSamples.length > 0 && <TableBody>
+        {menuMealSamples.map((item) => (<TableRow key={item.id} >
         <TableCell align='center'>{item.name}</TableCell>
-        <TableCell align='center'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
-        <TableCell align='center'>
-        <FuseSvgIcon className="text-48 ms-10" size={24} color="action" style={{cursor:'pointer'}} onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
+        <TableCell align='center'>{item.from}</TableCell>
+        <TableCell align='center'>{item.to}</TableCell>
+        <TableCell align='left'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
+        <TableCell >
+        <FuseSvgIcon className="text-48 ms-10" size={24} style={{cursor:'pointer'}} color="action" onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
         </TableCell>
     </TableRow>))}
         </TableBody>}
         </Table>
-    {units && units.length===0 && <Stack className='mt-36' direction='row' alignItems={"center"} justifyContent={"center"}>
+    {menuMealSamples && menuMealSamples.length===0 && <Stack className='mt-36' direction='row' alignItems={"center"} justifyContent={"center"}>
         <h2 style={{color:"gray"}}>No matching result</h2></Stack> }
     </FuseScrollbars>
 
@@ -90,4 +94,4 @@ const UnitContent = ()=>{
     {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
 </div>
 }
-export default UnitContent
+export default MenuMealSampleContent
