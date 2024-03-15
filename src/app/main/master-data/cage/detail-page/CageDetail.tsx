@@ -39,7 +39,8 @@ const schema = yup.object().shape({
     depth: yup
         .number()
         .required('You must enter a  depth'),
-
+    thumbnailUrl: yup   
+        .mixed()
 
 });
 type FormValues = {
@@ -51,17 +52,17 @@ const CageDetail = () => {
     const dispatch = useAppDispatch();
     const dataItem = useAppSelector(selectDetail);
     const routeParams = useParams();
-    const methods = useForm<CageType>({
+    const methods = useForm({
         mode: 'onSubmit',
         defaultValues: {
             name: dataItem?.name,
-            code : dataItem?.code,
-            material : dataItem?.material,
-            description : dataItem?.description,
-            depth : dataItem?.depth,
-            width : dataItem?.width,
-            height : dataItem?.height,
-            thumbnailUrl : dataItem?.thumbnailUrl,
+            code: dataItem?.code,
+            material: dataItem?.material,
+            description: dataItem?.description,
+            depth: dataItem?.depth,
+            width: dataItem?.width,
+            height: dataItem?.height,
+            thumbnailUrl: dataItem?.thumbnailUrl,
         },
         resolver: yupResolver(schema)
     });

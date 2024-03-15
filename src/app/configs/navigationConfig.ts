@@ -87,6 +87,13 @@ const navigationConfig: FuseNavigationType = [
 						end: true
 					},
 					{
+						id: 'master-data/meal-item-sample',
+						title: 'Meal item sample',
+						type: 'item',
+						url: 'master-data/meal-item-sample',
+						end: true
+					},
+					{
 						id: 'master-data-cage',
 						title: 'Cage',
 						type: 'item',

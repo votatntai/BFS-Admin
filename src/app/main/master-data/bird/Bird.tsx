@@ -1,7 +1,8 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
-import BirdContent from './BirdContent'
-import BirdHeader from './BirdHeader';
+import BirdsHeader from './BirdsHeader';
+import BirdsTable from './BirdsTable';
+
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
 		backgroundColor: theme.palette.background.paper,
@@ -15,11 +16,10 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 }));
 
 function Bird() {
-
 	return (<Root
-	header={<BirdHeader/>}
+	header={<BirdsHeader/>}
 	content={
-			<BirdContent />
+			<BirdsTable />
 	}
 />)
 }

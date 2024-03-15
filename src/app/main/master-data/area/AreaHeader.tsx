@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from 'app/store';
 import { areaReducerState, getAreaData, setPaginPageNumber, setSearchText } from './slice/areaSlice';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-const AreaHeader = ()=>{
+ function AreaHeader(){
     const [showAdd, setShowAdd] =useState(false)
     const [openCreateSuccessNotify, setOpenCreateSuccessNotify] = useState(false);
     const [openCreateFailNotify, setOpenCreateFailNotify] = useState(false);
@@ -22,8 +22,7 @@ const AreaHeader = ()=>{
         await dispatch(getAreaData({name: searchValue, pageNumber: 0, pageSize: pageSize}))
         dispatch(setSearchText(""))
     }
-    return
-     <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
+    return( <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
     <motion.span
         initial={{ x: -20 }}
         animate={{ x: 0, transition: { delay: 0.2 } }}
@@ -84,6 +83,6 @@ const AreaHeader = ()=>{
         </Alert>
       </Snackbar>
     {showAdd && <CreateModal handleClose={()=> setShowAdd(false)} show={showAdd} setOpenFailSnackbar={setOpenCreateFailNotify} setOpenSuccessSnackbar={setOpenCreateSuccessNotify} />}
-</div>
+</div>)
 }
 export default AreaHeader
