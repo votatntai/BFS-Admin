@@ -1,7 +1,7 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
-import BirdsHeader from './BirdsHeader';
-import BirdsTable from './BirdsTable';
+import MealItemSampleHeader from './MealItemSampleHeader';
+import MealItemSampleTable from './MealItemSampleTable';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
@@ -15,13 +15,8 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-sidebarContent': {}
 }));
 
-function Bird() {
-	return (<Root
-	header={<BirdsHeader/>}
-	content={
-			<BirdsTable />
-	}
-/>)
+export default function MealItemSample() {
+	return <Root
+	header={<MealItemSampleHeader/>}
+	content={<MealItemSampleTable />}/>
 }
-
-export default Bird;

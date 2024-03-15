@@ -7,19 +7,20 @@ import { TablePagination } from "@mui/material";
 import { Typography, Table, TableBody, TableRow, TableCell, Checkbox } from "@mui/material";
 import { motion } from "framer-motion";
 import _, { Many } from "lodash";
-import CagesTableHeader from "./CagesTableHead";
-import { getCages, selectCageSearchText, selectCages } from "./store/cageSlice";
-import { CageType } from "./type/CageType";
+import BirdTableHeader from "./MealItemSampleTableHead";
+import { getMealItemSamples, selectSearchText, selectMealItemSamples, selectMealItemSamplesList } from "../meal-item-sample/store/mealIteamSampleSlice";
+import { MealItemSampleType } from "../meal-item-sample/type/MealItemSampleType";
 
 
-type CagesTableeProps = WithRouterProps & {
+type TableProp = WithRouterProps & {
     navigate: (path: string) => void;
 };
-function CagesTable(prop: CagesTableeProps) {
+function MealItemSampleTable(prop: TableProp) {
     const { navigate } = prop;
     const dispatch = useAppDispatch();
-    const ListItem = useAppSelector(selectCages);
-    const searchText = useAppSelector(selectCageSearchText);
+    const ListItem = useAppSelector(selectMealItemSamplesList);
+
+    const searchText = useAppSelector(selectSearchText);
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(ListItem);
     const [page, setPage] = useState(0);
@@ -33,7 +34,7 @@ function CagesTable(prop: CagesTableeProps) {
     });
 
     useEffect(() => {
-        dispatch(getCages()).then(() => setLoading(false));
+        dispatch(getMealItemSamples()).then(() => setLoading(false));
     }, [dispatch]);
 
 
@@ -58,8 +59,8 @@ function CagesTable(prop: CagesTableeProps) {
 
         setTableOrder(newOrder);
     }
-    function handleClick(item: CageType) {
-        navigate(`/master-data/cage/${item.id}`);
+    function handleClick(item: MealItemSampleType) {
+        navigate(`/master-data/meal-item-sample/${item.id}`);
     }
 
     function handleChangePage(event: React.MouseEvent<HTMLButtonElement> | null, page: number) {
@@ -72,7 +73,7 @@ function CagesTable(prop: CagesTableeProps) {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex w-full  items-center justify-center h-full">
                 <FuseLoading />
             </div>
         );
@@ -89,13 +90,14 @@ function CagesTable(prop: CagesTableeProps) {
                     color="text.secondary"
                     variant="h5"
                 >
-                    There are no Cages!
+                    There are nothing!
                 </Typography>
             </motion.div>
         );
     }
 
     return (
+
         <div className="w-full flex flex-col min-h-full">
             <FuseScrollbars className="grow overflow-x-auto">
                 <Table
@@ -104,7 +106,7 @@ function CagesTable(prop: CagesTableeProps) {
                     aria-labelledby="tableTitle"
                 >
                     {/* table header tim hieu sau */}
-                    <CagesTableHeader
+                    <BirdTableHeader
                         tableOrder={tableOrder}
                         onRequestSort={handleRequestSort}
                         rowCount={data.length}
@@ -130,12 +132,14 @@ function CagesTable(prop: CagesTableeProps) {
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((n) => {
                                 return (
+
+                                    // Table row        
                                     <TableRow
                                         className="h-72 cursor-pointer"
                                         hover
                                         role="checkbox"
                                         tabIndex={-1}
-                                        key={n.name}
+                                        key={n.id}
                                         onClick={() => handleClick(n)}
                                     >
 
@@ -146,10 +150,10 @@ function CagesTable(prop: CagesTableeProps) {
                                             scope="row"
                                             padding="none"
                                         >
-                                            {n?.thumbnailUrl ? (
+                                            {n?.food.name ? (
                                                 <img
                                                     className="w-full block rounded"
-                                                    src={n.thumbnailUrl}
+                                                    src={n.food.name}
                                                     alt={n.name}
                                                 />
                                             ) : (
@@ -166,7 +170,7 @@ function CagesTable(prop: CagesTableeProps) {
                                             component="th"
                                             scope="row"
                                         >
-                                            {n.name}
+                                            {n.quantity}
                                         </TableCell>
                                         {/* material  cell */}
                                         <TableCell
@@ -174,7 +178,8 @@ function CagesTable(prop: CagesTableeProps) {
                                             component="th"
                                             scope="row"
                                         >
-                                            {n.material}
+                                            {n.order}
+
                                         </TableCell>
                                         {/* material  cell */}
                                         <TableCell
@@ -182,26 +187,11 @@ function CagesTable(prop: CagesTableeProps) {
                                             component="th"
                                             scope="row"
                                         >
-                                            {n.description}
+                                            {n.menuMealSample.id}
                                         </TableCell>
-                                        {/* material  cell */}
-                                        <TableCell
-                                            className="p-4 md:p-16"
-                                            component="th"
-                                            scope="row"
-                                        >
-                                            {n.createAt}
-                                        </TableCell>
-                                        {/* material  cell */}
-                                        <TableCell
-                                            className="p-4 md:p-16"
-                                            component="th"
-                                            scope="row"
-                                        >
-                                            {n.area.name}
-                                        </TableCell>
-                                 
-                             
+
+
+
 
                                     </TableRow>
                                 );
@@ -230,4 +220,4 @@ function CagesTable(prop: CagesTableeProps) {
     )
 
 }
-export default withRouter(CagesTable);
+export default withRouter(MealItemSampleTable);

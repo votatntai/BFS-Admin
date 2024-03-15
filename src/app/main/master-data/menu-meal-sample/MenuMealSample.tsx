@@ -2,7 +2,6 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
 import MenuMealSampleContent from './MenuMealSampleContent'
 import MenuMealSampleHeader from './MenuMealSampleHeader';
-
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
 		backgroundColor: theme.palette.background.paper,
@@ -15,13 +14,8 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-sidebarContent': {}
 }));
 
-function MenuMealSample() {
+export default function MenuMealSample() {
 	return <Root
 	header={<MenuMealSampleHeader/>}
-	content={
-			<MenuMealSampleContent />
-	}
-	/>  
+	content={<MenuMealSampleContent />}/>
 }
-
-export default MenuMealSample;

@@ -7,21 +7,18 @@ import { useAppDispatch, useAppSelector } from 'app/store';
 import { Link } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { ChangeEvent } from 'react';
-import { selectSpeciesSearchText, setSpeciesSearchText } from './store/SpecisesSlice';
+import { selectSearchText, setSearchText } from './store/birdSlice';
 
-/**
- * The products header.
- */
-function SpeciesHeader() {
+function BirdsHeader() {
 	const dispatch = useAppDispatch();
-	const searchText = useAppSelector(selectSpeciesSearchText);
+	const searchText = useAppSelector(selectSearchText);
 	return (
 		<div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
 			<motion.span
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Species</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Birds list</Typography>
 			</motion.span>
 			<div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
 				<Paper
@@ -33,7 +30,7 @@ function SpeciesHeader() {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search cages"
+						placeholder="Search Birds"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
@@ -42,7 +39,7 @@ function SpeciesHeader() {
 							'aria-label': 'Search'
 						}}
 						onChange={(ev: ChangeEvent<HTMLInputElement>) =>
-							dispatch(setSpeciesSearchText(ev.target.value))
+							dispatch(setSearchText(ev.target.value))
 						}
 					/>
 				</Paper>
@@ -53,7 +50,7 @@ function SpeciesHeader() {
 				>
 					<Button
 						component={Link}
-						to="/master-data/species/new"
+						to="/master-data/bird/new/"
 						variant="contained"
 						color="secondary"
 						startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
@@ -66,4 +63,4 @@ function SpeciesHeader() {
 	);
 }
 
-export default SpeciesHeader;
+export default BirdsHeader;

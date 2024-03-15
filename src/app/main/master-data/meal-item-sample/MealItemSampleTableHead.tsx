@@ -30,31 +30,31 @@ const rows: rowType[] = [
     },
  
     {
-        id: 'material',
+        id: 'gender',
         align: 'left',
         disablePadding: true,
-        label: 'Material',
+        label: 'Gender',
         sort: true
     },
     {
-        id: 'description',
+        id: 'code',
         align: 'left',
         disablePadding: true,
-        label: 'Description',
+        label: 'code',
         sort: true
     },
     {
-        id: 'createAt',
+        id: 'dateOfBirth',
         align: 'left',
         disablePadding: true,
-        label: 'Create at',
+        label: 'Date of birth',
         sort: true
     },
     {
-        id: 'area',
+        id: 'caremode',
         align: 'left',
         disablePadding: true,
-        label: 'Area',
+        label: 'Caremode',
         sort: true
     },
 
@@ -69,7 +69,7 @@ type TableHeadPropType = {
     },
     rowCount: number,
 }
-function CagesTableHeader(prop: TableHeadPropType) {
+function MealItemSampleTableHead(prop: TableHeadPropType) {
 	const {  tableOrder,  onRequestSort, rowCount } = prop;
 	const dispatch = useAppDispatch();
 	const createSortHandler = (event: MouseEvent<HTMLSpanElement>, property: string) => {
@@ -109,4 +109,4 @@ function CagesTableHeader(prop: TableHeadPropType) {
         </TableRow>
     </TableHead>);
 }
-export default CagesTableHeader
+export default MealItemSampleTableHead
