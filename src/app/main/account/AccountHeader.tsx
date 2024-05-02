@@ -5,11 +5,17 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useDispatch, useSelector } from 'react-redux';
-import { accountReducerState, setSearchText } from './store/accountSlice';
+import { accountReducerState, setSearchText,setRole, getUser } from './store/accountSlice';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { useEffect, useState } from 'react';
 
 const AccountHeader = () =>{
     const searchValue  = useSelector((state: accountReducerState) => state.accountReducer.accountsSlice.searchText)
     const dispatch = useDispatch()
+    
+    const role = useSelector((state: any) => state.accountReducer.accountsSlice.role)
+    
     return <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
     <motion.span
         initial={{ x: -20 }}
@@ -18,6 +24,16 @@ const AccountHeader = () =>{
         <Typography className="text-24 md:text-32 font-extrabold tracking-tight">Account</Typography>
     </motion.span>
 <div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
+<Autocomplete size='small' 
+             value={role}
+        onChange={(event: any, newValue: string | null) => {
+            dispatch(setRole(newValue));
+        }}
+        options={["Staff", "Manager"]} disableClearable
+        sx={{ width: '15rem' }}
+        renderInput={(params) => <TextField  sx={{background:'white'}} {...params} label="Role" />}
+      />
+
 <Paper
             component={motion.div}
             initial={{ y: -20, opacity: 0 }}

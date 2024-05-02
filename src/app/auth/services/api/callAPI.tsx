@@ -2,8 +2,7 @@ import axios from "./customAxios";
 /**
  * Account
  */
-export const getUsers = (object: Object) => axios.get(`/users`,{params: object});
-export const getPosts = (object: Object) => axios.get(`/posts`,{params: object});
+export const getUsers = (role,params) => axios.get(`/${role}s`,{params: params});
 
 
 /**
