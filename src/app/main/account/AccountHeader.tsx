@@ -9,8 +9,9 @@ import { accountReducerState, setSearchText,setRole, getUser } from './store/acc
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
-
+import CreateModal from './CreateModal'
 const AccountHeader = () =>{
+    const [show, setShow]=useState(false)
     const searchValue  = useSelector((state: accountReducerState) => state.accountReducer.accountsSlice.searchText)
     const dispatch = useDispatch()
     
@@ -64,7 +65,7 @@ const AccountHeader = () =>{
                 Search
             </Button>
             <Button
-                //onClick={()=>setShowAdd(true)}
+                onClick={()=>setShow(true)}
                 variant="contained"
                 color="secondary"
                 startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
@@ -73,6 +74,7 @@ const AccountHeader = () =>{
             </Button>
         </motion.div>
 </div>
+{show && <CreateModal show={show} handleClose={()=>setShow(false)}/> }
 </div>
 }
 
