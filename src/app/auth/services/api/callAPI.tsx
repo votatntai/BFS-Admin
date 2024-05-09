@@ -3,7 +3,8 @@ import axios from "./customAxios";
  * Account
  */
 export const getUsers = (role,params) => axios.get(`/${role}s`,{params: params});
-
+export const updateUser = (role, id, formData) => axios.put(`/${role}s/${id}`,formData);
+export const createUser = (role, json) => axios.post(`/${role}s/registrations`,json);
 
 /**
  * Farm

@@ -1,31 +1,40 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import Button from '@mui/material/Button';
+import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
+import Tooltip from '@mui/material/Tooltip';
 import TableRow from '@mui/material/TableRow';
 import {useEffect, useState } from 'react';
 import CreateModal from './CreateModal';
 import EditModal from './EditModal';
 import { accountReducerState, getUser } from './store/accountSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
+import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import Avatar from '@mui/material/Avatar';
+import Chip from '@mui/material/Chip';
+import FaceIcon from '@mui/icons-material/Face';
 
-function AccountContent() {
+export default function AccountContent() {
+	const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
 	const [showAdd, setShowAdd] =useState(false)
 	const [showEdit, setShowEdit] =useState(false)
     const [pageNumber, setPageNumber] = useState(0);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(8);
+	const totalRow = useAppSelector((state: any) => state.accountReducer.accountsSlice.accounts.pagination.totalRow)
+
 	const [editValue, setEditValue] =useState({})
     const dispatch = useAppDispatch()
 	const users = useAppSelector((state: any) => state.accountReducer.accountsSlice.accounts.data)
-	// console.log(users)
     const searchValue  = useAppSelector((state: accountReducerState) => state.accountReducer.accountsSlice.searchText)
     const role = useAppSelector((state: any) => state.accountReducer.accountsSlice.role)
     useEffect(()=>{
-		dispatch(getUser({role: role, params:{pageNumber: pageNumber, pageSize: pageSize}}))
+		dispatch(getUser({role: role, params:{pageNumber: pageNumber, pageSize: pageSize, name: searchValue}}))
 	},[role, pageNumber, pageSize])
 
 	return <div className="w-full flex flex-col min-h-full bg-white">
@@ -33,27 +42,29 @@ function AccountContent() {
 		<Table className="min-w-x" aria-labelledby="tableTitle" >
 		<TableHead style={{background:'rgb(250, 251, 254)'}}>
   <TableRow>
-	<TableCell align="center"><span className='font-semibold'>ID</span></TableCell>
-	<TableCell align="left"><span className='font-semibold'>Name</span></TableCell>
-	<TableCell align="left"><span className='font-semibold'>Username</span></TableCell>
+	<TableCell align="left"><span className='font-semibold'>Full name</span></TableCell>
 	<TableCell align="left"><span className='font-semibold'>Phone</span></TableCell>
 	<TableCell align="left"><span className='font-semibold'>Email</span></TableCell>
-	<TableCell align="left"><span className='font-semibold'>City</span></TableCell>
-	<TableCell align="left"><span className='font-semibold'>Company</span></TableCell>
-	<TableCell align="left"><span className='font-semibold'></span></TableCell>
+	<TableCell align="left"><span className='font-semibold'>Farm</span></TableCell>
+	<TableCell align="left"><span className='font-semibold'>Action</span></TableCell>
   </TableRow>
 </TableHead>
 	{users && users.length>0 && <TableBody>
 		{users.map((item: any) => (<TableRow key={item.id} >
-		<TableCell align='center'>{item.id}</TableCell>
-		<TableCell align='left'>{item.name}</TableCell>
-		<TableCell align='left'>{item.username}</TableCell>
+		<TableCell align='left'>
+		{item.avatarUrl === null ? <Chip icon={<FaceIcon />}
+        label={item.name} variant="outlined" /> : <Chip avatar={<Avatar alt="avt" src={item.avatarUrl} />}
+        label={item.name} variant="outlined" />}
+			</TableCell>
 		<TableCell align='left'>{item.phone}</TableCell>
 		<TableCell align='left'>{item.email}</TableCell>
-		<TableCell align='left'>{item.address.city}</TableCell>
-		<TableCell align='left'>{item.company.name}</TableCell>
+		<TableCell align='left'>{item.farm.name}</TableCell>
 		<TableCell align='left'>
-			<Button variant='contained' color='success' onClick={()=>{setShowEdit(true); setEditValue(item)}}>edit</Button>
+		<Tooltip title='Edit'>
+            <FuseSvgIcon className="text-48 ms-10" size={24} color="action" style={{cursor:'pointer'}} 
+            onClick={()=>{setShowEdit(true); setEditValue(item)}}
+            >heroicons-solid:pencil-alt</FuseSvgIcon>
+            </Tooltip>
 		</TableCell>
 	</TableRow>))}
 		</TableBody>}
@@ -65,8 +76,8 @@ function AccountContent() {
 	<TablePagination
 		className="shrink-0 border-t-1"
 		component="div"
-		rowsPerPageOptions={[5,10]}
-		count={10}
+		rowsPerPageOptions={[8,16]}
+		count={totalRow}
 		rowsPerPage={pageSize}
 		page={pageNumber}
 		backIconButtonProps={{
@@ -81,9 +92,13 @@ function AccountContent() {
 			setPageNumber(0)
 			}}
 	/>
-	{showAdd && <CreateModal handleClose={()=>setShowAdd(false)} show={showAdd} />}
-	{showEdit && <EditModal object={editValue} handleClose={()=>setShowEdit(false)} show={showEdit} />}
+	<Snackbar open={openEditSuccessNotify} autoHideDuration={3000} onClose={()=>{setOpenEditSuccessNotify(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={()=>{setOpenEditSuccessNotify(false)}}
+          severity="success" variant="filled" sx={{ width: '100%' }}>
+          Edit successfully
+        </Alert>
+      </Snackbar>
+	
+	{showEdit && <EditModal setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} handleClose={()=>setShowEdit(false)} show={showEdit} />}
 </div>
 }
-
-export default AccountContent;
