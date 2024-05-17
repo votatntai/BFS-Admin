@@ -15,8 +15,6 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 const FarmContent = ()=>{
     const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
-    const [openEditFailNotify, setOpenEditFailNotify] = useState(false);
-    
 	const [showEdit, setShowEdit] =useState(false)
 	const [editValue, setEditValue] =useState({})
     const dispatch = useAppDispatch()
@@ -91,13 +89,8 @@ const FarmContent = ()=>{
           Edit successfully
         </Alert>
       </Snackbar>
-    <Snackbar open={openEditFailNotify} autoHideDuration={3000} onClose={()=>{setOpenEditFailNotify(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
-        <Alert onClose={()=>{setOpenEditFailNotify(false)}}
-          severity="error" variant="filled" sx={{ width: '100%' }}>
-          Edit failed
-        </Alert>
-      </Snackbar>
-    {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
+    
+    {showEdit && <EditModal setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
 </div>
 }
 export default FarmContent

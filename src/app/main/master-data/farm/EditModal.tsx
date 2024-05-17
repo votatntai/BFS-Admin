@@ -6,82 +6,129 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton';
+import Autocomplete from '@mui/material/Autocomplete';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
-import { ObjectFarmToEdit } from '../../type/farm.type';
 import { useAppDispatch, useAppSelector } from 'app/store';
-import { editFarm, farmReducerState, getFarmData } from './slice/farmSlice';
-
-const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFailSnackbar})=>{
-  const [farm, setFarm] =useState<ObjectFarmToEdit>({
+import {getFarmData } from './slice/farmSlice';
+import * as Yup from "yup";
+import instance from 'src/app/auth/services/api/customAxios';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar})=>{
+  const [farm, setFarm] =useState({
     id: object.id,
     name: object.name,
     thumbnailUrl: object.thumbnailURL,
     address: object.address,
     phone: object.phone,
+    manager:{
+      label: object.manager.name,
+      value: object.manager.id
+    }
   }) 
-  const [checkAddress, setCheckAddress] = useState(false)
-    const [checkName, setCheckName] = useState(false)
-    const [checkPhone, setCheckPhone] = useState(false)
-    const [checkThumbnailURL, setCheckThumbcheckThumbnailURL] = useState(false)
+  const [errors, setErrors] = useState({
+    name: "",
+    address: "",
+    phone: "",
+  });
     const [file, setFile] = useState(object.thumbnailUrl)
     const [localFile, setLocalFile] = useState(null) //để render image push từ local lên
-    const pageNumber  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageNumber)
-    const pageSize  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageSize)
+    const pageNumber  = useAppSelector((state) => state.farmReducer.farmSlice.farms.pagination.pageNumber)
+    const pageSize  = useAppSelector((state) => state.farmReducer.farmSlice.farms.pagination.pageSize)
     const dispatch = useAppDispatch()
-    const checkValid= () =>{
-      let check: boolean = true
-      if(farm.name.trim() === '') {setCheckName(true)} else setCheckName(false)
-      if(farm.phone.trim() === '') {setCheckPhone(true)} else setCheckPhone(false)
-      if(farm.address.trim() === '') { setCheckAddress(true)} else setCheckAddress(false)
-      if(farm.thumbnailUrl === '') { setCheckThumbcheckThumbnailURL(true)} else setCheckThumbcheckThumbnailURL(false)
-      if(farm.name.trim() === '' || farm.address.trim() === '' || farm.phone.trim()==='' || farm.thumbnailUrl === ''){
-          check = false
-      }
-      return check;
-    }
-  
+    const validationSchema = Yup.object({
+      name: Yup.string().trim().required("Name is required"),
+      address: Yup.string().trim()
+        .required("Address is required"),
+      phone: Yup.string()
+        .matches(/^\d{10}$/, "Phone number must be 10 digits")
+        .required("Phone number is required"),
+    });
+    const [snackbarNotify, setSnackbarNotify] =useState(false)
+    const [responseMsg, setResponseMsg] =useState("")
     const edit = async() => {
-      const validate = checkValid()
-      const formData = new FormData()
-      if(validate) {
-        const id:string = farm.id
-        formData.append('name', farm.name)
-        formData.append('address', farm.address)
-        formData.append('phone', farm.phone)
-        formData.append('thumbnail', file)
-        await dispatch(editFarm({id, formData}))
-        await dispatch(getFarmData({pageNumber: pageNumber, pageSize: pageSize}))
-        setOpenSuccessSnackbar(true)
-        handleClose()
-      }else setOpenFailSnackbar(true)
-    }  
-    return <Dialog fullWidth
-    open={show}
-    onClose={handleClose}
-    aria-labelledby="alert-dialog-title"
-    aria-describedby="alert-dialog-description"
-  >
-    <DialogTitle id="alert-dialog-title">
-      Edit
-    </DialogTitle>
+      try{
+        await validationSchema.validate(farm, { abortEarly: false });
+        const formData = new FormData()
+          const id:string = farm.id
+          formData.append('name', farm.name)
+          formData.append('address', farm.address)
+          formData.append('phone', farm.phone)
+          formData.append('managerId', farm.manager.value)
+          formData.append('thumbnail', file)
+          await instance.put(`/farms/${id}`,formData).then(
+            async(res) => {
+              console.log(res)
+              await dispatch(getFarmData({pageNumber: pageNumber, pageSize: pageSize}))
+              setErrors({
+                name: "",
+                address: "",
+                phone: "",
+              })
+              setOpenSuccessSnackbar(true)
+              handleClose()
+            }
+          ).catch(err => {
+            setResponseMsg(err.response.data)
+            setSnackbarNotify(true)
+          })
+      }catch(error){
+        const errorObject = {
+          name: "",
+          phone: "",
+          address: "",
+        };
+        if (error.inner) {
+          error.inner.forEach((err) => {
+            errorObject[err.path] = err.message;
+          });
+        }
+        setErrors(errorObject);
+      }
+    }
+    
+    const [managers, setManagers]=useState([])
+    const loadManagers = async() => {
+      await instance.get<any,any>('/managers',{
+        params: {
+          status: "Active",
+          pageSize: 100,
+          pageNumber: 0
+        }
+      })
+      .then(res => {
+        const updatedComboboxList = res.data.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+        setManagers(updatedComboboxList)
+      })
+      .catch(err => console.log(err))
+    }
+    useEffect(()=>{
+      loadManagers()
+    },[])
+    return <Dialog fullWidth open={show} onClose={handleClose}>
+    <DialogTitle>Edit</DialogTitle>
     <DialogContent>
         <Stack direction='column' spacing={2} className='pt-5'>
-      <TextField helperText={checkName ? "This field is required" : false} 
-      error={checkName ? true : false} value={farm.name}
+      <TextField helperText={errors.name !== "" && errors.name} 
+      error={errors.name !== "" ? true : false} value={farm.name}
       onChange={e => setFarm(prev => ({...prev, name: e.target.value}))} label='Name' 
       placeholder='Enter name' size='small' variant="outlined" />
 
-      <TextField helperText={checkAddress ? "This field is required" : false} 
-      error={checkAddress ? true : false} value={farm.address}
+      <TextField helperText={errors.address !== "" && errors.address} 
+      error={errors.address !== "" ? true : false} value={farm.address}
        onChange={e => setFarm(prev => ({...prev, address: e.target.value}))} label='Adderss' 
        placeholder='Enter address' size='small' variant="outlined" />
       
-      <TextField helperText={checkPhone ? "This field is required" : false} 
-      error={checkPhone ? true : false} value={farm.phone}
+      <TextField helperText={errors.phone !== "" && errors.phone} 
+      error={errors.phone !== "" ? true : false} value={farm.phone}
        onChange={e => setFarm(prev => ({...prev, phone: e.target.value}))} label='Phone' 
        placeholder='Enter phone number' size='small' variant="outlined" />
+
+      <Autocomplete value={farm.manager} disableClearable options={managers} fullWidth size='small' isOptionEqualToValue={(option, value) => option.value === value.value}
+            onChange={(e, value) => setFarm(prev => ({...prev, manager: value}))} renderInput={(params) => <TextField {...params} label="Manager" />}/>
 
 <Stack direction="row" spacing={2}>
               <Button variant='contained' onClick={()=>document.getElementById('fileInput').click()}>
@@ -99,7 +146,6 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
                   Clear image
             </Button>}
             </Stack>
-            {checkThumbnailURL &&<div style={{color:'red'}}>Thumbnail is required!</div>}
       {file && <img src={localFile!==null ? localFile : file} alt="Selected Image" style={{ marginTop: '10px', maxWidth: '100%' }} />}
         </Stack>
     </DialogContent>
@@ -107,7 +153,12 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
       <Button variant='contained' onClick={handleClose}>Cancel</Button>
       <Button variant='contained' color='success' onClick={edit} >Edit</Button>
     </DialogActions>
-    
+    <Snackbar open={snackbarNotify} autoHideDuration={3000} onClose={()=>{setSnackbarNotify(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={()=>{setSnackbarNotify(false)}}
+          severity="error" variant="filled" sx={{ width: '100%' }}>
+          {responseMsg}
+        </Alert>
+      </Snackbar>
   </Dialog>
 }
 

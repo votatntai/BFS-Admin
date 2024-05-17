@@ -7,10 +7,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { useAppDispatch } from 'app/store';
+import { useAppDispatch,useAppSelector } from 'app/store';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import instance from 'src/app/auth/services/api/customAxios';
+import { getFarmData } from './slice/farmSlice';
 const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
     const [farm, setFarm] =useState({
       name: '',
@@ -22,12 +23,13 @@ const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
         value:""
       },
     })
+    const pageNumber  = useAppSelector((state) => state.farmReducer.farmSlice.farms.pagination.pageNumber)
+    const pageSize  = useAppSelector((state) => state.farmReducer.farmSlice.farms.pagination.pageSize)
     const formData = new FormData()
     const [file, setFile] =useState(null)
     const [checkName, setCheckName] = useState(false)
     const [checkAddress, setCheckAddress] = useState(false)
     const [checkPhone, setCheckPhone] = useState(false)
-    const [checkThumbnailURL, setCheckThumbnailURL] = useState(false)
     const dispatch = useAppDispatch()
     const [snackbar, setSnackbar]=useState(false)
     const [responseMsg, setResponseMsg] = useState("")
@@ -36,8 +38,7 @@ const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
       if(farm.name.trim() === '') {setCheckName(true)} else setCheckName(false)
       if(farm.address.trim() === '') { setCheckAddress(true)} else setCheckAddress(false)
       if(farm.phone.trim() === '') { setCheckPhone(true)} else setCheckPhone(false)
-      if(farm.thumbnailUrl.trim() === '') { setCheckThumbnailURL(true)} else setCheckThumbnailURL(false)
-      if(farm.name.trim() === '' || farm.address.trim() === '' || farm.phone.trim() === '' || farm.thumbnailUrl.trim() === ''){
+      if(farm.name.trim() === '' || farm.address.trim() === '' || farm.phone.trim() === ''){
           check = false
       }
       return check;
@@ -52,8 +53,9 @@ const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
         formData.append('phone',farm.phone)
         formData.append('managerId',farm.manager.value)
         await instance.post('/farms',formData)
-        .then(res =>{
+        .then(async(res) =>{
           console.log(res.status)
+          await dispatch(getFarmData({pageNumber: pageNumber, pageSize: pageSize}))
           setOpenSuccessSnackbar(true)
         handleClose()
         }).catch(err => {
@@ -109,8 +111,7 @@ const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
       onChange={(e, value) => setFarm(prev => ({...prev, manager: value}))} renderInput={(params) => <TextField {...params} label="Manager" />}
 />
 
-      <TextField helperText={checkThumbnailURL ? "This field is required" : false}  
-      error={checkThumbnailURL ? true : false} value={farm.thumbnailUrl} type="file"
+      <TextField value={farm.thumbnailUrl} type="file"
       inputProps={{ accept: "image/png, image/jpeg, image/jpg" }}
       onChange={(e: any) => {
         setFarm(prev => ({...prev, thumbnailUrl: e.target.value}))

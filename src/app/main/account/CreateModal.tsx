@@ -17,7 +17,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { getUser } from './store/accountSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
 import instance from 'src/app/auth/services/api/customAxios';
-import axios from 'axios';
 const CreateModal=({handleClose, show, setOpenSuccessSnackbar})=>{
   const dispatch = useAppDispatch()
   const [form, setForm] = useState({
