@@ -13,10 +13,12 @@ import * as Yup from "yup";
 import { useAppDispatch, useAppSelector } from 'app/store';
 import { editUser, getUser } from './store/accountSlice';
 import Avatar from '@mui/material/Avatar';
-
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
   const dispatch=useAppDispatch()
-  const [imageSend, setImageSend]=useState(null)
+  const [editFail, setEditFail] = useState(false)
+  const [editFailMessage, setEditFailMessage] = useState(false)
   const role = useAppSelector((state: any) => state.accountReducer.accountsSlice.role)
   const pageNumber = useAppSelector((state: any) => state.accountReducer.accountsSlice.accounts.pagination.pageNumber)
     const pageSize = useAppSelector((state: any) => state.accountReducer.accountsSlice.accounts.pagination.pageSize)
@@ -31,6 +33,7 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
         "value": object.farm.id
       }
     })
+    const [imageSend, setImageSend]=useState(object.avatarUrl)
     const [errors, setErrors] = useState({
       name: "",
       avatar: "",
@@ -46,6 +49,7 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
         .matches(/^\d{10}$/, "Phone number must be 10 digits")
         .required("Phone number is required"),
     });
+    const currentPhone = object.phone
     const handleEdit = async(e) => {
       e.preventDefault()
       try {
@@ -53,18 +57,23 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
         const checkForm = await validationSchema.validate(userInfo, { abortEarly: false });
         formData.append('name', checkForm.name)
         formData.append('email', checkForm.email)
-        formData.append('phone', checkForm.phone)
+        currentPhone !== checkForm.phone && formData.append('phone', checkForm.phone)
         formData.append('avatar', imageSend)
-        await dispatch(editUser({role: role, id: userInfo.id, formData: formData}))
-        await dispatch(getUser({role: role, params:{pageNumber: pageNumber, pageSize: pageSize}}))
-        setErrors({
-          name: "",
-          avatar: "",
-          phone: "",
-          email: "",
+        await instance.put(`/${role}s/${userInfo.id}`,formData)
+        .then(async() => {
+          await dispatch(getUser({role: role, params:{pageNumber: pageNumber, pageSize: pageSize}}))
+          setErrors({
+            name: "",
+            avatar: "",
+            phone: "",
+            email: "",
+          })
+          await setOpenSuccessSnackbar(true)
+          handleClose()
+        }).catch(error => {
+          setEditFail(true);
+          setEditFailMessage(error.response.data);
         })
-        await setOpenSuccessSnackbar(true)
-        handleClose()
       } catch (error) {
         const errorObject = {
           name: "",
@@ -152,6 +161,12 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
       <Button variant='contained' color='success' type='submit' >Edit</Button>
     </DialogActions>
         </form>
+        <Snackbar open={editFail} autoHideDuration={3500} onClose={()=>{setEditFail(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={()=>{setEditFail(false)}}
+          severity="error" variant="filled" sx={{ width: '100%' }}>
+          {editFailMessage}
+        </Alert>
+      </Snackbar>
   </Dialog>
 }
 

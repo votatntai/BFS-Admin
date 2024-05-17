@@ -3,20 +3,24 @@ import Dialog from '@mui/material/Dialog';
 import Stack from '@mui/material/Stack';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Autocomplete from '@mui/material/Autocomplete';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
-import { ObjectFarmToCreate } from '../../type/farm.type';
 import { useAppDispatch } from 'app/store';
-import { addFarm } from './slice/farmSlice';
-const CreateModal=({handleClose, show,setOpenFailSnackbar,setOpenSuccessSnackbar})=>{
-    const [farm, setFarm] =useState<ObjectFarmToCreate>({
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import instance from 'src/app/auth/services/api/customAxios';
+const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
+    const [farm, setFarm] =useState({
       name: '',
       thumbnailUrl: '',
       address:'',
       phone:'',
-      managerId: "34691515-a93b-461e-8fa3-de6c06ca3095",
+      manager: {
+        label:"",
+        value:""
+      },
     })
     const formData = new FormData()
     const [file, setFile] =useState(null)
@@ -25,6 +29,8 @@ const CreateModal=({handleClose, show,setOpenFailSnackbar,setOpenSuccessSnackbar
     const [checkPhone, setCheckPhone] = useState(false)
     const [checkThumbnailURL, setCheckThumbnailURL] = useState(false)
     const dispatch = useAppDispatch()
+    const [snackbar, setSnackbar]=useState(false)
+    const [responseMsg, setResponseMsg] = useState("")
     const checkValid= () =>{
       let check: boolean = true
       if(farm.name.trim() === '') {setCheckName(true)} else setCheckName(false)
@@ -44,19 +50,42 @@ const CreateModal=({handleClose, show,setOpenFailSnackbar,setOpenSuccessSnackbar
         formData.append('thumbnail',file)
         formData.append('address',farm.address)
         formData.append('phone',farm.phone)
-        formData.append('managerId',farm.managerId)
-        await dispatch(addFarm(formData))
-        setOpenSuccessSnackbar(true)
+        formData.append('managerId',farm.manager.value)
+        await instance.post('/farms',formData)
+        .then(res =>{
+          console.log(res.status)
+          setOpenSuccessSnackbar(true)
         handleClose()
-      } else setOpenFailSnackbar(true)
+        }).catch(err => {
+          // console.log(err)
+          setResponseMsg(err.response.data)
+          setSnackbar(true)
+        })
+      } 
     }  
-    return <Dialog fullWidth
-    open={show}
-    onClose={handleClose}
-    aria-labelledby="alert-dialog-title"
-    aria-describedby="alert-dialog-description"
-    >
-    <DialogTitle id="alert-dialog-title">
+    const [managers, setManagers]=useState([])
+    const loadManagers = async() => {
+      await instance.get<any,any>('/managers',{
+        params: {
+          status: "Active",
+          pageSize: 100,
+          pageNumber: 0
+        }
+      })
+      .then(res => {
+        const updatedComboboxList = res.data.map((item) => ({
+          label: item.name,
+          value: item.id,
+        }));
+        setManagers(updatedComboboxList)
+      })
+      .catch(err => console.log(err))
+    }
+    useEffect(()=>{
+      loadManagers()
+    },[])
+    return <Dialog fullWidth open={show} onClose={handleClose}  >
+    <DialogTitle>
       Create
     </DialogTitle>
     <DialogContent>
@@ -76,6 +105,10 @@ const CreateModal=({handleClose, show,setOpenFailSnackbar,setOpenSuccessSnackbar
       onChange={e => setFarm(prev => ({...prev, phone: e.target.value}))} label='Phone' 
       placeholder='Enter phone number' size='small' variant="outlined" />
       
+      <Autocomplete value={farm.manager} disableClearable options={managers} fullWidth size='small' isOptionEqualToValue={(option, value) => option.value === value.value}
+      onChange={(e, value) => setFarm(prev => ({...prev, manager: value}))} renderInput={(params) => <TextField {...params} label="Manager" />}
+/>
+
       <TextField helperText={checkThumbnailURL ? "This field is required" : false}  
       error={checkThumbnailURL ? true : false} value={farm.thumbnailUrl} type="file"
       inputProps={{ accept: "image/png, image/jpeg, image/jpg" }}
@@ -88,9 +121,15 @@ const CreateModal=({handleClose, show,setOpenFailSnackbar,setOpenSuccessSnackbar
         </Stack>
     </DialogContent>
     <DialogActions>
-      <Button variant='contained' onClick={handleClose}>cancel</Button>
+      <Button variant='contained' onClick={handleClose}>Cancel</Button>
       <Button variant='contained' color='secondary' onClick={add} >Add</Button>
     </DialogActions>
+    <Snackbar open={snackbar} autoHideDuration={3000} onClose={()=>{setSnackbar(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
+        <Alert onClose={()=>{setSnackbar(false)}}
+          severity="error" variant="filled" sx={{ width: '100%' }}>
+          {responseMsg}
+        </Alert>
+      </Snackbar>
   </Dialog>
 
 }

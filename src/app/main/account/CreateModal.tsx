@@ -37,7 +37,6 @@ const CreateModal=({handleClose, show, setOpenSuccessSnackbar})=>{
     phone: "",
     email: "",
     password: "",
-    farmId:""
   });
   const role = useAppSelector((state: any) => state.accountReducer.accountsSlice.role)
   const pageNumber = useAppSelector((state: any) => state.accountReducer.accountsSlice.accounts.pagination.pageNumber)
@@ -61,14 +60,6 @@ const CreateModal=({handleClose, show, setOpenSuccessSnackbar})=>{
       .matches(/[0-9]/, "Password must contain at least one number")
       .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
       .matches(/[a-z]/, "Password must contain at least one lowercase letter"),
-      farmId: Yup.string().test(
-        'isValidFarmId',
-        'Farm is required',
-        (value) => {
-          // Check if farm.value is not empty or null
-          return !!form.farm.value;
-        }
-      ),
   });
 
   const [createFail, setCreateFail]=useState(false)
@@ -77,12 +68,17 @@ const CreateModal=({handleClose, show, setOpenSuccessSnackbar})=>{
     e.preventDefault();
     try {
       await validationSchema.validate(form, { abortEarly: false });
-      await instance.post(`/${role}s/registrations`,{
+      await instance.post(`/${role}s/registrations`,role === 'staff' ? {
         "name": form.fullName,
         "email": form.email,
         "phone": form.phone,
         "password": form.password,
         "farmId": form.farm.value
+      } : {
+        "name": form.fullName,
+        "email": form.email,
+        "phone": form.phone,
+        "password": form.password,
       }).then(async() => {
         await dispatch(getUser({ role: role, params: { pageNumber: pageNumber, pageSize: pageSize } }));
       setErrors({
@@ -90,8 +86,7 @@ const CreateModal=({handleClose, show, setOpenSuccessSnackbar})=>{
         avatar: "",
         phone: "",
         email: "",
-        password: "",
-        farmId: ""
+        password: ""
       });
       setOpenSuccessSnackbar(true);
       handleClose();
@@ -105,7 +100,7 @@ const CreateModal=({handleClose, show, setOpenSuccessSnackbar})=>{
         avatar: "",
         phone: "",
         email: "",
-        password: "",farmId:""
+        password: ""
       };
       if (error.inner) {
         error.inner.forEach((err) => {
@@ -138,6 +133,11 @@ const CreateModal=({handleClose, show, setOpenSuccessSnackbar})=>{
     useEffect(()=>{
       loadFarm()
     },[])
+    useEffect(()=>{
+      if(farms.length>0) {
+        console.log('chay5')
+        setForm({...form, farm: farms[0]})};
+    },[farms])
     return <Dialog fullWidth
     open={show}
     onClose={handleClose}
@@ -178,11 +178,10 @@ const CreateModal=({handleClose, show, setOpenSuccessSnackbar})=>{
       onChange={handleChange} label='Password' name='password'
       placeholder='Enter password' size='small' variant="outlined" />
 
-      <Autocomplete size='small'  
-      disablePortal fullWidth disableClearable value={form.farm} onChange={(event, value) => setForm({...form, farm: value})}
+      {role === 'staff' && <Autocomplete size='small' fullWidth disableClearable value={form.farm} onChange={(event, value) => setForm({...form, farm: value})}
       options={farms} isOptionEqualToValue={(option, value) => option.value === value.value}
-      renderInput={(params) => <TextField helperText={errors.farmId !== "" && errors.farmId} error={errors.farmId == ""? false: true} {...params} label="Farm" />}
-      />
+      renderInput={(params) => <TextField {...params} label="Farm" />}
+      />}
         </Stack>
     </DialogContent>
     <DialogActions>

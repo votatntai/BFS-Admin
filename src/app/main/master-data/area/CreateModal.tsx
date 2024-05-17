@@ -90,7 +90,7 @@ const CreateModal = ({ handleClose, show, setOpenFailSnackbar, setOpenSuccessSna
           placeholder='Enter name' size='small' variant="outlined" />
 
         <Autocomplete
-          disablePortal value={area.farmId}
+          disableClearable value={area.farmId}
           onChange={(event: any, newValue: any) => {
             setArea(prev => ({ ...prev, farmId: newValue }))
           }}
