@@ -74,7 +74,7 @@ const itemId="3ABFB395-C6BE-48F3-AC74-4D247BBF8CBC";
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex w-full  items-center justify-center h-full">
                 <FuseLoading />
             </div>
         );

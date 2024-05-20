@@ -51,6 +51,5 @@ export const { setSearchText } = BirdsSlice.actions;
 
 export const selectSearchText = (state: AppRootStateType) => state.birdReducer?.birds.searchText;
 
-export const selectBird = (state)=>state.birdReducer?.Birds;
 export type BirdsSliceType = typeof BirdsSlice;
 export default BirdsSlice.reducer;

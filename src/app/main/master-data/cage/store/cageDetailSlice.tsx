@@ -8,21 +8,19 @@ import CageModels from '../Model/CageModel';
 
 export type AppRootStateType = RootStateType<cageDetailSliceType>;
 
-/**
- * Get birdCategory from server by id
- */
+// Gert
 export const getCage = createAppAsyncThunk<CageType, string>(
     'cageReducer/cage/getCage',
     async (Id) => {
-        
-        const response = await axios.get(`/species/${Id}`);
+
+        const response = await axios.get(`/cages/${Id}`);
 
         const data = (await response.data) as CageType;
 
         return data;
     }
 );
-// post bird Caategory
+// post 
 export const createCage = createAppAsyncThunk<any, any>(
     'cageReducer/cage/createCage',
     async (dataItem) => {
@@ -35,7 +33,7 @@ export const createCage = createAppAsyncThunk<any, any>(
 );
 
 /**
- * Save saveBirdCategory
+ * Save
  */
 export const saveCage = createAppAsyncThunk<CageType, CageType>(
     'cageReducer/cage/saveCage',
@@ -66,8 +64,8 @@ export const cageDetailSlice = createSlice({
     reducers: {
         reaset: () => initialState,
         newProduct: (state) => {
-		//	state.data = CageModels({});
-		}
+            //	state.data = CageModels({});
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -77,7 +75,7 @@ export const cageDetailSlice = createSlice({
             })
 
             .addCase(createCage.fulfilled, (state, action) => {
-              state.status = 'succeeded';
+                state.status = 'succeeded';
             })
 
     }
@@ -85,7 +83,7 @@ export const cageDetailSlice = createSlice({
 
 export const selectDetail = (state: AppRootStateType) => state.cageReducer.cage.data;
 
-export const {newProduct,  reaset } = cageDetailSlice.actions;
+export const { newProduct, reaset } = cageDetailSlice.actions;
 
 export type cageDetailSliceType = typeof cageDetailSlice;
 export default cageDetailSlice.reducer;

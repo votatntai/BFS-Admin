@@ -7,15 +7,15 @@ import { SpeicesListType, SpeicesType } from '../type/SpeciesType';
 
 export type AppRootStateType = RootStateType<speciesListSliceType>;
 
-
+// get List
 export const getSpeciesList= createAppAsyncThunk<SpeicesListType>('birdCategoryReducer/getBirdCategories', async () => {
 	const response = await axios.get('/species');
 	const data = (await response.data) ;
 	return data;
 });
-
+// create adapter
 const speciesAdapter = createEntityAdapter<SpeicesType>({});
-
+// select
 export const { selectAll: selectSpecieslist,selectById:selcetSpeciesById } = speciesAdapter.getSelectors(
 	(state: AppRootStateType) => state.speciesReducer.speciesList
 );
@@ -23,11 +23,10 @@ export const { selectAll: selectSpecieslist,selectById:selcetSpeciesById } = spe
 const initialState = speciesAdapter.getInitialState({
 	searchText: '',
 	pagination :{},
-	
 
 });
 
-
+//List slice
 export const speciesListSlice = createSlice({
 	name: 'speciesReducer/speciesList',
 	initialState,

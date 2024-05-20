@@ -1,20 +1,21 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import speciesList from '../species/store/SpecisesSlice'
-import species from   '../species/store/SpeciesDetailSlice'
-import bird from   '../bird/store/birdDetailSlice'
-import birds from   '../bird/store/birdSlice'
-import cage from   '../cage/store/cageDetailSlice'
-import cages from   '../cage/store/cageSlice'
-import birdCategories from '../bird-category/store/birdCategorySlice'
-import birdCategory from '../bird-category/store/birdCategoryDetailSlice'
-import farmSlice from '../farm/slice/farmSlice';
 import areaSlice from '../area/slice/areaSlice';
-import caremodeSlice from '../care-mode/slice/caremodeSlice'
-import foodCategorySlice from '../food-category/slice/foodCategorySlice'
-import foodSlice from '../food/slice/foodSlice'
-import unitSlice from '../unit/slice/unitSlice'
-import menuSampleSlice from '../menu-sample/slice/menuSampleSlice'
-import menuMealSampleSlice from '../menu-meal-sample/slice/menuMealSampleSlice';
+import birdCategory from '../bird-category/store/birdCategoryDetailSlice';
+import birdCategories from '../bird-category/store/birdCategorySlice';
+import bird from '../bird/store/birdDetailSlice';
+import birds from '../bird/store/birdSlice';
+import cage from '../cage/store/cageDetailSlice';
+import cages from '../cage/store/cageSlice';
+import caremodeSlice from '../care-mode/slice/caremodeSlice';
+import farmSlice from '../farm/slice/farmSlice';
+import foodCategorySlice from '../food-category/slice/foodCategorySlice';
+import foodSlice from '../food/slice/foodSlice';
+import species from '../species/store/SpeciesDetailSlice';
+import speciesList from '../species/store/SpecisesSlice';
+import unitSlice from '../unit/slice/unitSlice';
+import menuSamples from '../menu-sample/store/menuSamplesSlice';
+import menus from '../menu-sample/store/menusSlice'
+
 const reducer = combineReducers({
     bird,
     birds,
@@ -30,8 +31,8 @@ const reducer = combineReducers({
     foodCategorySlice,
     foodSlice,
     unitSlice,
-    menuSampleSlice,
-    menuMealSampleSlice
+    menuSamples,
+    menus
 })
 
 export default reducer

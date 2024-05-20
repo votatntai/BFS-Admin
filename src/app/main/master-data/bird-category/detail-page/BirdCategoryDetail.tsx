@@ -9,6 +9,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { selectBirdCategory } from "../store/birdCategorySlice";
 import { getBirdCategory, selectBirdCategoryDetail } from "../store/birdCategoryDetailSlice";
 import { useDeepCompareEffect } from "@fuse/hooks";
+import { useEffect } from "react";
 
 const schema = yup.object().shape({
     name: yup
@@ -23,7 +24,8 @@ type FormValues = {
 
 const BirdCategoryDetail = () => {
     const dispatch = useAppDispatch();
-    const dataItem = useAppSelector(selectBirdCategoryDetail);
+    const dataItem = useAppSelector(selectBirdCategoryDetail)
+    console.log("Bird category detail", dataItem)
     const routeParams = useParams();
     const methods = useForm<FormValues>({
         mode: 'onSubmit',
@@ -45,7 +47,12 @@ const BirdCategoryDetail = () => {
 
         updateProductState();
     }, [dispatch, routeParams]);
-
+    useEffect(
+        () => {
+            reset({})
+        }
+        , [reset]
+    )
     return (
         <form>
             <FormProvider

@@ -7,25 +7,18 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getBirdCategories, selectBirdCategories } from '../../bird-category/store/birdCategorySlice';
 import { useAppDispatch, useAppSelector } from 'app/store';
-export default function BirdCategoryDetailContent(prop) {
+export default function SpeciesDetailContent(prop) {
     // additional
-
     const options = useAppSelector(selectBirdCategories);
-
-
     const dispatch = useAppDispatch();
     const dataItem = prop
     const methods = useFormContext();
-    const { register, control, formState, watch } = methods;
+    const { control, formState, watch } = methods;
     const { errors } = formState;
     const { setValue } = useFormContext();
     useEffect(
         () => {
             dispatch(getBirdCategories());
-
-            setValue('name  ', dataItem.name)
-            setValue('thumbnailUrl', dataItem.thumbnailUrl);
-
         }
         , []
     )
@@ -35,18 +28,15 @@ export default function BirdCategoryDetailContent(prop) {
     return (
         <div>
             <Controller
-                defaultValue={dataItem.name}
                 name="name"
                 control={control}
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        {...register("name")}
                         className="mt-8 mb-16 w-[300px] ml-48"
                         required
-                        label="Name"
                         autoFocus
-                        value={dataItem.name}
+                        label="Name"
                         id="name"
                         variant="outlined"
                         fullWidth
@@ -64,28 +54,23 @@ export default function BirdCategoryDetailContent(prop) {
                     <Box
                         component="label"
                         htmlFor="button-file"
-                        className="productImageUpload ml-48 flex items-center justify-center relative w-128 h-128 rounded-16  mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
+                        className="productImageUpload ml-48 flex border-2 items-center justify-center relative w-128 h-128 rounded-16  mb-24 overflow-hidden cursor-pointer shadow hover:shadow-lg"
                     >
                         <input
                             accept="image/*"
                             className="hidden"
                             id="button-file"
                             type="file"
-                            onChange={async (e) => {
-                                function readFileAsync() {
-                                    return new Promise((resolve) => {
-                                        const file = e?.target?.files?.[0];
-                                        if (!file) {
-                                            return;
-                                        }
-                                        resolve(file)
-
-                                    });
+                            onChange={
+                                async (e) => {
+                                    const file = e.target.files[0];
+                                    if (!file) return;
+                                    onChange(file)
                                 }
-                                onChange(await readFileAsync());
-                            }}
+                            }
                         />
                         <FuseSvgIcon
+                            className=' absolute  left-1/2'
                             size={32}
                             color="action"
                         >
@@ -93,14 +78,19 @@ export default function BirdCategoryDetailContent(prop) {
                         </FuseSvgIcon>
                         <>
                             {thumbnailUrl ? (
-
-                                <img
-                                    className="max-w-none w-auto h-full"
-                                    src={URL.createObjectURL(thumbnailUrl)}
-                                />
+                                (thumbnailUrl instanceof File) ?
+                                    (<img
+                                        className="max-w-none w-auto h-full"
+                                        src={URL.createObjectURL(thumbnailUrl)}
+                                    />) : (
+                                        <img
+                                            className="max-w-none w-auto h-full"
+                                            src={thumbnailUrl}
+                                        />
+                                    )
                             ) : (
                                 <img
-                                    className="w-32 sm:w-48 rounded"
+                                    className="w-32 sm:w-48 rounded hidden"
                                     src="assets/images/apps/ecommerce/product-image-placeholder.png"
                                 />
                             )}</>
@@ -110,15 +100,13 @@ export default function BirdCategoryDetailContent(prop) {
             <Controller
                 name="birdCategoryId"
                 control={control}
-                defaultValue={[]}
                 render={({ field: { onChange, value } }) => (
                     <Autocomplete
                         className="mt-8 mb-16"
-                        freeSolo
+                      
                         options={options}
-                        getOptionLabel={(option ) => option.name}
+                        getOptionLabel={(option) => option.name}
                         value={value}
-                   
                         onChange={(event, newValue) => {
                             onChange(newValue);
                         }}
@@ -138,5 +126,5 @@ export default function BirdCategoryDetailContent(prop) {
                 )}
             />
         </div>
-    )   
+    )
 }

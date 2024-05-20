@@ -4,11 +4,11 @@ import createAppAsyncThunk from 'app/store/createAppAsyncThunk';
 import { AsyncStateType, RootStateType } from 'app/store/types';
 import { SpeicesType } from '../type/SpeciesType';
 
-
-export type AppRootStateType = RootStateType<birdCategoryDetailSliceType>;
+// Nha Kho
+export type AppRootStateType = RootStateType<speciesDetailSliceType>;
 
 /**
- * Get birdCategory from server by id
+ * Get item by Id
  */
 export const getSpecies = createAppAsyncThunk<SpeicesType, string>(
     'speciesReducer/species/getSpecies',
@@ -21,7 +21,7 @@ export const getSpecies = createAppAsyncThunk<SpeicesType, string>(
         return data;
     }
 );
-// post bird Caategory
+// post
 export const createSpecies = createAppAsyncThunk<any, any>(
     'speciesReducer/species/createSpecies',
     async (dataItem) => {
@@ -34,7 +34,7 @@ export const createSpecies = createAppAsyncThunk<any, any>(
 );
 
 /**
- * Save saveBirdCategory
+ * Save 
  */
 export const saveSpecies = createAppAsyncThunk<SpeicesType, SpeicesType>(
     'speciesReducer/species/saveSpecies',
@@ -57,7 +57,7 @@ const initialState: AsyncStateType<SpeicesType> = {
 };
 
 /**
- * The birdCategory Detail Slice 
+ * The Detail Slice 
  */
 export const speciesDetailSlice = createSlice({
     name: 'speciesReducer/species',
@@ -80,9 +80,9 @@ export const speciesDetailSlice = createSlice({
     }
 });
 
-export const selectDetail = (state: AppRootStateType) => state.speciesReducer.species.data;
+export const selectDetail = (state: AppRootStateType) => state
 
 export const {  reaset } = speciesDetailSlice.actions;
 
-export type birdCategoryDetailSliceType = typeof speciesDetailSlice;
+export type speciesDetailSliceType = typeof speciesDetailSlice;
 export default speciesDetailSlice.reducer;

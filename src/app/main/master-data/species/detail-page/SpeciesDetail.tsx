@@ -1,58 +1,72 @@
-import BirdCategoryDetailContent from "./SpeciesDetailContent";
-import BirdCategoryDetailHeader from "./SpeciesDetailHeader";
 import FusePageCarded from "@fuse/core/FusePageCarded";
-import { FormProvider, useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "app/store";
-import * as yup from 'yup';
-import { Link, useParams } from 'react-router-dom';
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useDeepCompareEffect } from "@fuse/hooks";
-import { getSpecies, selectDetail } from "../store/SpeciesDetailSlice";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useAppDispatch, useAppSelector } from "app/store";
+import { useEffect } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { useParams } from 'react-router-dom';
+import * as yup from 'yup';
+import { getSpecies, reaset, selectDetail } from "../store/SpeciesDetailSlice";
+import SpeciesDetailHeader from "./SpeciesDetailHeader";
+import SpeciesDetailContent from "./SpeciesDetailContent";
 
 const schema = yup.object().shape({
     name: yup
         .string()
         .required('You must enter a bird catego ry name')
         .min(5, 'At least 5 charactor'),
+    thumbnailUrl: yup
+        .mixed()
+
 });
 type FormValues = {
     name: string,
+    thumbnailUrl: any,
 }
 
 
-const BirdCategoryDetail = () => {
+const SpeciesDetail = () => {
     const dispatch = useAppDispatch();
     const dataItem = useAppSelector(selectDetail);
-    const routeParams = useParams();
+    const { id } = useParams();
     const methods = useForm<FormValues>({
         mode: 'onSubmit',
-        defaultValues: {
-            name: dataItem?.name
-        },
         resolver: yupResolver(schema)
     });
-    const {  watch } = methods;
+    const { watch, reset } = methods;
 
 
     useDeepCompareEffect(() => {
         function updateState() {
 
-            if (routeParams.id != 'new') {
-                dispatch(getSpecies(routeParams.id))
-            }
+            if (id != 'new') {
+                dispatch(getSpecies(id))
+            } else dispatch(reaset())
         }
-
         updateState();
-    }, [dispatch, routeParams]);
+
+    }, [dispatch, id]);
+    useEffect(() => {
+        reset(dataItem)
+
+    }, [dataItem]);
+    useEffect(() => {
+        return () => {
+            console.log("reAset ??")
+            dispatch(reaset())
+        }
+    }
+        , [dispatch]);
+
 
     return (
         <form>
             <FormProvider
                 {...methods}>
                 <FusePageCarded
-                    header={<BirdCategoryDetailHeader />}
+                    header={<SpeciesDetailContent />}
                     content={
-                        <BirdCategoryDetailContent prop={dataItem}
+                        <SpeciesDetailHeader 
                         />
                     }
                 />
@@ -61,4 +75,4 @@ const BirdCategoryDetail = () => {
     );
 };
 
-export default BirdCategoryDetail;
+export default SpeciesDetail;

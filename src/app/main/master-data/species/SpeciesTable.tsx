@@ -72,7 +72,7 @@ function SpeciesTable(prop: SpeciesTableeProps) {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-full">
+            <div className="flex w-full items-center justify-center h-full">
                 <FuseLoading />
             </div>
         );

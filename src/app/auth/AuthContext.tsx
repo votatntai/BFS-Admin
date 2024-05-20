@@ -4,7 +4,6 @@ import FuseSplashScreen from '@fuse/core/FuseSplashScreen';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { logoutUser, setUser } from 'app/store/user/userSlice';
 import { useAppDispatch } from 'app/store';
-import { AxiosError } from 'axios';
 import { UserType } from 'app/store/user';
 import jwtService from './services/jwtService';
 
@@ -37,7 +36,7 @@ function AuthProvider(props: AuthProviderProps) {
 				.then((user) => {
 					success(user as UserType, 'Signed in with JWT');
 				})
-				.catch((error: AxiosError) => {
+				.catch((error) => {
 					pass(error.message);
 				});
 		});
