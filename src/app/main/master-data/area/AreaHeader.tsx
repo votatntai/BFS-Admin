@@ -7,21 +7,18 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { useState } from 'react';
 import CreateModal from './CreateModal';
 import { useAppDispatch, useAppSelector } from 'app/store';
-import { areaReducerState, getAreaData, setPaginPageNumber, setSearchText } from './slice/areaSlice';
+import { areaReducerState, getAreaData, setSearchText } from './slice/areaSlice';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
- function AreaHeader(){
+import { useNavigate } from 'react-router';
+
+ function AreaHeader({farmId}){
+    const navigate = useNavigate()
     const [showAdd, setShowAdd] =useState(false)
     const [openCreateSuccessNotify, setOpenCreateSuccessNotify] = useState(false);
     const [openCreateFailNotify, setOpenCreateFailNotify] = useState(false);
     const dispatch = useAppDispatch()
-    const [searchValue, setSearchValue] = useState('')
-    const pageSize  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.pageSize)
-    const handleSearch= async()=>{
-        dispatch(setSearchText(searchValue))
-        await dispatch(getAreaData({name: searchValue, pageNumber: 0, pageSize: pageSize}))
-        dispatch(setSearchText(""))
-    }
+    
     return( <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
     <motion.span
         initial={{ x: -20 }}
@@ -40,11 +37,11 @@ import Alert from '@mui/material/Alert';
                 placeholder="Search areas"
                 disableUnderline
                 fullWidth
-                value={searchValue} onKeyPress={e => {if(e.key==='Enter') handleSearch()}}
+                // value={searchValue} onKeyPress={e => {if(e.key==='Enter') handleSearch()}}
                 inputProps={{
                     'aria-label': 'Search'
                 }}
-                onChange={e => setSearchValue(e.target.value)}
+                // onChange={e => setSearchValue(e.target.value)}
             />
 
         </Paper>
@@ -56,17 +53,24 @@ import Alert from '@mui/material/Alert';
                 variant="contained" className='me-12'
                 color="secondary"
                 startIcon={<FuseSvgIcon>heroicons-outline:search</FuseSvgIcon>}
-                onClick={()=>{handleSearch();setSearchValue('')}}
             >
                 Search
             </Button>
             <Button
-                onClick={()=>setShowAdd(true)}
+                onClick={()=>setShowAdd(true)} className='me-12'
                 variant="contained"
                 color="secondary"
                 startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
             >
                 Add
+            </Button>
+            <Button
+                onClick={()=>navigate(-1)}
+                variant="contained"
+                color="secondary"
+                startIcon={<FuseSvgIcon>heroicons-outline:arrow-left</FuseSvgIcon>}
+            >
+                Back
             </Button>
         </motion.div>
 </div>
@@ -82,7 +86,7 @@ import Alert from '@mui/material/Alert';
           Add failed
         </Alert>
       </Snackbar>
-    {showAdd && <CreateModal handleClose={()=> setShowAdd(false)} show={showAdd} setOpenFailSnackbar={setOpenCreateFailNotify} setOpenSuccessSnackbar={setOpenCreateSuccessNotify} />}
+    {showAdd && <CreateModal farmId={farmId} handleClose={()=> setShowAdd(false)} show={showAdd} setOpenFailSnackbar={setOpenCreateFailNotify} setOpenSuccessSnackbar={setOpenCreateSuccessNotify} />}
 </div>)
 }
 export default AreaHeader

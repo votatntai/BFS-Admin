@@ -1,8 +1,7 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
-import AreaContent from './AreaContent'
-import AreaHeader from './AreaHeader';
-import { useParams } from 'react-router';
+import FarmSelectContent from './FarmSelectContent';
+import FarmSelectHeader from './FarmSelectHeader';
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
 		backgroundColor: theme.palette.background.paper,
@@ -15,14 +14,14 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-sidebarContent': {}
 }));
 
-function Area() {
-const {id} = useParams()
+function FarmSelect() {
+
 	return (<Root
-	header={<AreaHeader farmId={id}/>}
+	header={<FarmSelectHeader/>}
 	content={
-			<AreaContent farmId={id}/>
+			<FarmSelectContent />
 	}
 />)
 }
 
-export default Area;
+export default FarmSelect;
