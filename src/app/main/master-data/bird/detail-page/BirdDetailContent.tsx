@@ -17,7 +17,6 @@ export default function CageDetailContent() {
     const categoriesList = useAppSelector(selectBirdCategories)
     const speciesList = useAppSelector(selectSpecieslist);
     const dispatch = useAppDispatch();
-    console.log("specieslist", speciesList)
     const methods = useFormContext();
     const { control, formState, watch, getValues } = methods;
     const { errors } = formState;
@@ -34,6 +33,8 @@ export default function CageDetailContent() {
         , []
     )
     const thumbnailUrl = watch('thumbnailUrl')
+    const gender = watch('gender')
+    console.log("gender",gender)
 
     return (
         <div className='flex'>
@@ -82,9 +83,9 @@ export default function CageDetailContent() {
                             {...field}
                             className='mb-16 ml-48'
                             aria-labelledby="demo-radio-buttons-group-label"
-                            defaultValue="female"
                             name="radio-buttons-group"
-                        >
+                            value={field.value} 
+                    >
                             <FormControlLabel value={true} control={<Radio />} label="Female" />
                             <FormControlLabel value={false} control={<Radio />} label="Male" />
                         </RadioGroup>
@@ -101,7 +102,7 @@ export default function CageDetailContent() {
                     render={({ field }) => (
                         <DatePicker
 
-                            {...field}
+                            // {...field}
                             className='ml-48'
                         />
                     )}

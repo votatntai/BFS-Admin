@@ -9,7 +9,7 @@ import BirdCategoryModel from '../model/BirdCategoryModel';
 export type AppRootStateType = RootStateType<birdCategoryDetailSliceType>;
 
 /**
- * Get birdCategory from server by id
+ * Get item by id
  */
 export const getBirdCategory = createAppAsyncThunk<BirdCategoryType, string>(
     'birdCategoryReducer/birdCategory/getBirdCategory',
@@ -21,7 +21,7 @@ export const getBirdCategory = createAppAsyncThunk<BirdCategoryType, string>(
         return data;
     }
 );
-// post bird Caategory
+// post 
 export const createBirdCategory = createAppAsyncThunk<any, any>(
     'birdCategoryReducer/birdCategory/createBirdCategory',
     async (dataItem) => {
@@ -34,7 +34,7 @@ export const createBirdCategory = createAppAsyncThunk<any, any>(
 );
 
 /**
- * Save saveBirdCategory
+ * Save 
  */
 export const saveBirdCategory = createAppAsyncThunk<BirdCategoryType, BirdCategoryType>(
     'birdCategoryReducer/birdCategory/saveBirdCategory',
@@ -57,7 +57,7 @@ const initialState: AsyncStateType<BirdCategoryType> = {
 };
 
 /**
- * The birdCategory Detail Slice 
+ * The Detail Slice 
  */
 export const birdCategoryDetailSlice = createSlice({
     name: 'birdCategoryReducer/birdCategory',
@@ -71,8 +71,8 @@ export const birdCategoryDetailSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(getBirdCategory.fulfilled, (state, action) => {
-                state.data = action.payload;
-                state.status = 'succeeded';
+                state.data = action.payload
+                state.status = 'succeeded'
             })
 
             .addCase(createBirdCategory.fulfilled, (state, action) => {

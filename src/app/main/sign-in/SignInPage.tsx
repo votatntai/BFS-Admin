@@ -59,9 +59,7 @@ function SignInPage() {
 			.signInWithEmailAndPassword(email, password)
 			.then((user: UserType) => {
 				// eslint-disable-next-line no-console
-				console.info(user);
 
-				// No need to do anything, user data will be set at app/auth/AuthContext
 			})
 			.catch((_errors: { type: 'email' | 'password' | `root.${string}` | 'root'; message: string }[]) => {
 				_errors.forEach((error) => {
@@ -105,7 +103,7 @@ function SignInPage() {
 						<Controller
 							name="email"
 							control={control}
-							render={({ field }) => (
+							render={	({ field }) => (
 								<TextField
 									{...field}
 									className="mb-24"

@@ -38,27 +38,12 @@ export default function CageDetailHeader(prop) {
     }
 
     const handleAdd = () => {
-        formData.append('code', getValues().code)
-        formData.append('name', getValues().name)
-        formData.append('thumbnail', getValues().thumbnailUrl)
-        formData.append('height', getValues().height)
-        formData.append('width', getValues().width)
-        formData.append('depth', getValues().depth)
-        formData.append('material', getValues().material)
-        formData.append('areaId', getValues().areaId.id)
-        formData.append('caremodeId', getValues().careModeId.id)
-        formData.append('speciesId', getValues().speciesId.id)
-        console.log("itemId", getValues())
-        dispatch(createCage(formData));
+
+        // dispatch(createCage(formData));
         navigate('/master-data/cage');
     }
     return (<>
-        <span
-            onClick={() => {
-                console.log("itemId", getValues())
-            }}>
-            x
-        </span>
+    
         <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-32 px-24 md:px-32">
             <div className="flex flex-col items-center sm:items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">
 

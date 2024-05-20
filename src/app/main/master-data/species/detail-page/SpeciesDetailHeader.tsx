@@ -12,7 +12,7 @@ import { SpeicesType } from '../type/SpeciesType';
 import { getValue } from '@mui/system';
 
 
-export default function BirdCategoryDetailHeader() {
+export default function SpeciesDetailHeader() {
 
     const dispatch = useAppDispatch();
     const methods = useFormContext();
@@ -43,8 +43,7 @@ export default function BirdCategoryDetailHeader() {
         formData.append('birdCategoryId', BCId)
         formData.append('name', getValues().name)
         formData.append('thumbnail', getValues().thumbnailUrl)
-        console.log("itemId", getValues())
-        await dispatch(createSpecies(formData));
+        dispatch(createSpecies(formData));
         navigate('/master-data/species');
     }
 
@@ -79,7 +78,7 @@ export default function BirdCategoryDetailHeader() {
                     className=" "
                     component={Link}
                     variant="outlined"
-                    to="/master-data/bird-category"
+                    to="/master-data/species"
                 >
                     Back
                 </Button>
