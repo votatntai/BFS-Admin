@@ -59,7 +59,7 @@ export default function AccountContent() {
 			</TableCell>
 		<TableCell align='left'>{item.phone}</TableCell>
 		<TableCell align='left'>{item.email}</TableCell>
-		<TableCell align='left'>{item.farm.name}</TableCell>
+		<TableCell align='left'>{item.farm?.name}</TableCell>
 		<TableCell align='center'>{item.status === 'Active' ? <Button variant="contained" style={{pointerEvents: "none"}} color='success'>Active</Button> : <Button variant="contained" style={{pointerEvents: "none"}} color='error'>Disable</Button>}</TableCell>
 		<TableCell align='left'>
 		<Tooltip title='Edit'>

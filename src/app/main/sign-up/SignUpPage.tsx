@@ -80,15 +80,6 @@ function SignUpPage() {
 					<Typography className="mt-32 text-4xl font-extrabold leading-tight tracking-tight">
 						Sign up
 					</Typography>
-					<div className="mt-2 flex items-baseline font-medium">
-						<Typography>Already have an account?</Typography>
-						<Link
-							className="ml-4"
-							to="/sign-in"
-						>
-							Sign in
-						</Link>
-					</div>
 
 					<form
 						name="registerForm"
@@ -273,31 +264,11 @@ function SignUpPage() {
 				</Box>
 
 				<div className="relative z-10 w-full max-w-2xl">
-					<div className="text-7xl font-bold leading-none text-gray-100">
-						<div>Welcome to</div>
-						<div>our community</div>
+					<div className="text-4xl font-bold leading-none text-gray-100">
+					<div>Bird Farm Meal System</div>
 					</div>
-					<div className="mt-24 text-lg leading-6 tracking-tight text-gray-400">
-						Fuse helps developers to build organized and well coded dashboards full of beautiful and rich
-						modules. Join us and start building your application today.
-					</div>
-					<div className="mt-32 flex items-center">
-						<AvatarGroup
-							sx={{
-								'& .MuiAvatar-root': {
-									borderColor: 'primary.main'
-								}
-							}}
-						>
-							<Avatar src="assets/images/avatars/female-18.jpg" />
-							<Avatar src="assets/images/avatars/female-11.jpg" />
-							<Avatar src="assets/images/avatars/male-09.jpg" />
-							<Avatar src="assets/images/avatars/male-16.jpg" />
-						</AvatarGroup>
-
-						<div className="ml-16 font-medium tracking-tight text-gray-400">
-							More than 17k people joined us, it's your turn
-						</div>
+					<div className="mt-24 text-2xl leading-6 tracking-tight text-gray-400">
+					Nourish to flourish: Your wingman for perfect bird meals!
 					</div>
 				</div>
 			</Box>

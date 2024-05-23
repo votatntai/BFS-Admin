@@ -30,6 +30,7 @@ const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
     const [checkName, setCheckName] = useState(false)
     const [checkAddress, setCheckAddress] = useState(false)
     const [checkPhone, setCheckPhone] = useState(false)
+    const [checkManager, setCheckManager] = useState(false)
     const dispatch = useAppDispatch()
     const [snackbar, setSnackbar]=useState(false)
     const [responseMsg, setResponseMsg] = useState("")
@@ -38,7 +39,8 @@ const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
       if(farm.name.trim() === '') {setCheckName(true)} else setCheckName(false)
       if(farm.address.trim() === '') { setCheckAddress(true)} else setCheckAddress(false)
       if(farm.phone.trim() === '') { setCheckPhone(true)} else setCheckPhone(false)
-      if(farm.name.trim() === '' || farm.address.trim() === '' || farm.phone.trim() === ''){
+      if(farm.manager.value === '') { setCheckManager(true)} else setCheckManager(false)
+      if(farm.name.trim() === '' || farm.address.trim() === '' || farm.phone.trim() === '' || farm.manager.value === ''){
           check = false
       }
       return check;
@@ -108,7 +110,7 @@ const CreateModal=({handleClose, show,setOpenSuccessSnackbar})=>{
       placeholder='Enter phone number' size='small' variant="outlined" />
       
       <Autocomplete value={farm.manager} disableClearable options={managers} fullWidth size='small' isOptionEqualToValue={(option, value) => option.value === value.value}
-      onChange={(e, value) => setFarm(prev => ({...prev, manager: value}))} renderInput={(params) => <TextField {...params} label="Manager" />}
+      onChange={(e, value) => setFarm(prev => ({...prev, manager: value}))} renderInput={(params) => <TextField helperText={checkManager ? "This field is required" : false} error={checkManager ? true : false} {...params} label="Manager" />}
 />
 
       <TextField value={farm.thumbnailUrl} type="file"
