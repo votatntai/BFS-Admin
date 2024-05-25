@@ -26,7 +26,7 @@ function CaremodeWidget() {
     const [awaitRender, setAwaitRender] = useState(true)
     const theme = useTheme()
     const [totalBirds, setTotalBirds] = useState(10)
-    const [data, setData] = useState([])
+    const [series, setSeries] = useState([])
     const [labels, setLabels] = useState([])
     const [colors, setColors] = useState([])
 
@@ -46,7 +46,7 @@ function CaremodeWidget() {
                 enabled: true
             }
         },
-        colors: colors,
+        colors,
         labels,
         plotOptions: {
             pie: {
@@ -60,7 +60,7 @@ function CaremodeWidget() {
         stroke: {
             colors: [theme.palette.background.paper]
         },
-        // series,
+        series,
         states: {
             hover: {
                 filter: {
@@ -93,18 +93,23 @@ function CaremodeWidget() {
     }
 
 
+
     useEffect(() => {
-        setAwaitRender(false);
-    }, []);
-    useEffect(() => {
-        if (birds && birds?.length > 0) {
-            setTotalBirds(birds?.length)
-            let { percentages, names } = calculateSpeciesPercentages(birds);
-            setData(percentages)
-            setLabels(names)
-            setColors(generateRandomColors(percentages.length))
+        if (birds) {
+            if (birds.length) {
+                setTotalBirds(birds?.length)
+                let { percentages, names } = calculateSpeciesPercentages(birds);
+                if (percentages.length > 0) {
+                    setSeries(percentages)
+                    setLabels(names)
+                    setColors(["#0A51E2", "#29F0CA", '#B7B99F', '#385805', '#A5B1FE', '#E33486', '#F7AF57', '#6CE49F'])
+                }
+            }
+            else
+                setSeries([])
+
         }
-    }, [birds]);
+    }, [birds])
     function calculateSpeciesPercentages(birds) {
         let totalBirds = birds.length;
         let speciesCounts = {};
@@ -116,7 +121,7 @@ function CaremodeWidget() {
                 }
                 speciesCounts[bird.careMode.name]++;
             }
-        });
+        })
 
         let percentages = [];
         let names = [];
@@ -128,10 +133,17 @@ function CaremodeWidget() {
 
         return { percentages, names }; // We return an object containing the two arrays.
     }
-
-    if (awaitRender) {
-        return null;
+    useEffect(() => {
+        setAwaitRender(false);
+    }, [])
+    if (!series.length || !labels.length || !colors.length || !chartOptions.labels.length || !chartOptions.colors.length || !chartOptions.series.length) {
+        return null
     }
+    if (awaitRender) {
+        return null
+    }
+
+
     return (
 
         <Paper className="flex flex-col flex-auto shadow rounded-2xl overflow-hidden p-24">
@@ -150,14 +162,14 @@ function CaremodeWidget() {
                 <ReactApexChart
                     className="flex flex-auto items-center justify-center w-full h-full"
                     options={chartOptions}
-                    series={data ? data : []}
+                    series={Array.isArray(series) ? series : []}
                     type={chartOptions.chart?.type}
                     height={chartOptions.chart?.height}
                 />
             </div>
             <div className="mt-32">
                 <div className="-my-12 divide-y">
-                    {data?.map((dataset, i) => (
+                    {series?.map((dataset, i) => (
                         <div
                             className="grid grid-cols-3 py-12"
                             key={i}
@@ -176,7 +188,7 @@ function CaremodeWidget() {
                                 className="text-right"
                                 color="text.secondary"
                             >
-                                {dataset}%
+                                {parseFloat(dataset).toFixed(2)}%
                             </Typography>
                         </div>
                     ))}

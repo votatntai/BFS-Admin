@@ -8,21 +8,31 @@ import { BirdType, PlanType } from '../type/MenuType';
 export type AppRootStateType = RootStateType<menusSliceType>;
 
 //========== GET API ===================
-export const getCareMode = createAppAsyncThunk('menuSamplesReducer/menus/getCareMode', async () => {
+export const getCareMode = createAppAsyncThunk<any,any>('menuSamplesReducer/menus/getCareMode', async () => {
     const response = await axios.get('/care-modes');
     const data = (await response.data);
     return data;
-});
+})
+export const getTickets = createAppAsyncThunk<any,any>('menuSamplesReducer/menus/getTickets', async (farmId) => {
+    const response = await axios.get(`/tickets?pageSize=99999&farmId=${farmId}`);
+    const data = (await response.data);
+    return data;
+})
 export const getSpecies = createAppAsyncThunk('menuSamplesReducer/menus/getSpecies', async () => {
-    const response = await axios.get('/species');
+    const response = await axios.get('/species?pageSize=99999');
     const data = (await response.data);
     return data;
 });
-export const getBirds = createAppAsyncThunk('menuSamplesReducer/menus/getBirds', async () => {
-    const response = await axios.get('/birds');
+export const getBirds = createAppAsyncThunk<any,any>('menuSamplesReducer/menus/getBirds', async (farmId) => {
+    const response = await axios.get(`/birds?pageSize=99999&farmId=${farmId}`);
     const data = (await response.data);
     return data;
-});
+})
+export const getFarms = createAppAsyncThunk('menuSamplesReducer/menus/getFarms', async () => {
+    const response = await axios.get('/farms?pageSize=99999');
+    const data = (await response.data);
+    return data;
+})
 export const getMenuSample = createAppAsyncThunk<any, any>('menuSamplesReducer/menus/getMenuSample', async (item) => {
     const { speciesId, careModeId } = item;
     let response;
@@ -132,7 +142,7 @@ export const updateMealItem = createAppAsyncThunk<any, any>('menuSamplesReducer/
                 const data = (await response.data);
                 return data
             }
-          
+
         }
         if (action == "increase") {
             newItem.quantity += 1
@@ -170,8 +180,10 @@ const initialState = menusAdapter.getInitialState({
     searchText: '',
     birds: [] as BirdType[],
     species: [],
+    farms:[],
     careMode: [],
     menuSample: [],
+    tickets: [],
     mealDialog: {
         data: [],
         isOpen: false,
@@ -233,10 +245,10 @@ export const menusSlice = createSlice({
         setBirdRecommend: (state, action) => {
             const bird = state.birds?.find(bird => bird?.id == action.payload.birdId)
             if (bird) {
-                bird.recommend=action.payload.checked
+                bird.recommend = action.payload.checked
             }
         },
-  
+
 
     },
     extraReducers: (builder) => {
@@ -244,6 +256,12 @@ export const menusSlice = createSlice({
             //=================== GET Reducer ========================
             .addCase(getSpecies.fulfilled, (state, action) => {
                 state.species = action.payload.data
+            })
+            .addCase(getFarms.fulfilled, (state, action) => {
+                state.farms = action.payload.data
+            })
+            .addCase(getTickets.fulfilled, (state, action) => {
+                state.tickets = action.payload.data
             })
             .addCase(getCareMode.fulfilled, (state, action) => {
                 state.careMode = action.payload.data
@@ -349,11 +367,13 @@ export const menusSlice = createSlice({
     }
 });
 
-export const {  setBirdRecommend,addMealBirdId , resetPlan, addMealId, setDialogState, setMealitemsDialog, setMenuDialog, addMealItems } = menusSlice.actions;
+export const { setBirdRecommend, addMealBirdId, resetPlan, addMealId, setDialogState, setMealitemsDialog, setMenuDialog, addMealItems } = menusSlice.actions;
 
 export const selectCageSearchText = (state: AppRootStateType) => state.menuSamplesReducer?.menus
 export const selectBirds = (state: AppRootStateType) => state.menuSamplesReducer.menus.birds
+export const selectFarms = (state: AppRootStateType) => state.menuSamplesReducer.menus.farms
 export const selectSpecies = (state) => state.menuSamplesReducer?.menus.species;
+export const selectTickets = (state) => state.menuSamplesReducer?.menus.tickets;
 export const selectCareModes = (state) => state.menuSamplesReducer?.menus.careMode;
 export const selectMeals = (state: AppRootStateType) => state.menuSamplesReducer?.menus.mealDialog.data
 export const selectFoods = (state: AppRootStateType) => state.menuSamplesReducer?.menus.mealItemDialogState.foods

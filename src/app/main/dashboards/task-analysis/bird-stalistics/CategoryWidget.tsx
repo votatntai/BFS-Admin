@@ -26,7 +26,7 @@ function CategoryWidget() {
     const [awaitRender, setAwaitRender] = useState(true)
     const theme = useTheme()
     const [totalBirds, setTotalBirds] = useState(10)
-    const [data, setData] = useState([])
+    const [series, setSeries] = useState([])
     const [labels, setLabels] = useState([])
     const [colors, setColors] = useState([])
 
@@ -46,7 +46,7 @@ function CategoryWidget() {
                 enabled: true
             }
         },
-        colors: colors,
+        colors,
         labels,
         plotOptions: {
             pie: {
@@ -60,7 +60,7 @@ function CategoryWidget() {
         stroke: {
             colors: [theme.palette.background.paper]
         },
-        // series,
+        series,
         states: {
             hover: {
                 filter: {
@@ -93,17 +93,15 @@ function CategoryWidget() {
     }
 
 
+
     useEffect(() => {
-        setAwaitRender(false);
-    }, []);
-    useEffect(() => {
-        if (birds && birds?.length > 0) {
+        if (birds) {
             setTotalBirds(birds?.length)
 
             let { percentages, names } = calculateSpeciesPercentages(birds);
-            setData(percentages)
+            setSeries(percentages)
             setLabels(names)
-            setColors(generateRandomColors(percentages.length))
+            setColors(["#0A51E2", "#29F0CA", '#B7B99F', '#385805', '#A5B1FE', '#E33486', '#F7AF57', '#6CE49F'])
 
         }
     }, [birds]);
@@ -130,9 +128,17 @@ function CategoryWidget() {
 
         return { percentages, names }; // We return an object containing the two arrays.
     }
-
+    if (!series || !labels || !colors || !chartOptions.labels || !chartOptions.colors || !chartOptions.series) {
+        return null
+    }
+    useEffect(() => {
+        setAwaitRender(false);
+    }, [])
+    if (!series.length || !labels.length || !colors.length || !chartOptions.labels.length || !chartOptions.colors.length || !chartOptions.series.length) {
+        return null
+    }
     if (awaitRender) {
-        return null;
+        return null
     }
     return (
 
@@ -152,14 +158,14 @@ function CategoryWidget() {
                 <ReactApexChart
                     className="flex flex-auto items-center justify-center w-full h-full"
                     options={chartOptions}
-                    series={data ? data : []}
+                    series={series}
                     type={chartOptions.chart?.type}
                     height={chartOptions.chart?.height}
                 />
             </div>
             <div className="mt-32">
                 <div className="-my-12 divide-y">
-                    {data?.map((dataset, i) => (
+                    {series?.map((dataset, i) => (
                         <div
                             className="grid grid-cols-3 py-12"
                             key={i}
@@ -178,7 +184,7 @@ function CategoryWidget() {
                                 className="text-right"
                                 color="text.secondary"
                             >
-                                {dataset}%
+                                {parseFloat(dataset).toFixed(2)}%
                             </Typography>
                         </div>
                     ))}

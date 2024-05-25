@@ -1,12 +1,19 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import Typography from '@mui/material/Typography';
-import { useAppDispatch } from 'app/store';
+import { useAppDispatch, useAppSelector } from 'app/store';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getBirds } from '../../master-data/bird/store/birdSlice';
 import TaskDashBoardHeader from './TaskDashBoardHeader';
 import SpeciesWidget from './bird-stalistics/SpeciesWidget';
-import { getTicket, getWidgets } from './store/widgetsSlice';
+import { getWidgets } from './store/widgetsSlice';
+import { getFarms, getTickets, selectFarms } from '../../master-data/menu-sample/store/menusSlice';
+import TodoWidgets from './task-widget/TodoWidget';
+import CaremodeWidget from './bird-stalistics/CaremodeWidget';
+import GenderWidget from './bird-stalistics/GenderWidget';
+import CategoryWidget from './bird-stalistics/CategoryWidget';
+import TicketWidget from './ticket-stalistics/TicketWidget';
+import { FarmContext } from './context/FarmContext';
 
 const container = {
     show: {
@@ -25,19 +32,19 @@ const item = {
  * The analytics dashboard app.
  */
 function AnalyticsDashboardApp() {
-    const dispatch = useAppDispatch();
-
+    const [farmId, setFarmId] = useState("d2f2494f-0182-4457-8920-2d15943a7a23");  const dispatch = useAppDispatch()
+  
     useEffect(() => {
-        dispatch(getWidgets());
-        dispatch(getBirds())
-        // dispatch(getTicket())
-    }, [dispatch]);
+        dispatch(getWidgets(farmId))
+        dispatch(getBirds(farmId))
+        dispatch(getTickets(farmId))
+        dispatch(getFarms())
+    }, [dispatch,farmId])
 
-    // if (_.isEmpty(widgets)) {
-    // 	return null;
-    // }
+
 
     return (
+        <FarmContext.Provider value={{farmId, setFarmId}}>
         <FusePageSimple
             header={<TaskDashBoardHeader />}
             content={
@@ -53,7 +60,7 @@ function AnalyticsDashboardApp() {
                     >
                         {/* <VisitorsOverviewWidget /> */}
                     </motion.div>
-{/* 
+
                     <motion.div
                         variants={item}
                         className="sm:col-span-2 lg:col-span-1 "
@@ -79,7 +86,7 @@ function AnalyticsDashboardApp() {
                         className="sm:col-span-2 lg:col-span-1 "
                     >
                         <TodoWidgets status="Work finished" />
-                    </motion.div> */}
+                    </motion.div>
 
 
 
@@ -106,35 +113,67 @@ function AnalyticsDashboardApp() {
                         <motion.div
                             className="sm:col-span-2 lg:col-span-1 "
                             variants={item}>
-                            {/* <CaremodeWidget /> */}
+                            <CaremodeWidget />
+                        </motion.div>
+
+                        <motion.div
+                            className="sm:col-span-2 lg:col-span-1 "
+                            variants={item}>
+                            <GenderWidget />
                         </motion.div>
                         <motion.div
                             className="sm:col-span-2 lg:col-span-1 "
                             variants={item}>
-                            {/* <GenderWidget /> */}
-                        </motion.div>
-                        <motion.div
-                            className="sm:col-span-2 lg:col-span-1 "
-                            variants={item}>
-                            {/* <CategoryWidget /> */}
+                            <CategoryWidget />
                         </motion.div>
                         <motion.div
                             className="sm:col-span-2 lg:col-span-1 "
                             variants={item}>
                             <SpeciesWidget />
                         </motion.div>
-             
+
                     </div>
                     {/* Ticket stalistical */}
-                    <div className="w-full mt-16 sm:col-span-3">
+                    <div className="sm:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full">
                         <Typography className="text-2xl font-semibold tracking-tight leading-6">
                             Tickets statistical
                         </Typography>
-                      
+                        <div className="sm:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full">
+
+                            <motion.div
+                                variants={item}
+                                className="sm:col-span-2 lg:col-span-1 "
+                            >
+                                <TicketWidget status="To do" />
+                            </motion.div>
+                            <motion.div
+                                variants={item}
+                                className="sm:col-span-2 lg:col-span-1 "
+                            >
+                                <TicketWidget status="In progress" />
+                            </motion.div>
+
+                            <motion.div
+                                variants={item}
+                                className="sm:col-span-2 lg:col-span-1 "
+                            >
+                                <TicketWidget status="Done" />
+                            </motion.div>
+
+                            <motion.div
+                                variants={item}
+                                className="sm:col-span-2 lg:col-span-1 "
+                            >
+                                <TicketWidget status="Work finished" />
+                            </motion.div>
+                        </div>
+
+
                     </div>
                 </motion.div>
             }
         />
+        </FarmContext.Provider>
     );
 }
 

@@ -13,17 +13,9 @@ const navigationConfig: FuseNavigationType = [
 			{
 				id: 'dashboard',
 				title: 'Dashboard',
-				type: 'collapse',
+				type: 'item',
 				icon: 'heroicons-solid:user-group',
-				children: [
-					{
-						id: 'dashboard-task',
-						title: 'Tasks analytics',
-						type: 'item',
-						url: 'dashboards/tasks',
-						end: true
-					}
-				]
+				url: 'dashboard'
 			},
 			{
 				id: 'account',

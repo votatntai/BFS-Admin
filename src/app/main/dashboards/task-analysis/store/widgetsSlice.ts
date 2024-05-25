@@ -11,9 +11,9 @@ export type WidgetsType = {
 
 /**
  * Get the widgets data.
- */
-export const getWidgets = createAppAsyncThunk('dashboards/tasks/getWidgets', async () => {
-	const response = await axios.get('/tasks?pageSize=99999');
+ */	
+export const getWidgets = createAppAsyncThunk<any,any>('dashboards/tasks/getWidgets', async (farmId) => {
+	const response = await axios.get(`/tasks?pageSize=99999&farmId=${farmId}`);
 
 	const data = (await response.data);
 

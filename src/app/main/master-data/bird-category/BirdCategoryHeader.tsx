@@ -33,7 +33,7 @@ function BirdCategoryHeader() {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search cages"
+						placeholder="Search bird category"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth
