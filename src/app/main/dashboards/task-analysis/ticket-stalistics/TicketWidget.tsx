@@ -9,6 +9,7 @@ import { selectWidgets } from '../store/widgetsSlice';
 import ReactApexChart from 'react-apexcharts';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
+import { selectTickets } from 'src/app/main/master-data/menu-sample/store/menusSlice';
 
 /**
  * The conversions widget.
@@ -16,26 +17,24 @@ import { useEffect, useState } from 'react';
 function TicketWidget(props) {
     const { status } = props
     const theme = useTheme()
-    const tasks = useAppSelector(selectWidgets)
+    const tasks = useAppSelector(selectTickets)
     const [amount, setAmount] = useState(0)
     const [label, setLabel] = useState([])
     const [taskCount, setTaskCount] = useState([])
 
     useEffect(() => {
-        if (tasks && tasks?.length > 0) {
+        if (tasks ) {
             var todoTasks = _.filter(tasks, { status: status });
-            let sortedTodoTask = _.orderBy(todoTasks, [(task) => new Date(task.startAt)], ['asc']);
-            // const { series, amount, labels } = widgets.conversions ;
+            let sortedTodoTask = _.orderBy(todoTasks, [(task) => new Date(task.createAt)], ['asc']);
             let startDate = new Date();
             startDate.setDate(startDate.getDate() - 90);
-            let recentTasks = _.filter(sortedTodoTask, task => new Date(task.startAt) >= startDate);
+            let recentTasks = _.filter(sortedTodoTask, task => new Date(task.createAt) >= startDate)
             let tasksByDate = recentTasks.map(task => {
                 return {
                     ...task,
                     startAt: new Date(task.startAt).toLocaleDateString() // Chuyển đổi datetime thành định dạng ngày
                 }
             })
-            // console.log("recent task ", recentTasks)
 
             let amount = _.size(recentTasks);
             setAmount(amount)
@@ -56,7 +55,7 @@ function TicketWidget(props) {
             fontFamily: 'inherit',
             foreColor: 'inherit',
             height: '100%',
-            type: 'area',
+            type: 'bar',
             sparkline: {
                 enabled: true
             }

@@ -21,7 +21,6 @@ import SignInConfig from '../main/sign-in/SignInConfig';
 import SignOutConfig from '../main/sign-out/SignOutConfig';
 import SignUpConfig from '../main/sign-up/SignUpConfig';
 import DashboardsConfigs from '../main/dashboards/dashboardsConfig';
-
 const routeConfigs: FuseRouteConfigsType = [
 	...DashboardsConfigs,
 	MenuSampleConfig, UnitConfig,

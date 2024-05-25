@@ -18,13 +18,10 @@ function SpeciesWidget() {
     const [awaitRender, setAwaitRender] = useState(true)
     const theme = useTheme()
     const [totalBirds, setTotalBirds] = useState(10)
-    const [data, setData] = useState([])
+    const [series, setSeries] = useState([])
     const [labels, setLabels] = useState([])
     const [colors, setColors] = useState([])
-    console.log("birds test",birds)
-    console.log("data test",data)
-    console.log("labels test",labels)
-    console.log("colors test",colors)
+
     const chartOptions: ApexOptions = {
         chart: {
             animations: {
@@ -41,7 +38,7 @@ function SpeciesWidget() {
                 enabled: true
             }
         },
-        colors: colors,
+        colors,
         labels,
         plotOptions: {
             pie: {
@@ -55,7 +52,7 @@ function SpeciesWidget() {
         stroke: {
             colors: [theme.palette.background.paper]
         },
-        // series,
+        series,
         states: {
             hover: {
                 filter: {
@@ -88,17 +85,15 @@ function SpeciesWidget() {
     }
 
 
+   
     useEffect(() => {
-        setAwaitRender(false);
-    }, []);
-    useEffect(() => {
-        if (birds && birds?.length > 0) {
+        if (birds ) {
             setTotalBirds(birds?.length)
 
             let { percentages, names } = calculateSpeciesPercentages(birds);
-            setData(percentages)
+            setSeries(percentages)
             setLabels(names)
-            setColors(generateRandomColors(names.length))
+            setColors(["#0A51E2","#29F0CA",'#B7B99F','#385805','#A5B1FE','#E33486','#F7AF57','#6CE49F'  ])
         }
     }, [birds])
     function generateRandomColors(numColors) {
@@ -132,9 +127,17 @@ function SpeciesWidget() {
 
         return { percentages, names }; // We return an object containing the two arrays.
     }
-
+    if (!series || !labels || !colors || !chartOptions.labels || !chartOptions.colors  || !chartOptions.series) {
+        return null
+    }
+    useEffect(() => {
+        setAwaitRender(false);
+    }, [])
+    if (!series.length || !labels.length || !colors.length || !chartOptions.labels.length || !chartOptions.colors.length || !chartOptions.series.length) {
+        return null
+    }
     if (awaitRender) {
-        return null;
+        return null
     }
     return (
 
@@ -154,14 +157,14 @@ function SpeciesWidget() {
                 <ReactApexChart
                     className="flex flex-auto items-center justify-center w-full h-full"
                     options={chartOptions}
-                    series={data ? data : []}
+                    series={ series}
                     type={chartOptions.chart?.type}
                     height={chartOptions.chart?.height}
                 />
             </div>
             <div className="mt-32">
                 <div className="-my-12 divide-y">
-                    {data?.map((dataset, i) => (
+                    {series?.map((dataset, i) => (
                         <div
                             className="grid grid-cols-3 py-12"
                             key={i}
@@ -180,7 +183,7 @@ function SpeciesWidget() {
                                 className="text-right"
                                 color="text.secondary"
                             >
-                                {dataset}%
+                          {parseFloat(dataset).toFixed(2)}%
                             </Typography>
                         </div>
                     ))}

@@ -12,7 +12,7 @@ const TaskDashboardConfig = {
 	},
 	routes: [
 		{
-			path: 'dashboards/tasks',
+			path: 'dashboard',
 			element: <TaskDashBoard />
 		}
 	]

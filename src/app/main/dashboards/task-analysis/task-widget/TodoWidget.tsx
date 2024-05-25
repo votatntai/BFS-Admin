@@ -17,12 +17,13 @@ function TodoWidgets(props) {
     const { status } = props
     const theme = useTheme()
     const tasks = useAppSelector(selectWidgets)
+    console.log("tasks",tasks)
     const [amount, setAmount] = useState(0)
     const [label, setLabel] = useState([])
     const [taskCount, setTaskCount] = useState([])
 
     useEffect(() => {
-        if (tasks && tasks?.length > 0) {
+        if (tasks ) {
             var todoTasks = _.filter(tasks, { status: status });
             let sortedTodoTask = _.orderBy(todoTasks, [(task) => new Date(task.startAt)], ['asc']);
             // const { series, amount, labels } = widgets.conversions ;
