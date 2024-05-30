@@ -25,16 +25,16 @@ export const getUnitData = createAsyncThunk('unitReducer/getUnits', async (objec
 	}
   });
 
-export const addUnit = createAsyncThunk('unitReducer/addUnit', async (formData: FormData) => {
+export const addUnit = createAsyncThunk('unitReducer/addUnit', async (formData: any) => {
 	try {
 	  await createUnit(formData);
 	} catch (error) {
 	  console.error(error);
 	}
   });
-export const editUnit = createAsyncThunk('unitReducer/editUnit', async ({id, formData}: {id: string, formData: FormData}) => {
+export const editUnit = createAsyncThunk('unitReducer/editUnit', async (object: any) => {
 	try {
-	  await updateUnit(id, formData);
+	  await updateUnit(object.id, object.formData);
 	} catch (error) {
 	  console.error(error);
 	}

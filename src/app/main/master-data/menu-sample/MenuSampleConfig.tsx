@@ -1,13 +1,19 @@
 import lazyWithReducer from 'app/store/lazyWithReducer';
 import reducer from '../store/rootReducer'
-const MenuSample = lazyWithReducer('menuSampleReducer', () => import('./MenuSample'), reducer);
+import { Navigate } from 'react-router';
+
+import { lazy } from 'react';
+
+const MenuSample = lazyWithReducer('menuSamplesReducer', () => import('./MenuSample'), reducer);
 
 /**
- * The Account page config.
+ * The MealPlan configuration.
  */
 const MenuSampleConfig = {
 	settings: {
-		layout: {}
+		layout: {
+			config: {}
+		}
 	},
 	routes: [
 		{

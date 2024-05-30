@@ -1,7 +1,7 @@
 import FuseUtils from '@fuse/utils/FuseUtils';
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import jwtDecode, { JwtPayload } from 'jwt-decode';
 import UserType from 'app/store/user/UserType';
+import axios, { AxiosResponse } from 'axios';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { PartialDeep } from 'type-fest';
 import jwtServiceConfig from './jwtServiceConfig';
 /* eslint-disable camelcase, class-methods-use-this */
@@ -23,26 +23,25 @@ class JwtService extends FuseUtils.EventEmitter {
 	 * Sets the interceptors for the Axios instance.
 	 */
 	setInterceptors = () => {
-		axios.defaults.baseURL='https://bfs.monoinfinity.net/api';
+		axios.defaults.baseURL = 'https://bfs.monoinfinity.net/api';
 		axios.interceptors.request.use(
 			function (config) {
-			  // Lấy accessToken từ local storage
-			  const accessToken = localStorage.getItem("accessToken");
-			  // Kiểm tra xem accessToken có tồn tại không
-			  if (accessToken) {
-				// Thêm accessToken vào header của request
-				// config.headers.Authorization = `Bearer ${accessToken}`;
-				config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjM0NjkxNTE1LWE5M2ItNDYxZS04ZmEzLWRlNmMwNmNhMzA5NSIsInJvbGUiOiJNYW5hZ2VyIiwibmJmIjoxNzA4NTA0NDA3LCJleHAiOjE3MDg1OTA4MDcsImlhdCI6MTcwODUwNDQwN30.rOVPIsSOwVWtNzpsyR4xJYidBVggB9g2ejP8DCpHznM`;
-			  }
-			  return config;
+				// Lấy accessToken từ local storage
+				const accessToken = localStorage.getItem("accessToken");
+				// Kiểm tra xem accessToken có tồn tại không
+				if (accessToken) {
+					// Thêm accessToken vào header của request
+					config.headers.Authorization = `Bearer ${accessToken}`;
+				}
+				return config;
 			},
 			function (error) {
-			  return Promise.reject(error);
+				return Promise.reject(error);
 			}
-		  );
+		);
 		axios.interceptors.response.use(
-			(response: AxiosResponse<unknown>) => response,
-			(err: AxiosError) =>
+			(response ) => response,
+			(err) =>
 				new Promise(() => {
 					if (err?.response?.status === 401 && err.config) {
 						// if you ever get an unauthorized response, logout the user
@@ -62,7 +61,6 @@ class JwtService extends FuseUtils.EventEmitter {
 
 		if (!access_token) {
 			this.emit('onNoAccessToken');
-
 			return;
 		}
 
@@ -96,6 +94,7 @@ class JwtService extends FuseUtils.EventEmitter {
 					}>
 				) => {
 					if (response.data.user) {
+						response.data.user.role = "admin"
 						_setSession(response.data.access_token);
 						resolve(response.data.user);
 						this.emit('onLogin', response.data.user);
@@ -111,13 +110,14 @@ class JwtService extends FuseUtils.EventEmitter {
 	 */
 	signInWithEmailAndPassword = (email: string, password: string) =>
 		new Promise((resolve, reject) => {
-				const 	data= {
+
+			axios
+				.post(jwtServiceConfig.signIn,
+					{
 						email,
 						password
 					}
-			axios
-				.post(jwtServiceConfig.signIn, data
-			
+
 				)
 				.then(
 					(
@@ -131,7 +131,7 @@ class JwtService extends FuseUtils.EventEmitter {
 						}>
 					) => {
 						if (response.data.user) {
-						response.data.user.role="admin";
+							response.data.user.role = "admin"
 							_setSession(response.data.access_token);
 							this.emit('onLogin', response.data.user);
 							resolve(response.data.user);
@@ -148,13 +148,13 @@ class JwtService extends FuseUtils.EventEmitter {
 	signInWithToken = () =>
 		new Promise<UserType>((resolve, reject) => {
 			axios
-				.get(jwtServiceConfig.accessToken, {
-					data: {
-						access_token: getAccessToken()
-					}
-				})
-				.then((response: AxiosResponse<{ user: UserType; access_token: string }>) => {
+				.get(jwtServiceConfig.accessToken)
+				.then((response: AxiosResponse<{
+					user: UserType;
+					access_token: string
+				}>) => {
 					if (response.data.user) {
+						response.data.user.role="admin"
 						_setSession(response.data.access_token);
 						resolve(response.data.user);
 					} else {

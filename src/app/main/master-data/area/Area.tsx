@@ -2,6 +2,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
 import AreaContent from './AreaContent'
 import AreaHeader from './AreaHeader';
+import { useParams } from 'react-router';
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
 		backgroundColor: theme.palette.background.paper,
@@ -15,11 +16,11 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 }));
 
 function Area() {
-
+const {id} = useParams()
 	return (<Root
-	header={<AreaHeader/>}
+	header={<AreaHeader farmId={id}/>}
 	content={
-			<AreaContent />
+			<AreaContent farmId={id}/>
 	}
 />)
 }

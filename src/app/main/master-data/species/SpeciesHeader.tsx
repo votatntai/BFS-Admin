@@ -33,7 +33,7 @@ function SpeciesHeader() {
 					<FuseSvgIcon color="disabled">heroicons-solid:search</FuseSvgIcon>
 
 					<Input
-						placeholder="Search cages"
+						placeholder="Search species"
 						className="flex flex-1"
 						disableUnderline
 						fullWidth

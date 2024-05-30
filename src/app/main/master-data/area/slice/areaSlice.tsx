@@ -46,41 +46,18 @@ const areaSlice = createSlice({
 	initialState: {
         status: 'pending',
 		searchText:'',
-        areas: {
-			pagination:{
-				"pageNumber": 0,
-				"pageSize": 8,
-				"totalRow": 0
-			},
-			data: []
-		},
+        areas: [],
     },
 	reducers: {
 		setSearchText: (state,action)=>{
             state.searchText = action.payload as string
         },
-		setPaginPageNumber: (state, action) => {
-			state.areas.pagination.pageNumber = action.payload as number
-		},
-		setPaginPageSize: (state, action) => {
-			state.areas.pagination.pageSize = action.payload as number
-		},
-		setPaginTotalRow: (state, action) => {
-			state.areas.pagination.totalRow = action.payload as number
-		},
+		setAreas: (state,action)=>{
+            state.areas = action.payload
+        },
 	},
 	extraReducers: (builder) => {
 		builder
-            .addCase(getAreaData.fulfilled, (state, action: any) => {
-                state.status = 'succeeded';
-                state.areas = action.payload;
-            })
-			.addCase(getAreaData.pending, (state) => {
-                state.status = 'inprogress';
-			})
-			.addCase(getAreaData.rejected, (state) => {
-				state.status = 'error';
-			})
 			.addCase(addArea.fulfilled, (state) => {
 				state.status = 'create success'
 			})
@@ -90,6 +67,6 @@ const areaSlice = createSlice({
 	}
 });
 
-export const {setSearchText,setPaginPageNumber,setPaginPageSize,setPaginTotalRow} = areaSlice.actions
+export const {setSearchText, setAreas} = areaSlice.actions
 const areaReducer = areaSlice.reducer;
 export default areaReducer

@@ -16,7 +16,7 @@ function BirdsHeader() {
 		<div className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
 			<motion.span
 				initial={{ x: -20 }}
-				animate={{ x: 0, transition: { delay: 0.2 } }}
+					animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
 				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Birds list</Typography>
 			</motion.span>

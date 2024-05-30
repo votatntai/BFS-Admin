@@ -20,13 +20,12 @@ import UnitConfig from '../main/master-data/unit/UnitConfig';
 import SignInConfig from '../main/sign-in/SignInConfig';
 import SignOutConfig from '../main/sign-out/SignOutConfig';
 import SignUpConfig from '../main/sign-up/SignUpConfig';
-import MealItemSampleConfig from '../main/master-data/meal-item-sample/MealItemSampleConfig';
-import MenuMealSampleConfig from '../main/master-data/menu-meal-sample/MenuMealSampleConfig';
-
+import DashboardsConfigs from '../main/dashboards/dashboardsConfig';
 const routeConfigs: FuseRouteConfigsType = [
-	MenuSampleConfig,UnitConfig,
-	SpciesConfig,AccountConfig, FoodCategoryConfig,FoodConfig, CaremodeConfig,AreaConfig, FarmConfig, BirdConfig, BirdCategoryConfig,CageConfig, MealItemSampleConfig,
-	SignOutConfig, SignInConfig, SignUpConfig, Error404Config, MenuMealSampleConfig];
+	...DashboardsConfigs,
+	MenuSampleConfig, UnitConfig,
+	SpciesConfig, AccountConfig, FoodCategoryConfig, FoodConfig, CaremodeConfig, AreaConfig, FarmConfig, BirdConfig, BirdCategoryConfig, CageConfig, 
+	SignOutConfig, SignInConfig, SignUpConfig, Error404Config ];
 
 /**
  * The routes of the application.

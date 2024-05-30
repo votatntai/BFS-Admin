@@ -52,7 +52,6 @@ const BirdDetail = () => {
         async function updateState() {
 
             if (routeParams.id !== 'new') {
-
                 await dispatch(getBird(routeParams.id))
             } else {
                 await dispatch(newItem())
@@ -60,19 +59,21 @@ const BirdDetail = () => {
         }
 
         updateState();
-        reset(dataItem);
+
 
     }, [dispatch, routeParams]);
+    console.log("dataItem >>>", dataItem)
     useEffect(() => {
+        reset(dataItem);
     }, [dataItem, reset]);
-    console.log("form",form)
+    console.log("form", form)
     /**
-	 * Wait while dataItem data is loading and form is setted
-	 */
-	// if (_.isEmpty(form) || (dataItem && routeParams.id !== dataItem.id && routeParams.id !== 'new')) {
-    
+     * Wait while dataItem data is loading and form is setted
+     */
+    // if (_.isEmpty(form) || (dataItem && routeParams.id !== dataItem.id && routeParams.id !== 'new')) {
+
     //     return <FuseLoading />;
-	// }
+    // }
     return (
         <form>
             <FormProvider

@@ -30,11 +30,9 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
   
     const edit = async() => {
       const validate = checkValid()
-      const formData = new FormData()
       if(validate) {
         const id:string = farm.id
-        formData.append('name', farm.name.trim())
-        await dispatch(editUnit({id, formData}))
+        await dispatch(editUnit({id: id, formData: {name: farm.name.trim()}}))
         await dispatch(getUnitData({pageNumber: pageNumber, pageSize: pageSize}))
         setOpenSuccessSnackbar(true)
         handleClose()

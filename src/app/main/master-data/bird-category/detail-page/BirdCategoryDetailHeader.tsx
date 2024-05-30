@@ -19,14 +19,11 @@ export default function BirdCategoryDetailHeader() {
     const { isValid, dirtyFields } = formState;
     const navigate = useNavigate();
     const { itemId } = useParams();
-    const [ isAddButton, setIsAddButton ] = useState(false);
+    const [isAddButton, setIsAddButton] = useState(false);
     useEffect(
         () => {
             if (itemId === 'new')
                 setIsAddButton(true);
-            console.log("isAddButtonis",isAddButton)
-            console.log("itemId",itemId)
-            
         }
         , []
     )
@@ -37,9 +34,9 @@ export default function BirdCategoryDetailHeader() {
         dispatch(saveBirdCategory(getValues() as BirdCategoryType));
         navigate('/master-data/bird-category');
     }
-   const handleAdd= ()=>{
+    const handleAdd = () => {
         formData.append('name', getValues().name)
-        formData.append('thumbnail',getValues().thumbnailUrl)
+        formData.append('thumbnail', getValues().thumbnailUrl)
         dispatch(createBirdCategory(formData));
         navigate('/master-data/bird-category');
     }

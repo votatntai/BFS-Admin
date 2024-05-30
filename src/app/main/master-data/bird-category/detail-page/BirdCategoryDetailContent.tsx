@@ -5,36 +5,27 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Box from '@mui/material/Box';
 import { useEffect } from 'react';
 export default function BirdCategoryDetailContent(prop) {
-    const dataItem = prop
+    const {dataItem} = prop
     const methods = useFormContext();
     const { register, control, formState, watch } = methods;
     const { errors } = formState;
     const { setValue } = useFormContext();
-    useEffect(
-        () => {
-            setValue('name  ', dataItem.name)
-            setValue('thumbnailUrl', dataItem.thumbnailUrl);
-        }
-        , []
-    )
+
     
     const thumbnailUrl = watch('thumbnailUrl')
 
     return (
         <div>
             <Controller
-                defaultValue={dataItem.name}
                 name="name"
                 control={control}
                 render={({ field }) => (
                     <TextField
                         {...field}
-                        {...register("name")}
                         className="mt-8 mb-16 w-[300px] ml-48"
                         required
                         label="Name"
                         autoFocus
-                        value={dataItem.name}
                         id="name"
                         variant="outlined"
                         fullWidth
@@ -79,7 +70,7 @@ export default function BirdCategoryDetailContent(prop) {
                         >
                             heroicons-outline:upload
                         </FuseSvgIcon>
-                        <>
+                   =     <>
                             {thumbnailUrl ? (
 
                                 <img

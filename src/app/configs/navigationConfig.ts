@@ -9,7 +9,7 @@ const navigationConfig: FuseNavigationType = [
 		title: 'modules',
 		type: 'group',
 		translate: 'MODULES',
-		children:[
+		children: [
 			{
 				id: 'dashboard',
 				title: 'Dashboard',
@@ -29,7 +29,7 @@ const navigationConfig: FuseNavigationType = [
 				title: 'Master data',
 				type: 'collapse',
 				icon: 'heroicons-solid:database',
-				children:[
+				children: [
 					{
 						id: 'master-data-bird',
 						title: 'Bird',
@@ -86,20 +86,7 @@ const navigationConfig: FuseNavigationType = [
 						url: 'master-data/menu-sample',
 						end: true
 					},
-					{
-						id: 'master-data-menu-meal-sample',
-						title: 'Menu meal sample',
-						type: 'item',
-						url: 'master-data/menu-meal-sample',
-						end: true
-					},
-					{
-						id: 'master-data/meal-item-sample',
-						title: 'Meal item sample',
-						type: 'item',
-						url: 'master-data/meal-item-sample',
-						end: true
-					},
+				
 					{
 						id: 'master-data-cage',
 						title: 'Cage',
@@ -118,14 +105,14 @@ const navigationConfig: FuseNavigationType = [
 						id: 'master-data-area',
 						title: 'Area',
 						type: 'item',
-						url: 'master-data/area',
+						url: 'master-data/select-farm',
 						end: true
 					},
 				]
 			},
 		]
 	}
-	
+
 ];
 
 export default navigationConfig;

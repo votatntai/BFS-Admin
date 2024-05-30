@@ -7,43 +7,49 @@ import { BirdType, BirdsType } from '../type/BirdType';
 export type AppRootStateType = RootStateType<BirdsSliceType>;
 
 
-export const getBirds= createAppAsyncThunk<BirdsType>('birdReducer/Birds/getBirds', async () => {
-	const response = await axios.get('/birds');
-	const data = (await response.data) ;
-	return data;
+export const getBirds = createAppAsyncThunk<any, any>('birdReducer/Birds/getBirds', async (farmId) => {
+	if (farmId) {
+		const response = await axios.get(`/birds?pageSize=9999&farmId=${farmId}`);
+		const data = (await response.data);
+		return data;
+	}else{
+		const response = await axios.get(`/birds?pageSize=9999`);
+		const data = (await response.data);
+		return data;
+	}
 });
 
 const birdAdapter = createEntityAdapter<BirdType>({});
 
-export const { selectAll: selectBirds,selectById:selcetSpeciesById } = birdAdapter.getSelectors(
+export const { selectAll: selectBirds, selectById: selcetSpeciesById } = birdAdapter.getSelectors(
 	(state: AppRootStateType) => state.birdReducer.birds
 );
 
 const initialState = birdAdapter.getInitialState({
 	searchText: '',
-	pagination :{},
+	pagination: {},
 });
 
 
 export const BirdsSlice = createSlice({
 	name: 'birdReducer/birds',
 	initialState,
-	reducers:  {
+	reducers: {
 		setSearchText: (state, action) => {
 			state.searchText = action.payload as string;
 		}
-		
+
 	},
 	extraReducers: (builder) => {
 		builder
-            .addCase(getBirds.fulfilled, (state, action) => {
+			.addCase(getBirds.fulfilled, (state, action) => {
 				birdAdapter.setAll(state, action.payload.data);
-				state.pagination=action.payload.pagination;
+				state.pagination = action.payload.pagination;
 				state.searchText = '';
-            })
-		
-	
-		
+			})
+
+
+
 	}
 });
 
@@ -51,6 +57,5 @@ export const { setSearchText } = BirdsSlice.actions;
 
 export const selectSearchText = (state: AppRootStateType) => state.birdReducer?.birds.searchText;
 
-export const selectBird = (state)=>state.birdReducer?.Birds;
 export type BirdsSliceType = typeof BirdsSlice;
 export default BirdsSlice.reducer;

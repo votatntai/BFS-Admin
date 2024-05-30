@@ -8,27 +8,28 @@ import TableCell from '@mui/material/TableCell';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import {useEffect, useState } from 'react';
-import { areaReducerState, getAreaData, setPaginPageNumber,setPaginPageSize } from './slice/areaSlice';
+import { setAreas } from './slice/areaSlice';
 import { useAppDispatch,useAppSelector } from 'app/store';
 import EditModal from './EditModal';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
+import instance from 'src/app/auth/services/api/customAxios';
 
-const FarmContent = ()=>{
+const AreaContent = ({farmId})=>{
     const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
     const [openEditFailNotify, setOpenEditFailNotify] = useState(false);
 	const [showEdit, setShowEdit] =useState(false)
 	const [editValue, setEditValue] =useState({})
     const dispatch = useAppDispatch()
-    const areas  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.data)
-    const pageNumber  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.pageNumber)
-    const pageSize  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.pageSize)
-    const totalRow =  useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.totalRow)
-    const searchValue = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.searchText)
+    const areas = useAppSelector((state) => state.areaReducer.areaSlice.areas)
+    const loadAreas = async() =>{
+        await instance.get<any, any>(`/farms/${farmId}`).then(res => {dispatch(setAreas(res.areas))}).catch(err =>console.log(err))
+    }
+    
     useEffect(()=>{
-        dispatch(getAreaData({name:searchValue, pageNumber: pageNumber, pageSize: pageSize}))
-    },[pageNumber, pageSize])
+        loadAreas()
+    },[])
     
     return <div className="w-full flex flex-col min-h-full bg-white">
     <FuseScrollbars className="grow overflow-x-auto">
@@ -62,27 +63,6 @@ const FarmContent = ()=>{
         <h2 style={{color:"gray"}}>No matching result</h2></Stack> }
     </FuseScrollbars>
 
-    <TablePagination
-        className="shrink-0 border-t-1"
-        component="div"
-        rowsPerPageOptions={[8,16,32]}
-        count={totalRow}
-        rowsPerPage={pageSize}
-        page={pageNumber}
-        backIconButtonProps={{
-            'aria-label': 'Previous Page'
-        }}
-        nextIconButtonProps={{
-            'aria-label': 'Next Page'
-        }}
-        onPageChange={(event, newPage) => {
-            dispatch(setPaginPageNumber(newPage))
-        }}
-        onRowsPerPageChange={(event) => {
-            dispatch(setPaginPageSize(parseInt(event.target.value)))
-            dispatch(setPaginPageNumber(0))
-            }}
-    />
     <Snackbar open={openEditSuccessNotify} autoHideDuration={3000} onClose={()=>{setOpenEditSuccessNotify(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
         <Alert onClose={()=>{setOpenEditSuccessNotify(false)}}
           severity="success" variant="filled" sx={{ width: '100%' }}>
@@ -95,7 +75,7 @@ const FarmContent = ()=>{
           Edit failed
         </Alert>
       </Snackbar>
-    {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
+    {showEdit && <EditModal farmId={farmId} setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
 </div>
 }
-export default FarmContent
+export default AreaContent

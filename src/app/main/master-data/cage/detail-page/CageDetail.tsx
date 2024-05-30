@@ -10,6 +10,7 @@ import { getCage, selectDetail } from "../store/cageDetailSlice";
 import CageDetailHeader from "./CageDetailHeader";
 import CageDetailContent from "./CageDetailContent";
 import { CageType } from "../type/CageType";
+import { useEffect } from "react";
 
 const schema = yup.object().shape({
     name: yup
@@ -39,7 +40,7 @@ const schema = yup.object().shape({
     depth: yup
         .number()
         .required('You must enter a  depth'),
-    thumbnailUrl: yup   
+    thumbnailUrl: yup
         .mixed()
 
 });
@@ -50,36 +51,39 @@ type FormValues = {
 
 const CageDetail = () => {
     const dispatch = useAppDispatch();
-    const dataItem = useAppSelector(selectDetail);
+    const cage = useAppSelector(selectDetail);
     const routeParams = useParams();
     const methods = useForm({
         mode: 'onSubmit',
-        defaultValues: {
-            name: dataItem?.name,
-            code: dataItem?.code,
-            material: dataItem?.material,
-            description: dataItem?.description,
-            depth: dataItem?.depth,
-            width: dataItem?.width,
-            height: dataItem?.height,
-            thumbnailUrl: dataItem?.thumbnailUrl,
-        },
         resolver: yupResolver(schema)
     });
     const { reset, watch } = methods;
-    const form = watch();
 
     useDeepCompareEffect(() => {
         function updateState() {
 
             if (routeParams.id !== 'new') {
                 dispatch(getCage(routeParams.id))
+                console.log("Nguyen thi Minh Chaau")
             }
         }
 
         updateState();
     }, [dispatch, routeParams]);
+    useEffect(() => {
 
+        return () => {
+            reset({})
+        };
+    }, [dispatch]);
+    useEffect(() => {
+        if (!cage) {
+			return;
+		}
+		reset(cage);
+     
+    }, [cage,reset]);
+  
     return (
         <form>
             <FormProvider
@@ -87,7 +91,7 @@ const CageDetail = () => {
                 <FusePageCarded
                     header={<CageDetailHeader />}
                     content={
-                        <CageDetailContent prop={dataItem}
+                        <CageDetailContent cage={cage}
                         />
                     }
                 />
