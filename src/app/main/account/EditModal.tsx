@@ -31,7 +31,8 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
       "farm": {
         "label": object.farm.name,
         "value": object.farm.id
-      }
+      },
+      "status": object.status
     })
     const [imageSend, setImageSend]=useState(object.avatarUrl)
     const [errors, setErrors] = useState({
@@ -59,6 +60,7 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
         formData.append('email', checkForm.email)
         currentPhone !== checkForm.phone && formData.append('phone', checkForm.phone)
         formData.append('avatar', imageSend)
+        formData.append('status', userInfo.status)
         await instance.put(`/${role}s/${userInfo.id}`,formData)
         .then(async() => {
           await dispatch(getUser({role: role, params:{pageNumber: pageNumber, pageSize: pageSize}}))
@@ -153,6 +155,12 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
       disablePortal fullWidth disableClearable value={userInfo.farm} onChange={(event, value) => setUserInfo({...userInfo, farm: value})}
       options={farms} isOptionEqualToValue={(option, value) => option.value === value.value}
       renderInput={(params) => <TextField {...params} label="Farm" />}
+    />
+
+    <Autocomplete size='small'
+      disablePortal fullWidth disableClearable value={userInfo.status} onChange={(event, value) => setUserInfo({...userInfo, status: value})}
+      options={['Active', 'Disable']} isOptionEqualToValue={(option, value) => option.value === value.value}
+      renderInput={(params) => <TextField {...params} label="Status" />}
     />
         </Stack>
     </DialogContent>

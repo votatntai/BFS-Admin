@@ -14,17 +14,14 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
       name: '',
       priority: 0,
     })
-    const formData = new FormData()
     const [checkName, setCheckName] = useState(false)
-    const [checkPriority, setCheckPriority] = useState(false)
     const dispatch = useAppDispatch()
     const pageNumber  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.pageNumber)
     const pageSize  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.pageSize)
     const checkValid= () =>{
       let check: boolean = true
       if(caremode.name.trim() === '') {setCheckName(true)} else setCheckName(false)
-      if(caremode.priority === 0 || caremode.priority <= 0) { setCheckPriority(true)} else setCheckPriority(false)
-      if(caremode.name.trim() === '' || caremode.priority === 0 || caremode.priority <= 0){
+      if(caremode.name.trim() === '' ){
           check = false
       }
       return check;
@@ -33,9 +30,7 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
     const add = async() => {
       const validate = checkValid()
       if(validate) {
-        formData.append('name',caremode.name)
-        formData.append('priority', caremode.priority.toString())
-        await dispatch(addCaremode(formData))
+        await dispatch(addCaremode({name: caremode.name, priority:caremode.priority.toString() }))
         await dispatch(getCaremodeData({pageNumber: pageNumber, pageSize: pageSize}))
         setOpenSuccessSnackbar(true)
         handleClose()
@@ -58,10 +53,10 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
       onChange={e => setCaremode(prev => ({...prev, name: e.target.value}))} label='Name' 
       placeholder='Enter name' size='small' variant="outlined" />
       
-      <TextField helperText={checkPriority ? "This field is required and can not smaller than 0" : false} 
+      {/* <TextField helperText={checkPriority ? "This field is required and can not smaller than 0" : false} 
       error={checkPriority ? true : false} value={caremode.priority} type="number"
       onChange={e => setCaremode(prev => ({...prev, priority: parseInt(e.target.value)}))} label='Priority' 
-      placeholder='Enter name' size='small' variant="outlined" />
+      placeholder='Enter name' size='small' variant="outlined" /> */}
 
         </Stack>
     </DialogContent>

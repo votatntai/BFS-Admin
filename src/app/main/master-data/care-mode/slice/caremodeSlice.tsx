@@ -22,22 +22,22 @@ export const getCaremodeData = createAsyncThunk('caremodeReducer/getCaremodes', 
 	  const response = await getCaremodes(object);
 	  return response;
 	} catch (error) {
-	  console.error(error);
+	  console.log(error);
 	}
   });
 
-export const addCaremode = createAsyncThunk('caremodeReducer/addCaremode', async (formData: FormData) => {
+export const addCaremode = createAsyncThunk('caremodeReducer/addCaremode', async (formData) => {
 	try {
 	  await createCaremode(formData);
 	} catch (error) {
-	  console.error(error);
+	  console.log(error);
 	}
   });
-export const editCaremode = createAsyncThunk('caremodeReducer/editCaremode', async ({id, formData}: {id: string, formData: FormData}) => {
+export const editCaremode = createAsyncThunk('caremodeReducer/editCaremode', async (object: any) => {
 	try {
-	  await updateCaremode(id, formData);
+	  await updateCaremode(object.id, object.formData);
 	} catch (error) {
-	  console.error(error);
+	  console.log(error);
 	}
   });
 
