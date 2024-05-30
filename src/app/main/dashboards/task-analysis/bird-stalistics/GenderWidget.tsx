@@ -94,14 +94,14 @@ function GenderWidget() {
 
 	useEffect(() => {
 		if (birds) {
-			if(birds.length){
-			setTotalBirds(birds?.length)
-			const genderPercentages = calculatePercentages(birds)
-			setSeries(genderPercentages)
-			setColors(["#0A51E2", "#29F0CA", '#B7B99F', '#385805', '#A5B1FE', '#E33486', '#F7AF57', '#6CE49F'])
+			if (birds.length) {
+				setTotalBirds(birds?.length)
+				const genderPercentages = calculatePercentages(birds)
+				setSeries(genderPercentages)
+				setColors(["#0A51E2", "#29F0CA", '#B7B99F', '#385805', '#A5B1FE', '#E33486', '#F7AF57', '#6CE49F'])
 			}
 			else
-			setSeries([])
+				setSeries([])
 
 		}
 	}, [birds]);
@@ -170,7 +170,7 @@ function GenderWidget() {
 								className="text-right"
 								color="text.secondary"
 							>
-                          {parseFloat(dataset).toFixed(2)}%
+								{parseFloat(dataset).toFixed(2)}%
 							</Typography>
 						</div>
 					))}

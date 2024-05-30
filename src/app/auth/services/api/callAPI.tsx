@@ -1,3 +1,4 @@
+import { CareModeType } from "src/app/main/master-data/menu-sample/type/MenuType";
 import axios from "./customAxios";
 /**
  * Account
@@ -24,7 +25,7 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  * Care mode
  */
  export const getCaremodes = (object: Object) => axios.get(`/care-modes`,{params: object});
- export const createCaremode = (formData: FormData) => axios.post('/care-modes',formData);
+ export const createCaremode = (formData: Partial<CareModeType>) => axios.post('/care-modes',formData);
  export const updateCaremode = (id: string, formData: FormData) => axios.put(`/care-modes/${id}`,formData);
 
  /**

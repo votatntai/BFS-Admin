@@ -52,7 +52,6 @@ const BirdDetail = () => {
         async function updateState() {
 
             if (routeParams.id !== 'new') {
-                console.log("Nguyen Thi Minh Chau")
                 await dispatch(getBird(routeParams.id))
             } else {
                 await dispatch(newItem())

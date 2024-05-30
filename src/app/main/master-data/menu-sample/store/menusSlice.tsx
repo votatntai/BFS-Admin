@@ -8,7 +8,7 @@ import { BirdType, PlanType } from '../type/MenuType';
 export type AppRootStateType = RootStateType<menusSliceType>;
 
 //========== GET API ===================
-export const getCareMode = createAppAsyncThunk<any,any>('menuSamplesReducer/menus/getCareMode', async () => {
+export const getCareMode = createAppAsyncThunk('menuSamplesReducer/menus/getCareMode', async () => {
     const response = await axios.get('/care-modes');
     const data = (await response.data);
     return data;
