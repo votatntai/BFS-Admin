@@ -14,7 +14,6 @@ const FarmHeader = ()=>{
     const [showAdd, setShowAdd] =useState(false)
     const dispatch = useAppDispatch()
     const [openCreateSuccessNotify, setOpenCreateSuccessNotify] = useState(false);
-    const [openCreateFailNotify, setOpenCreateFailNotify] = useState(false);
     const searchValue = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.searchText)
     const pageNumber  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageNumber)
     const pageSize  = useAppSelector((state: farmReducerState) => state.farmReducer.farmSlice.farms.pagination.pageSize)
@@ -75,13 +74,8 @@ const FarmHeader = ()=>{
           Add successfully
         </Alert>
       </Snackbar>
-    <Snackbar open={openCreateFailNotify} autoHideDuration={3000} onClose={()=>{setOpenCreateFailNotify(false)}} anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}>
-        <Alert onClose={()=>{setOpenCreateFailNotify(false)}}
-          severity="error" variant="filled" sx={{ width: '100%' }}>
-          Add failed
-        </Alert>
-      </Snackbar>
-    {showAdd && <CreateModal handleClose={()=> setShowAdd(false)} show={showAdd} setOpenFailSnackbar={setOpenCreateFailNotify} setOpenSuccessSnackbar={setOpenCreateSuccessNotify}/>}
+    
+    {showAdd && <CreateModal handleClose={()=> setShowAdd(false)} show={showAdd} setOpenSuccessSnackbar={setOpenCreateSuccessNotify}/>}
 </div>
 }
 export default FarmHeader

@@ -36,11 +36,9 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
   
     const edit = async() => {
       const validate = checkValid()
-      const formData = new FormData()
       if(validate) {
         const id:string = caremode.id
-        formData.append('name', caremode.name)
-        await dispatch(editCaremode({id, formData}))
+        await dispatch(editCaremode({"id":id, formData: {"name":caremode.name}}))
         await dispatch(getCaremodeData({pageNumber: pageNumber, pageSize: pageSize}))
         setOpenSuccessSnackbar(true)
         handleClose()

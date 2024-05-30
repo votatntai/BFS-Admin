@@ -4,7 +4,8 @@ import axios from "./customAxios";
  * Account
  */
 export const getUsers = (role,params) => axios.get(`/${role}s`,{params: params});
-
+export const updateUser = (role, id, formData) => axios.put(`/${role}s/${id}`,formData);
+export const createUser = (role, json) => axios.post(`/${role}s/registrations`,json);
 
 /**
  * Farm
@@ -24,8 +25,8 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  * Care mode
  */
  export const getCaremodes = (object: Object) => axios.get(`/care-modes`,{params: object});
- export const createCaremode = (formData: Partial<CareModeType>) => axios.post('/care-modes',formData);
- export const updateCaremode = (id: string, formData: FormData) => axios.put(`/care-modes/${id}`,formData);
+ export const createCaremode = (formData) => axios.post('/care-modes',formData);
+ export const updateCaremode = (id: string, formData) => axios.put(`/care-modes/${id}`,formData);
 
  /**
  * BirdCategory
@@ -49,8 +50,8 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  * Unit of measurement
  */
  export const getUnit = (object: Object) => axios.get(`/unit-of-measurements`,{params: object});
- export const createUnit = (formData: FormData) => axios.post('/unit-of-measurements',formData);
- export const updateUnit = (id: string, formData: FormData) => axios.put(`/unit-of-measurements/${id}`,formData);
+ export const createUnit = (formData) => axios.post('/unit-of-measurements',formData);
+ export const updateUnit = (id: string, formData) => axios.put(`/unit-of-measurements/${id}`,formData);
 
  /**
  * Menu sample

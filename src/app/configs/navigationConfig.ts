@@ -105,7 +105,7 @@ const navigationConfig: FuseNavigationType = [
 						id: 'master-data-area',
 						title: 'Area',
 						type: 'item',
-						url: 'master-data/area',
+						url: 'master-data/select-farm',
 						end: true
 					},
 				]

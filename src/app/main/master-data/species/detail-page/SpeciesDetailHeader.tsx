@@ -43,8 +43,12 @@ export default function SpeciesDetailHeader() {
         formData.append('birdCategoryId', BCId)
         formData.append('name', getValues().name)
         formData.append('thumbnail', getValues().thumbnailUrl)
+<<<<<<< HEAD
         console.log("itemId", getValues())
         await dispatch(createSpecies(formData));
+=======
+        dispatch(createSpecies(formData));
+>>>>>>> 0ad403d767fa1a1c578481ed56a3a7d9f1882f68
         navigate('/master-data/species');
     }
 

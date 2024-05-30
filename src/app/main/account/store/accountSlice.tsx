@@ -1,15 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getUsers } from "src/app/auth/services/api/callAPI";
+import { getUsers, updateUser,createUser } from "src/app/auth/services/api/callAPI";
 
-interface ApiResponse{
-    data:[]
-  }
 export const getUser = createAsyncThunk('accountReducer/getUser',
 	async(object: any) => {
         try{
-			//const response = await getUsers(object.role, object.params);
-			//return response;
-			console.log(object)
+			const response = await getUsers(object.role, object.params);
+			return response;
+			// console.log(object)
+		}catch(error){
+			console.log(error)
+		}
+	}
+);
+
+export const editUser = createAsyncThunk('accountReducer/editUser',
+	async(object: any) => {
+        try{
+			const response = await updateUser(object.role, object.id, object.formData);
+			return response.data;
+			// console.log(object)
 		}catch(error){
 			console.log(error)
 		}
@@ -20,7 +29,7 @@ export const accountsSlice = createSlice({
 	name: 'accountReducer',
 	initialState: {
 		searchText: '',
-		role: 'Staff',
+		role: 'staff',
         accounts:{
 			pagination:{
 				"pageNumber": 0,
@@ -49,9 +58,9 @@ export const accountsSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-            .addCase(getUser.fulfilled, (state, action) => {
-                // state.accounts.data = action.payload;
-                state.accounts.data = [];
+            .addCase(getUser.fulfilled, (state: any, action: any) => {
+                state.accounts.data = action.payload.data;
+				state.accounts.pagination = action.payload.pagination
             })
 	}
 });

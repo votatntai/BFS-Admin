@@ -11,9 +11,10 @@ import IconButton from '@mui/material/IconButton';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { ObjectAreaToEdit } from '../../type/area.type';
 import { useAppDispatch, useAppSelector } from 'app/store';
-import { editArea, areaReducerState, getAreaData } from './slice/areaSlice';
+import { editArea, setAreas } from './slice/areaSlice';
+import instance from 'src/app/auth/services/api/customAxios';
 
-const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFailSnackbar})=>{
+const EditModal = ({farmId,show,handleClose, object, setOpenSuccessSnackbar, setOpenFailSnackbar})=>{
   const [farm, setFarm] =useState<ObjectAreaToEdit>({
     id: object.id,      
     name: object.name,
@@ -23,8 +24,6 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
     const [checkThumbnailURL, setCheckThumbcheckThumbnailURL] = useState(false)
     const [file, setFile] = useState(object.thumbnailUrl)
     const [localFile, setLocalFile] = useState(null) //để render image push từ local lên
-    const pageNumber  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.pageNumber)
-    const pageSize  = useAppSelector((state: areaReducerState) => state.areaReducer.areaSlice.areas.pagination.pageSize)
     const dispatch = useAppDispatch()
     const checkValid= () =>{
       let check: boolean = true
@@ -44,7 +43,7 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
         formData.append('name', farm.name)
         formData.append('thumbnail', file)
         await dispatch(editArea({id, formData}))
-        await dispatch(getAreaData({pageNumber: pageNumber, pageSize: pageSize}))
+        await instance.get<any, any>(`/farms/${farmId}`).then(res => {dispatch(setAreas(res.areas))}).catch(err =>console.log(err))
         setOpenSuccessSnackbar(true)
         handleClose()
       }else setOpenFailSnackbar(true)

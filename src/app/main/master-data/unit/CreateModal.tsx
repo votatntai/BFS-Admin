@@ -30,8 +30,7 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
     const add = async() => {
       const validate = checkValid()
       if(validate) {
-        formData.append('name',unit.name)
-        await dispatch(addUnit(formData))
+        await dispatch(addUnit({name: unit.name}))
         await dispatch(getUnitData({pageNumber: pageNumber, pageSize: pageSize}))
         setOpenSuccessSnackbar(true)
         handleClose()
