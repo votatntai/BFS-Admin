@@ -20,7 +20,6 @@ function BirdCategoryTable(prop: BirdCategoryTableProps) {
     const dispatch = useAppDispatch();
     const birdCategories = useAppSelector(selectBirdCategories);
     const searchText = useAppSelector(selectBirdCategorySearchText);
-    console.log("bird", birdCategories)
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState(birdCategories);
     const [page, setPage] = useState(0);
@@ -99,7 +98,7 @@ const itemId="3ABFB395-C6BE-48F3-AC74-4D247BBF8CBC";
 
     return (
         <div className="w-full flex flex-col min-h-full">
-            <FuseScrollbars className="grow overflow-x-auto">
+            <div className="grow overflow-x-auto">
                 <Table
                     stickyHeader
                     className="min-w-xl ml-60"
@@ -177,7 +176,7 @@ const itemId="3ABFB395-C6BE-48F3-AC74-4D247BBF8CBC";
                             })}
                     </TableBody>
                 </Table>
-            </FuseScrollbars>
+            </div>
             {/* paging		 */}
             <TablePagination
                 className="shrink-0 border-t-1"
