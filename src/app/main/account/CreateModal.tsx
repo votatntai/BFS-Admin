@@ -7,29 +7,75 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
+import * as Yup from "yup";
+
 const CreateModal=({handleClose, show})=>{
-    const [name, setName] = useState('')
-    const [address, setAddress] = useState('')
-    const [tax, setTax] = useState('')
-    const [checkName, setCheckName] = useState(false)
-    const [checkAddress, setCheckAddress] = useState(false)
-    const [checkTax, setCheckTax] = useState(false)
-    const checkValid= () =>{
-      let check: boolean = true
-  
-      if(name.trim() === '') {setCheckName(true)} else setCheckName(false)
-      if(address.trim() === '') { setCheckAddress(true)} else setCheckAddress(false)
-      if(tax.trim() === '') { setCheckTax(true)} else setCheckTax(false)
-      if(name.trim() === '' || address.trim() === '' || tax.trim() === ''){
-          check = false
-      }
-      return check;
+  const [form, setForm] = useState({
+    fullName: "",
+    avatar: "",
+    phone: "",
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    fullName: "",
+    avatar: "",
+    phone: "",
+    email: "",
+    password: "",
+  });
+  const validationSchema = Yup.object({
+    fullName: Yup.string().required("Name is required"),
+    // email: Yup.string()
+    //   .email("Invalid email format")
+    //   .required("Email name is required"),
+    // phone: Yup.string()
+    //   .matches(/^\d{10}$/, "Phone number must be 10 digits")
+    //   .required("Phone number is required"),
+    // password: Yup.string()
+    //   .required("Password is required")
+    //   .min(8, "Password must be at least 8 characters")
+    //   .matches(
+    //     /[!@#$%^&*(),.{}|<>]/,
+    //     "Password must contain at least one special character"
+    //   )
+    //   .matches(/[0-9]/, "Password must contain at least one number")
+    //   .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
+    //   .matches(/[a-z]/, "Password must contain at least one lowercase letter"),
+  });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await validationSchema.validate(form, { abortEarly: false });
+      console.log(form);
+      setErrors({
+        fullName: "",
+        avatar: "",
+        phone: "",
+        email: "",
+        password: "",
+    });
+    } catch (error) {
+      const errorObject = {
+        fullName: "",
+        avatar: "",
+        phone: "",
+        email: "",
+        password: "",
+      };
+      // console.log(error.inner);
+      error.inner.forEach((err) => {
+        errorObject[err.path] = err.message;
+      });
+      setErrors(errorObject);
     }
-  
-    const add = async() => {
-      const validate = checkValid()
-      if(validate) console.log('add successfully')
-    }  
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+    
+  };
     return <Dialog fullWidth
     open={show}
     onClose={handleClose}
@@ -40,26 +86,19 @@ const CreateModal=({handleClose, show})=>{
       Create
     </DialogTitle>
     <DialogContent>
+      <form onSubmit={handleSubmit}>
         <Stack direction='column' spacing={2} className='pt-5'>
-      <TextField helperText={checkName ? "This field is required" : false} 
-      error={checkName ? true : false} value={name}
-      onChange={e => setName(e.target.value)} label='Name' 
+      <TextField helperText={errors.fullName !== "" && errors.fullName} 
+      error={errors.fullName == ""? false: true} value={form.fullName}
+      onChange={handleChange} label='Name' name='fullName'
       placeholder='Enter name' size='small' variant="outlined" />
 
-      <TextField helperText={checkAddress ? "This field is required" : false} 
-      error={checkAddress ? true : false} value={address}
-       onChange={e => setAddress(e.target.value)} label='Adderss' 
-       placeholder='Enter address' size='small' variant="outlined" />
-
-      <TextField helperText={checkTax ? "This field is required" : false}  
-      error={checkTax ? true : false} value={tax} 
-      onChange={e => setTax(e.target.value)} label='Tax Code' 
-      placeholder='Enter tax code' size='small' variant="outlined" />
         </Stack>
+        </form>
     </DialogContent>
     <DialogActions>
-      <Button variant='contained' onClick={handleClose}>cancel</Button>
-      <Button variant='contained' color='success' onClick={add} >add</Button>
+      <Button variant='contained' onClick={handleClose}>Cancel</Button>
+      <Button variant='contained' color='secondary' onClick={handleSubmit} >Add</Button>
     </DialogActions>
   </Dialog>
 

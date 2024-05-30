@@ -38,12 +38,13 @@ export default function SpeciesDetailHeader() {
         navigate('/master-data/species');
     }
     const BCId = "3ABFB395-C6BE-48F3-AC74-4D247BBF8CBC";
-    const handleAdd = () => {
+    const handleAdd = async() => {
         // formData.append('birdCategoryId',getValues().birdCategoryId)
         formData.append('birdCategoryId', BCId)
         formData.append('name', getValues().name)
         formData.append('thumbnail', getValues().thumbnailUrl)
-        dispatch(createSpecies(formData));
+        console.log("itemId", getValues())
+        await dispatch(createSpecies(formData));
         navigate('/master-data/species');
     }
 

@@ -1,5 +1,6 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
 import TableBody from '@mui/material/TableBody';
@@ -19,12 +20,13 @@ function AccountContent() {
     const [pageSize, setPageSize] = useState(5);
 	const [editValue, setEditValue] =useState({})
     const dispatch = useAppDispatch()
-	const users = useAppSelector((state: accountReducerState) => state.accountReducer.accountsSlice.accounts)
+	const users = useAppSelector((state: any) => state.accountReducer.accountsSlice.accounts.data)
+	// console.log(users)
     const searchValue  = useAppSelector((state: accountReducerState) => state.accountReducer.accountsSlice.searchText)
-    console.log(searchValue)
+    const role = useAppSelector((state: any) => state.accountReducer.accountsSlice.role)
     useEffect(()=>{
-		dispatch(getUser({_page: pageNumber+1, _limit: pageSize}))
-	},[pageNumber, pageSize])
+		dispatch(getUser({role: role, params:{pageNumber: pageNumber, pageSize: pageSize}}))
+	},[role, pageNumber, pageSize])
 
 	return <div className="w-full flex flex-col min-h-full bg-white">
 	<FuseScrollbars className="grow overflow-x-auto">
@@ -41,8 +43,8 @@ function AccountContent() {
 	<TableCell align="left"><span className='font-semibold'></span></TableCell>
   </TableRow>
 </TableHead>
-	<TableBody>
-		{users && users.length>0 && users.map((item: any) => (<TableRow key={item.id} >
+	{users && users.length>0 && <TableBody>
+		{users.map((item: any) => (<TableRow key={item.id} >
 		<TableCell align='center'>{item.id}</TableCell>
 		<TableCell align='left'>{item.name}</TableCell>
 		<TableCell align='left'>{item.username}</TableCell>
@@ -54,10 +56,10 @@ function AccountContent() {
 			<Button variant='contained' color='success' onClick={()=>{setShowEdit(true); setEditValue(item)}}>edit</Button>
 		</TableCell>
 	</TableRow>))}
-		</TableBody>
-<TableBody>
-</TableBody>
+		</TableBody>}
 		</Table>
+		{users && users.length===0 && <Stack className='mt-36' direction='row' alignItems={"center"} justifyContent={"center"}>
+<h2 style={{color:"gray"}}>No matching result</h2></Stack> }
 	</FuseScrollbars>
 
 	<TablePagination
