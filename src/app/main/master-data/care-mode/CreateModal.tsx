@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import { ObjectCaremodeToCreate } from '../../type/care-mode.type';
-import { useAppDispatch,useAppSelector } from 'app/store';
+import { useAppDispatch, useAppSelector } from 'app/store';
 import { addCaremode, caremodeReducerState, getCaremodeData } from './slice/caremodeSlice';
 const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackbar})=>{
     const [caremode, setCaremode] =useState<ObjectCaremodeToCreate>({
@@ -37,12 +37,12 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
       } else setOpenFailSnackbar(true)
     }  
 
-    return <Dialog fullWidth
+  return <Dialog fullWidth
     open={show}
     onClose={handleClose}
     aria-labelledby="alert-dialog-title"
     aria-describedby="alert-dialog-description"
-    >
+  >
     <DialogTitle id="alert-dialog-title">
       Create
     </DialogTitle>
@@ -58,7 +58,7 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
       onChange={e => setCaremode(prev => ({...prev, priority: parseInt(e.target.value)}))} label='Priority' 
       placeholder='Enter name' size='small' variant="outlined" /> */}
 
-        </Stack>
+      </Stack>
     </DialogContent>
     <DialogActions>
       <Button variant='contained' onClick={handleClose}>cancel</Button>

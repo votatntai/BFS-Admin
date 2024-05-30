@@ -1,3 +1,4 @@
+import { CareModeType } from "src/app/main/master-data/menu-sample/type/MenuType";
 import axios from "./customAxios";
 /**
  * Account
@@ -49,8 +50,8 @@ export const updateFarm = (id: string, formData: FormData) => axios.put(`/farms/
  * Unit of measurement
  */
  export const getUnit = (object: Object) => axios.get(`/unit-of-measurements`,{params: object});
- export const createUnit = (formData: FormData) => axios.post('/unit-of-measurements',formData);
- export const updateUnit = (id: string, formData: FormData) => axios.put(`/unit-of-measurements/${id}`,formData);
+ export const createUnit = (formData) => axios.post('/unit-of-measurements',formData);
+ export const updateUnit = (id: string, formData) => axios.put(`/unit-of-measurements/${id}`,formData);
 
  /**
  * Menu sample

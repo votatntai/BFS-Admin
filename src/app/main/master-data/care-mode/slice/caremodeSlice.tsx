@@ -1,17 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getCaremodes,createCaremode, updateCaremode } from "src/app/auth/services/api/callAPI";
-import {CareMode} from "src/app/main/type/care-mode.type";
+import { getCaremodes, createCaremode, updateCaremode } from "src/app/auth/services/api/callAPI";
+import { CareMode } from "src/app/main/type/care-mode.type";
+import { CareModeType } from "../../menu-sample/type/MenuType";
 
-export interface caremodeReducerState{
-	caremodeReducer:{
-		caremodeSlice:{
+export interface caremodeReducerState {
+	caremodeReducer: {
+		caremodeSlice: {
 			caremodes: {
-				pagination:{
+				pagination: {
 					pageNumber: number
 					pageSize: number
 					totalRow: number
-				  },
-				data: CareMode[]	
+				},
+				data: CareMode[]
 			},
 			searchText: string
 		}
@@ -19,16 +20,16 @@ export interface caremodeReducerState{
 }
 export const getCaremodeData = createAsyncThunk('caremodeReducer/getCaremodes', async (object: Object) => {
 	try {
-	  const response = await getCaremodes(object);
-	  return response;
+		const response = await getCaremodes(object);
+		return response;
 	} catch (error) {
 	  console.log(error);
 	}
-  });
+});
 
 export const addCaremode = createAsyncThunk('caremodeReducer/addCaremode', async (formData) => {
 	try {
-	  await createCaremode(formData);
+		await createCaremode(formData);
 	} catch (error) {
 	  console.log(error);
 	}
@@ -39,26 +40,26 @@ export const editCaremode = createAsyncThunk('caremodeReducer/editCaremode', asy
 	} catch (error) {
 	  console.log(error);
 	}
-  });
+});
 
 const caremodeSlice = createSlice({
 	name: 'caremodeReducer',
 	initialState: {
-        status: 'pending',
-		searchText:'',
-        caremodes: {
-			pagination:{
+		status: 'pending',
+		searchText: '',
+		caremodes: {
+			pagination: {
 				"pageNumber": 0,
 				"pageSize": 8,
 				"totalRow": 0
 			},
 			data: []
 		},
-    },
+	},
 	reducers: {
-		setSearchText: (state,action)=>{
-            state.searchText = action.payload as string
-        },
+		setSearchText: (state, action) => {
+			state.searchText = action.payload as string
+		},
 		setPaginPageNumber: (state, action) => {
 			state.caremodes.pagination.pageNumber = action.payload as number
 		},
@@ -71,12 +72,12 @@ const caremodeSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-            .addCase(getCaremodeData.fulfilled, (state, action: any) => {
-                state.status = 'succeeded';
-                state.caremodes = action.payload;
-            })
+			.addCase(getCaremodeData.fulfilled, (state, action: any) => {
+				state.status = 'succeeded';
+				state.caremodes = action.payload;
+			})
 			.addCase(getCaremodeData.pending, (state) => {
-                state.status = 'inprogress';
+				state.status = 'inprogress';
 			})
 			.addCase(getCaremodeData.rejected, (state) => {
 				state.status = 'error';
@@ -90,6 +91,6 @@ const caremodeSlice = createSlice({
 	}
 });
 
-export const {setSearchText,setPaginPageNumber,setPaginPageSize,setPaginTotalRow} = caremodeSlice.actions
+export const { setSearchText, setPaginPageNumber, setPaginPageSize, setPaginTotalRow } = caremodeSlice.actions
 const caremodeReducer = caremodeSlice.reducer;
 export default caremodeReducer
