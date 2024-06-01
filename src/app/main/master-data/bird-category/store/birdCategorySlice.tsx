@@ -53,6 +53,6 @@ export const { setBirdCategorySearchText } = birdCategorySlice.actions;
 
 export const selectBirdCategorySearchText = (state: AppRootStateType) => state.birdCategoryReducer?.birdCategories.searchText;
 
-export const selectBirdCategory = (state)=>state.birdCategoryReducer.birdCategories;
+export const selectBirdCategory = (state)=>state.birdCategoryReducer.birdCategories
 export type birdCategorySliceType = typeof birdCategorySlice;
 export default birdCategorySlice.reducer;

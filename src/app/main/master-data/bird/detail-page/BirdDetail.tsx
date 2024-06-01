@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "app/store";
 import { FormProvider, useForm } from "react-hook-form";
 import { useParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { getBird, newItem, selectDetail } from "../store/birdDetailSlice";
+import { getBird, newItem, reaset, selectDetail } from "../store/birdDetailSlice";
 import BirdDetailContent from "./BirdDetailContent";
 import BirdDetailHeader from "./BirdDetailHeader";
 import { useEffect } from "react";
@@ -31,6 +31,8 @@ const schema = yup.object().shape({
         .date()
         .required('You must enter a  dayOfBirth'),
     thumbnailUrl: yup
+        .mixed(),
+    category: yup
         .mixed()
 
 });
@@ -62,11 +64,22 @@ const BirdDetail = () => {
 
 
     }, [dispatch, routeParams]);
-    console.log("dataItem >>>", dataItem)
     useEffect(() => {
         reset(dataItem);
     }, [dataItem, reset]);
-    console.log("form", form)
+    useEffect(() => {
+        return () => {
+            dispatch(reaset())
+        }
+    }
+        , [dispatch])
+    if (!dataItem && routeParams.id !== "new") {
+        return (
+            <div className="flex w-full  items-center justify-center h-full">
+                <FuseLoading />
+            </div>
+        )
+    }
     /**
      * Wait while dataItem data is loading and form is setted
      */

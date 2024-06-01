@@ -7,9 +7,10 @@ import * as yup from 'yup';
 import { Link, useParams } from 'react-router-dom';
 import { yupResolver } from "@hookform/resolvers/yup";
 import { selectBirdCategory } from "../store/birdCategorySlice";
-import { getBirdCategory, selectBirdCategoryDetail } from "../store/birdCategoryDetailSlice";
+import { getBirdCategory, reaset, selectBirdCategoryDetail } from "../store/birdCategoryDetailSlice";
 import { useDeepCompareEffect } from "@fuse/hooks";
 import { useEffect } from "react";
+import FuseLoading from "@fuse/core/FuseLoading";
 
 const schema = yup.object().shape({
     name: yup
@@ -46,13 +47,25 @@ const BirdCategoryDetail = () => {
         }
 
         updateProductState();
-    }, [dispatch, routeParams]);
-    useEffect(
-        () => {
-            reset({})
+    }, [dispatch, routeParams])
+    useEffect(() => {
+        reset(dataItem)
+
+    }, [dataItem]);
+    useEffect(() => {
+        return () => {
+            dispatch(reaset())
         }
-        , [reset]
-    )
+    }
+        , [dispatch])
+    if (!dataItem && routeParams.id !== "new") {
+        return (
+            <div className="flex w-full  items-center justify-center h-full">
+                <FuseLoading />
+            </div>
+        )
+    }
+
     return (
         <form>
             <FormProvider

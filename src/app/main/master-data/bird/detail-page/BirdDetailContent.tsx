@@ -28,13 +28,16 @@ export default function CageDetailContent() {
             dispatch(getBirdCategories())
             dispatch(getCages())
 
-
         }
         , []
     )
     const thumbnailUrl = watch('thumbnailUrl')
+    const category = watch('category')
+    console.log("category")
+    const species = watch('species')
+    const careMode = watch('careMode')
+    const cage = watch('cage')
     const gender = watch('gender')
-    console.log("gender",gender)
 
     return (
         <div className='flex'>
@@ -84,8 +87,8 @@ export default function CageDetailContent() {
                             className='mb-16 ml-48'
                             aria-labelledby="demo-radio-buttons-group-label"
                             name="radio-buttons-group"
-                            value={field.value} 
-                    >
+                            value={Boolean(gender)}
+                        >
                             <FormControlLabel value={true} control={<Radio />} label="Female" />
                             <FormControlLabel value={false} control={<Radio />} label="Male" />
                         </RadioGroup>
@@ -101,16 +104,16 @@ export default function CageDetailContent() {
                     control={control}
                     render={({ field }) => (
                         <DatePicker
-
-                            // {...field}
+                            label="date of birth"
+                            value={field.value ? new Date(field.value) : null}
+                            onChange={date => field.onChange(date)}
                             className='ml-48'
                         />
                     )}
                 />
                 {cagesList && <Controller
-                    name="cageId"
+                    name="cage"
                     control={control}
-                    defaultValue={{}}
                     render={({ field: { onChange, value } }) => (
                         <Autocomplete
                             className="mt-8 mb-16"
@@ -120,7 +123,7 @@ export default function CageDetailContent() {
                                 return options.name || '';
                             }
                             }
-                            value={value}
+                            value={cage ? cage : []}
                             onChange={(event, newValue) => {
                                 onChange(newValue);
                             }}
@@ -129,7 +132,7 @@ export default function CageDetailContent() {
                                     {...params}
                                     className="w-[300px] ml-48"
                                     placeholder="Select one"
-                                    label="Care mode"
+                                    label="Cage of bird"
                                     variant="outlined"
                                     InputLabelProps={{
                                         shrink: true
@@ -159,7 +162,7 @@ export default function CageDetailContent() {
             <div className='flex flex-col w-1/3'>
 
                 {caremodeList && <Controller
-                    name="careModeId"
+                    name="careMode"
                     control={control}
                     defaultValue={caremodeList}
                     render={({ field: { onChange, value } }) => (
@@ -171,7 +174,7 @@ export default function CageDetailContent() {
                                 return options.name || '';
                             }
                             }
-                            value={value}
+                            value={careMode ? careMode : []}
                             onChange={(event, newValue) => {
                                 onChange(newValue);
                             }}
@@ -191,7 +194,7 @@ export default function CageDetailContent() {
                     )}
                 />}
                 {speciesList && <Controller
-                    name="speciesId"
+                    name="species"
                     control={control}
                     render={({ field: { onChange, value } }) => (
                         <Autocomplete
@@ -201,7 +204,7 @@ export default function CageDetailContent() {
                                 return options.name || '';
                             }
                             }
-                            value={value}
+                            value={species ? species : []}
                             onChange={(event, newValue) => {
                                 onChange(newValue);
                             }}
@@ -221,9 +224,8 @@ export default function CageDetailContent() {
                     )}
                 />}
                 {categoriesList && <Controller
-                    name="categoryId"
+                    name="category"
                     control={control}
-                    defaultValue={{}}
                     render={({ field: { onChange, value } }) => (
                         <Autocomplete
                             className="mt-8 mb-16"
@@ -232,7 +234,7 @@ export default function CageDetailContent() {
                                 return options.name || '';
                             }
                             }
-                            value={value}
+                            value={category ? category : []}
                             onChange={(event, newValue) => {
                                 onChange(newValue);
                             }}
@@ -286,11 +288,11 @@ export default function CageDetailContent() {
                                 {thumbnailUrl ? (
                                     (thumbnailUrl instanceof File) ?
                                         (<img
-                                            className="max-w-none w-auto h-full"
+                                            className="max-w-none w-auto h-full z-9999"
                                             src={URL.createObjectURL(thumbnailUrl)}
                                         />) : (
                                             <img
-                                                className="max-w-none w-auto h-full"
+                                                className="max-w-none w-auto h-full z-9999"
                                                 src={thumbnailUrl}
                                             />
                                         )

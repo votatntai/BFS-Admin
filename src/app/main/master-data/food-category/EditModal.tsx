@@ -30,11 +30,12 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
   
     const edit = async() => {
       const validate = checkValid()
-      const formData = new FormData()
       if(validate) {
         const id:string = foodCategory.id
-        formData.append('name', foodCategory.name)
-        await dispatch(editFoodCategory({id, formData}))
+        const data ={
+          name:foodCategory.name
+        }
+        await dispatch(editFoodCategory({id, data}))
         await dispatch(getFoodCategoryData({pageNumber: pageNumber, pageSize: pageSize}))
         setOpenSuccessSnackbar(true)
         handleClose()

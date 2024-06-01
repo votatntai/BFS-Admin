@@ -5,13 +5,13 @@ import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import Box from '@mui/material/Box';
 import { useEffect } from 'react';
 export default function BirdCategoryDetailContent(prop) {
-    const {dataItem} = prop
+    const { dataItem } = prop
     const methods = useFormContext();
     const { register, control, formState, watch } = methods;
     const { errors } = formState;
     const { setValue } = useFormContext();
 
-    
+
     const thumbnailUrl = watch('thumbnailUrl')
 
     return (
@@ -37,7 +37,6 @@ export default function BirdCategoryDetailContent(prop) {
 
             <Controller
                 name="thumbnailUrl"
-
                 control={control}
                 render={({ field: { onChange, value } }) => (
                     <Box
@@ -67,21 +66,24 @@ export default function BirdCategoryDetailContent(prop) {
                         <FuseSvgIcon
                             size={32}
                             color="action"
+                            className=' absolute  left-1/2'
                         >
                             heroicons-outline:upload
                         </FuseSvgIcon>
-                   =     <>
+                        <>
                             {thumbnailUrl ? (
-
-                                <img
-                                    className="max-w-none w-auto h-full"
-                                    src={URL.createObjectURL(thumbnailUrl)}
-                                />
+                                (thumbnailUrl instanceof File) ?
+                                    (<img
+                                        className="max-w-none w-auto h-full"
+                                        src={URL.createObjectURL(thumbnailUrl)}
+                                    />) : (
+                                        <img
+                                            className="max-w-none w-auto h-full"
+                                            src={thumbnailUrl}
+                                        />
+                                    )
                             ) : (
-                                <img
-                                    className="w-32 sm:w-48 rounded"
-                                    src="assets/images/apps/ecommerce/product-image-placeholder.png"
-                                />
+                                <div></div>
                             )}</>
                     </Box>
                 )}

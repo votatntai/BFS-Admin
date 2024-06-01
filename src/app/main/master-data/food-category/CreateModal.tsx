@@ -30,8 +30,10 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
     const add = async() => {
       const validate = checkValid()
       if(validate) {
-        formData.append('name',foodCategory.name)
-        await dispatch(addFoodCategory(formData))
+        const data={
+          name:foodCategory.name
+        }
+        await dispatch(addFoodCategory(data))
         await dispatch(getFoodCategoryData({pageNumber: pageNumber, pageSize: pageSize}))
         setOpenSuccessSnackbar(true)
         handleClose()

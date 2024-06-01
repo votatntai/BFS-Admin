@@ -119,7 +119,6 @@ function BirdsTable(prop: BirdTableeProps) {
                             [
                                 (o) => {
                                     { (console.log("o", o)) }
-
                                     switch (o.id) {
                                         case 'name': {
                                             return o.name[0];

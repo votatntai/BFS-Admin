@@ -40,7 +40,7 @@ class JwtService extends FuseUtils.EventEmitter {
 			}
 		);
 		axios.interceptors.response.use(
-			(response ) => response,
+			(response) => response,
 			(err) =>
 				new Promise(() => {
 					if (err?.response?.status === 401 && err.config) {
@@ -136,10 +136,14 @@ class JwtService extends FuseUtils.EventEmitter {
 							this.emit('onLogin', response.data.user);
 							resolve(response.data.user);
 						} else {
-							reject(response.data.error);
+							reject(response.data)
 						}
 					}
-				);
+				)
+				.catch((error) => {
+					console.error(error);
+					reject(error);
+				});
 		});
 
 	/**
@@ -154,7 +158,7 @@ class JwtService extends FuseUtils.EventEmitter {
 					access_token: string
 				}>) => {
 					if (response.data.user) {
-						response.data.user.role="admin"
+						response.data.user.role = "admin"
 						_setSession(response.data.access_token);
 						resolve(response.data.user);
 					} else {

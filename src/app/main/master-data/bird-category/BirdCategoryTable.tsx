@@ -58,9 +58,8 @@ function BirdCategoryTable(prop: BirdCategoryTableProps) {
 
         setTableOrder(newOrder);
     }
-const itemId="3ABFB395-C6BE-48F3-AC74-4D247BBF8CBC";
     function handleClick(item: BirdCategoryType) {
-        navigate(`/master-data/bird-category/${itemId}`);
+        navigate(`/master-data/bird-category/${item.id}`);
     }
 
     function handleChangePage(event: React.MouseEvent<HTMLButtonElement> | null, page: number) {

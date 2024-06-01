@@ -7,11 +7,10 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getBirdCategories, selectBirdCategories } from '../../bird-category/store/birdCategorySlice';
 import { useAppDispatch, useAppSelector } from 'app/store';
-export default function SpeciesDetailContent(prop) {
+export default function SpeciesDetailContent() {
     // additional
     const options = useAppSelector(selectBirdCategories);
     const dispatch = useAppDispatch();
-    const dataItem = prop
     const methods = useFormContext();
     const { control, formState, watch } = methods;
     const { errors } = formState;
@@ -24,7 +23,8 @@ export default function SpeciesDetailContent(prop) {
     )
 
     const thumbnailUrl = watch('thumbnailUrl')
-
+    const birdCat = watch('birdCategory')
+    console.log("bitf",birdCat)
     return (
         <div>
             <Controller
@@ -80,11 +80,11 @@ export default function SpeciesDetailContent(prop) {
                             {thumbnailUrl ? (
                                 (thumbnailUrl instanceof File) ?
                                     (<img
-                                        className="max-w-none w-auto h-full"
+                                        className="max-w-none w-auto h-full z-999"
                                         src={URL.createObjectURL(thumbnailUrl)}
                                     />) : (
                                         <img
-                                            className="max-w-none w-auto h-full"
+                                            className="max-w-none w-auto h-full z-999"
                                             src={thumbnailUrl}
                                         />
                                     )
@@ -98,12 +98,11 @@ export default function SpeciesDetailContent(prop) {
                 )}
             />
             <Controller
-                name="birdCategoryId"
+                name="birdCategory"
                 control={control}
                 render={({ field: { onChange, value } }) => (
                     <Autocomplete
                         className="mt-8 mb-16"
-                      
                         options={options}
                         getOptionLabel={(option) => option.name}
                         value={value}

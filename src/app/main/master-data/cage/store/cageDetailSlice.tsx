@@ -35,16 +35,12 @@ export const createCage = createAppAsyncThunk<any, any>(
 /**
  * Save
  */
-export const saveCage = createAppAsyncThunk<CageType, CageType>(
+export const saveCage = createAppAsyncThunk<any, any>(
     'cageReducer/cage/saveCage',
-    async (form, { getState }) => {
-        const AppState = getState() as AppRootStateType;
+    async ({ id, formSave }) => {
+        const response = await axios.put(`/cages/${id}`, formSave);
 
-        const { id } = AppState.cageReducer.cage.data as CageType;
-
-        const response = await axios.put(`/cages/${id}`, form);
-
-        const data = (await response.data) as CageType;
+        const data = (await response.data);
 
         return data;
     }

@@ -18,20 +18,23 @@ export default function BirdCategoryDetailHeader() {
     const { formState, watch, getValues } = methods;
     const { isValid, dirtyFields } = formState;
     const navigate = useNavigate();
-    const { itemId } = useParams();
+    const { id } = useParams();
     const [isAddButton, setIsAddButton] = useState(false);
     useEffect(
         () => {
-            if (itemId === 'new')
+            if (id === 'new')
                 setIsAddButton(true);
         }
         , []
     )
     const formData = new FormData()
+    const formSave = new FormData()
     const { name, thumbnailUrl } = watch();
 
     function handleSaveProduct() {
-        dispatch(saveBirdCategory(getValues() as BirdCategoryType));
+        formSave.append('name', getValues().name)
+        formSave.append('thumbnail', getValues().thumbnailUrl)
+        dispatch(saveBirdCategory({ id, formSave }))
         navigate('/master-data/bird-category');
     }
     const handleAdd = () => {
@@ -76,7 +79,7 @@ export default function BirdCategoryDetailHeader() {
                 >
                     Back
                 </Button>
-                {isAddButton ? (
+                {!isAddButton ? (
                     <Button
                         className="whitespace-nowrap mx-4"
                         variant="contained"

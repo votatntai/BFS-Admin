@@ -9,6 +9,7 @@ import * as yup from 'yup';
 import { getSpecies, reaset, selectDetail } from "../store/SpeciesDetailSlice";
 import SpeciesDetailHeader from "./SpeciesDetailHeader";
 import SpeciesDetailContent from "./SpeciesDetailContent";
+import FuseLoading from "@fuse/core/FuseLoading";
 
 const schema = yup.object().shape({
     name: yup
@@ -16,21 +17,25 @@ const schema = yup.object().shape({
         .required('You must enter a bird catego ry name')
         .min(5, 'At least 5 charactor'),
     thumbnailUrl: yup
+        .mixed(),
+    birdCategory: yup
         .mixed()
 
 });
 type FormValues = {
     name: string,
     thumbnailUrl: any,
+    birdCategory: any,
 }
 
 
 const SpeciesDetail = () => {
     const dispatch = useAppDispatch();
-    const dataItem = useAppSelector(selectDetail);
+    const dataItem = useAppSelector(selectDetail)
+    console.log("dataItem",dataItem)
     const { id } = useParams();
     const methods = useForm<FormValues>({
-        mode: 'onSubmit',
+        mode: 'onChange',
         resolver: yupResolver(schema)
     });
     const { watch, reset } = methods;
@@ -41,7 +46,7 @@ const SpeciesDetail = () => {
 
             if (id != 'new') {
                 dispatch(getSpecies(id))
-            } else dispatch(reaset())
+            }
         }
         updateState();
 
@@ -52,22 +57,29 @@ const SpeciesDetail = () => {
     }, [dataItem]);
     useEffect(() => {
         return () => {
-            console.log("reAset ??")
             dispatch(reaset())
         }
     }
-        , [dispatch]);
-
+        , [dispatch])
+    if (!dataItem && id !== "new") {
+        return (
+            <div className="flex w-full  items-center justify-center h-full">
+                <FuseLoading />
+            </div>
+        )
+    }
 
     return (
         <form>
             <FormProvider
                 {...methods}>
                 <FusePageCarded
-                    header={<SpeciesDetailContent />}
-                    content={
-                        <SpeciesDetailHeader 
+                    header={
+                        <SpeciesDetailHeader
                         />
+                    }
+                    content={
+                        <SpeciesDetailContent />
                     }
                 />
             </FormProvider>
