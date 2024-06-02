@@ -5,14 +5,14 @@ import TextField from '@mui/material/TextField';
 import { useAppDispatch, useAppSelector } from 'app/store';
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { getAreaData } from '../../area/slice/areaSlice';
 import { getCaremodeData } from '../../care-mode/slice/caremodeSlice';
+import { getAreas, selectAreas } from '../../menu-sample/store/menusSlice';
 import { getSpeciesList, selectSpecieslist } from '../../species/store/SpecisesSlice';
+import FuseLoading from '@fuse/core/FuseLoading';
 export default function CageDetailContent(prop) {
+
     const { cage } = prop
-    const areaList = useAppSelector((state) => state.areaReducer.areaSlice.areas.data)
-    const caremodeList = useAppSelector((state) => state.caremodeReducer.caremodeSlice.caremodes.data)
-    const speciesList = useAppSelector(selectSpecieslist);
+    const areaList = useAppSelector(selectAreas)
     const dispatch = useAppDispatch();
     const methods = useFormContext();
     const { reset, control, formState, watch } = methods;
@@ -20,9 +20,7 @@ export default function CageDetailContent(prop) {
     const { setValue } = useFormContext();
     useEffect(
         () => {
-            dispatch(getCaremodeData({}));
-            dispatch(getSpeciesList());
-            dispatch(getAreaData({}));
+            dispatch(getAreas());
         }
         , []
     )
@@ -30,6 +28,8 @@ export default function CageDetailContent(prop) {
 
 
     const thumbnailUrl = watch('thumbnailUrl')
+
+    const area = watch('area')
 
     return (
         <div className='flex'>
@@ -166,54 +166,25 @@ export default function CageDetailContent(prop) {
             </div>
             <div className='flex flex-col w-1/3'>
 
+
                 <Controller
-                    name="careModeId"
+                    name="area"
                     control={control}
-                    defaultValue={[]}
                     render={({ field: { onChange, value } }) => (
                         <Autocomplete
                             className="mt-8 mb-16"
                             freeSolo
-                            options={caremodeList}
-                            getOptionLabel={(option) => option?.name}
-                            value={value}
+                            options={areaList ? areaList : []}
+                            value={area ? area : []}
+                            getOptionLabel={(option: any) => option.name ? option.name : ""}
                             onChange={(event, newValue) => {
-                                onChange(newValue);
+                                onChange(newValue)
                             }}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
                                     className="w-[300px] ml-48"
-                                    placeholder="Select one"
-                                    label="Care mode"
-                                    variant="outlined"
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                />
-                            )}
-                        />
-                    )}
-                />
-                <Controller
-                    name="areaId"
-                    control={control}
-                    defaultValue={[]}
-                    render={({ field: { onChange, value } }) => (
-                        <Autocomplete
-                            className="mt-8 mb-16"
-                            freeSolo
-                            options={areaList}
-                            getOptionLabel={(option) => option.name}
-                            value={value}
-                            onChange={(event, newValue) => {
-                                onChange(newValue);
-                            }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    className="w-[300px] ml-48"
-                                    placeholder="Select one"
+                                    placeholder="Select area"
                                     label="Area"
                                     variant="outlined"
                                     InputLabelProps={{
@@ -224,35 +195,7 @@ export default function CageDetailContent(prop) {
                         />
                     )}
                 />
-                <Controller
-                    name="speciesId"
-                    control={control}
-                    defaultValue={[]}
-                    render={({ field: { onChange, value } }) => (
-                        <Autocomplete
-                            className="mt-8 mb-16"
-                            freeSolo
-                            options={speciesList}
-                            getOptionLabel={(option) => option.name}
-                            value={value}
-                            onChange={(event, newValue) => {
-                                onChange(newValue);
-                            }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    className="w-[300px] ml-48"
-                                    placeholder="Select one"
-                                    label="Species"
-                                    variant="outlined"
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                />
-                            )}
-                        />
-                    )}
-                />
+
                 <Controller
                     name="thumbnailUrl"
 
@@ -285,22 +228,21 @@ export default function CageDetailContent(prop) {
                             <FuseSvgIcon
                                 size={32}
                                 color="action"
+                                className=' absolute  left-1/2'
+
                             >
                                 heroicons-outline:upload
                             </FuseSvgIcon>
-                            <>
-                                {thumbnailUrl ? (
 
-                                    <img
-                                        className="max-w-none w-auto h-full"
-                                        // src={URL.createObjectURL(thumbnailUrl)}
-                                    />
-                                ) : (
-                                    <img
-                                        className="w-32 sm:w-48 rounded"
-                                        src="assets/images/apps/ecommerce/product-image-placeholder.png"
-                                    />
-                                )}</>
+
+
+                            {thumbnailUrl && (
+                                thumbnailUrl instanceof File
+                                    ? <img className="max-w-none w-auto h-full z-999" src={URL.createObjectURL(thumbnailUrl)} />
+                                    : <img className="max-w-none w-auto h-full z-999" src={thumbnailUrl} />
+                            )}
+
+
                         </Box>
                     )}
                 />

@@ -36,14 +36,11 @@ export const createBirdCategory = createAppAsyncThunk<any, any>(
 /**
  * Save 
  */
-export const saveBirdCategory = createAppAsyncThunk<BirdCategoryType, BirdCategoryType>(
+export const saveBirdCategory = createAppAsyncThunk<BirdCategoryType, any>(
     'birdCategoryReducer/birdCategory/saveBirdCategory',
-    async (form, { getState }) => {
-        const AppState = getState() as AppRootStateType;
+    async ({ id, formSave }) => {
 
-        const { id } = AppState.birdCategoryReducer.birdCategory.data as BirdCategoryType;
-
-        const response = await axios.put(`/api/ecommerce/products/${id}`, form);
+        const response = await axios.put(`/bird-categories/${id}`, formSave);
 
         const data = (await response.data) as BirdCategoryType;
 
@@ -76,7 +73,7 @@ export const birdCategoryDetailSlice = createSlice({
             })
 
             .addCase(createBirdCategory.fulfilled, (state, action) => {
-              state.status = 'succeeded';
+                state.status = 'succeeded';
             })
 
     }

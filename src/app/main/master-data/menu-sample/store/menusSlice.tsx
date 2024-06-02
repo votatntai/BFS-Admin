@@ -28,6 +28,11 @@ export const getBirds = createAppAsyncThunk<any,any>('menuSamplesReducer/menus/g
     const data = (await response.data);
     return data;
 })
+export const getAreas = createAppAsyncThunk('menuSamplesReducer/menus/getAreas', async () => {
+    const response = await axios.get(`/areas?pageSize=99999`);
+    const data = (await response.data);
+    return data;
+})
 export const getFarms = createAppAsyncThunk('menuSamplesReducer/menus/getFarms', async () => {
     const response = await axios.get('/farms?pageSize=99999');
     const data = (await response.data);
@@ -181,6 +186,7 @@ const initialState = menusAdapter.getInitialState({
     birds: [] as BirdType[],
     species: [],
     farms:[],
+    areas:[],
     careMode: [],
     menuSample: [],
     tickets: [],
@@ -256,6 +262,9 @@ export const menusSlice = createSlice({
             //=================== GET Reducer ========================
             .addCase(getSpecies.fulfilled, (state, action) => {
                 state.species = action.payload.data
+            })
+            .addCase(getAreas.fulfilled, (state, action) => {
+                state.areas = action.payload.data
             })
             .addCase(getFarms.fulfilled, (state, action) => {
                 state.farms = action.payload.data
@@ -372,6 +381,7 @@ export const { setBirdRecommend, addMealBirdId, resetPlan, addMealId, setDialogS
 export const selectCageSearchText = (state: AppRootStateType) => state.menuSamplesReducer?.menus
 export const selectBirds = (state: AppRootStateType) => state.menuSamplesReducer.menus.birds
 export const selectFarms = (state: AppRootStateType) => state.menuSamplesReducer.menus.farms
+export const selectAreas = (state: AppRootStateType) => state.menuSamplesReducer.menus.areas
 export const selectSpecies = (state) => state.menuSamplesReducer?.menus.species;
 export const selectTickets = (state) => state.menuSamplesReducer?.menus.tickets;
 export const selectCareModes = (state) => state.menuSamplesReducer?.menus.careMode;

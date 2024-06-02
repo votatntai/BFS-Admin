@@ -19,33 +19,41 @@ export default function SpeciesDetailHeader() {
     const { formState, watch, getValues } = methods;
     const { isValid, dirtyFields } = formState;
     const navigate = useNavigate();
-    const { itemId } = useParams();
+    const { id } = useParams();
     const [isAddButton, setIsAddButton] = useState(false);
     useEffect(
         () => {
-            if (itemId === 'new')
+            if (id === 'new')
                 setIsAddButton(true);
-            console.log("isAddButtonis", isAddButton)
 
         }
         , []
     )
     const formData = new FormData()
-    const { name, thumbnailUrl } = watch();
+ 
 
-    function handleSaveProduct() {
-        dispatch(saveSpecies(getValues() as SpeicesType));
-        navigate('/master-data/species');
+    const { name, thumbnailUrl,birdCategory } = watch();
+
+    async function handleSaveProduct() {
+        const formSave = new FormData()
+        if(birdCategory)
+        formSave.append('birdCategoryId', getValues().birdCategory.id)
+        formSave.append('name', getValues().name)
+        formSave.append('thumbnail', getValues().thumbnailUrl)
+  
+        const result = await dispatch(saveSpecies({id,formSave}));
+        // navigate('/master-data/species');
     }
-    const BCId = "3ABFB395-C6BE-48F3-AC74-4D247BBF8CBC";
-    const handleAdd = async() => {
-        // formData.append('birdCategoryId',getValues().birdCategoryId)
-        formData.append('birdCategoryId', BCId)
+    const handleAdd = async () => {
+        formData.append('birdCategoryId', getValues().birdCategory.id)
         formData.append('name', getValues().name)
         formData.append('thumbnail', getValues().thumbnailUrl)
-        dispatch(createSpecies(formData));
+
+        const result = await dispatch(createSpecies(formData));
+
         navigate('/master-data/species');
     }
+
 
     return (
         <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-32 px-24 md:px-32">
@@ -82,7 +90,7 @@ export default function SpeciesDetailHeader() {
                 >
                     Back
                 </Button>
-                {isAddButton ? (
+                {!isAddButton ? (
                     <Button
                         className="whitespace-nowrap mx-4"
                         variant="contained"

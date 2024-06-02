@@ -61,14 +61,18 @@ function SignInPage() {
 				// eslint-disable-next-line no-console
 
 			})
-			.catch((_errors: { type: 'email' | 'password' | `root.${string}` | 'root'; message: string }[]) => {
-				_errors.forEach((error) => {
-					setError(error.type, {
+			.catch
+			(
+				(error) => {
+					setError('email', {
 						type: 'manual',
-						message: error.message
+						message: 'Invalid email or password',
 					});
-				});
-			});
+					setError('password', {
+						type: 'manual',
+					});
+				}
+			)
 	}
 
 	return (
@@ -94,7 +98,7 @@ function SignInPage() {
 						<Controller
 							name="email"
 							control={control}
-							render={	({ field }) => (
+							render={({ field }) => (
 								<TextField
 									{...field}
 									className="mb-24"
@@ -210,10 +214,10 @@ function SignInPage() {
 
 				<div className="relative z-10 w-full max-w-2xl">
 					<div className="text-4xl font-bold leading-none text-gray-100">
-					<div>Bird Farm Meal System</div>
+						<div>Bird Farm Meal System</div>
 					</div>
 					<div className="mt-24 text-2xl leading-6 tracking-tight text-gray-400">
-					Nourish to flourish: Your wingman for perfect bird meals!
+						Nourish to flourish: Your wingman for perfect bird meals!
 					</div>
 				</div>
 			</Box>

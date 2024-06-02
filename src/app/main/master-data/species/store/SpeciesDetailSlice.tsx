@@ -13,7 +13,7 @@ export type AppRootStateType = RootStateType<speciesDetailSliceType>;
 export const getSpecies = createAppAsyncThunk<SpeicesType, string>(
     'speciesReducer/species/getSpecies',
     async (Id) => {
-        
+
         const response = await axios.get(`/species/${Id}`);
 
         const data = (await response.data) as SpeicesType;
@@ -36,14 +36,11 @@ export const createSpecies = createAppAsyncThunk<any, any>(
 /**
  * Save 
  */
-export const saveSpecies = createAppAsyncThunk<SpeicesType, SpeicesType>(
+export const saveSpecies = createAppAsyncThunk<SpeicesType, any>(
     'speciesReducer/species/saveSpecies',
-    async (form, { getState }) => {
-        const AppState = getState() as AppRootStateType;
-
-        const { id } = AppState.speciesReducer.species.data as SpeicesType;
-
-        const response = await axios.put(`/api/ecommerce/products/${id}`, form);
+    async ({ id, formSave }) => {
+ 
+        const response = await axios.put(`/species/${id}`, formSave);
 
         const data = (await response.data) as SpeicesType;
 
@@ -54,7 +51,7 @@ export const saveSpecies = createAppAsyncThunk<SpeicesType, SpeicesType>(
 const initialState: AsyncStateType<SpeicesType> = {
     data: null,
     status: 'idle'
-};
+}
 
 /**
  * The Detail Slice 
@@ -64,7 +61,7 @@ export const speciesDetailSlice = createSlice({
     initialState,
     reducers: {
         reaset: () => initialState,
-      
+
     },
     extraReducers: (builder) => {
         builder
@@ -74,15 +71,15 @@ export const speciesDetailSlice = createSlice({
             })
 
             .addCase(createSpecies.fulfilled, (state, action) => {
-              state.status = 'succeeded';
+                state.status = 'succeeded';
             })
 
     }
 });
 
-export const selectDetail = (state: AppRootStateType) => state
+export const selectDetail = (state: AppRootStateType) => state.speciesReducer.species.data
 
-export const {  reaset } = speciesDetailSlice.actions;
+export const { reaset } = speciesDetailSlice.actions;
 
 export type speciesDetailSliceType = typeof speciesDetailSlice;
 export default speciesDetailSlice.reducer;

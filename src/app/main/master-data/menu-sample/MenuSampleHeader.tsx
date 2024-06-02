@@ -22,7 +22,7 @@ export default function MenuSampleHeader() {
                     className="flex items-center w-full sm:max-w-256 space-x-8 px-16 rounded-full border-1 shadow-0"
                 >
                     <Input
-                        placeholder="Search areas"
+                        placeholder="Search menu"
                         disableUnderline
                         fullWidth
                         //value={searchValue} onKeyPress={e => {if(e.key==='Enter') handleSearch()}}

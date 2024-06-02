@@ -75,7 +75,7 @@ function CagesTable(prop: CagesTableeProps) {
             <div className="flex w-full  items-center justify-center h-full">
                 <FuseLoading />
             </div>
-        );
+        )
     }
     if (data.length === 0) {
         return (

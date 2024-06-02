@@ -14,7 +14,7 @@ export type AppRootStateType = RootStateType<birdDetailSliceType>;
 export const getBird = createAppAsyncThunk<BirdType, string>(
     'birdReducer/bird/getBird',
     async (Id) => {
-        
+
         const response = await axios.get(`/birds/${Id}`);
 
         const data = (await response.data) as BirdType;
@@ -26,6 +26,7 @@ export const getBird = createAppAsyncThunk<BirdType, string>(
 export const createBird = createAppAsyncThunk<any, any>(
     'birdReducer/bird/createBird',
     async (dataItem) => {
+        console.log("dataItem", dataItem)
         const response = await axios.post(`/birds/`, dataItem);
 
         const data = (await response.data);
@@ -37,14 +38,12 @@ export const createBird = createAppAsyncThunk<any, any>(
 /**
  * Save saveBirdCategory
  */
-export const saveBird = createAppAsyncThunk<BirdType, BirdType>(
+export const saveBird = createAppAsyncThunk<BirdType, any>(
     'birdReducer/bird/saveBird',
-    async (form, { getState }) => {
-        const AppState = getState() as AppRootStateType;
+    async ({ id, formSave }) => {
 
-        const { id } = AppState.birdReducer.bird.data as BirdType;
 
-        const response = await axios.put(`/birds/${id}`, form);
+        const response = await axios.put(`/birds/${id}`, formSave);
 
         const data = (await response.data) as BirdType;
 
@@ -66,9 +65,9 @@ export const birdDetailSlice = createSlice({
     reducers: {
         reaset: () => initialState,
         newItem: (state) => {
-			state.data ={name:''};
-            
-		}
+            state.data = { name: '' };
+
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -78,7 +77,7 @@ export const birdDetailSlice = createSlice({
             })
 
             .addCase(createBird.fulfilled, (state, action) => {
-              state.status = 'succeeded';
+                state.status = 'succeeded';
             })
 
     }
@@ -86,7 +85,7 @@ export const birdDetailSlice = createSlice({
 
 export const selectDetail = (state: AppRootStateType) => state.birdReducer.bird.data;
 
-export const {newItem,  reaset } = birdDetailSlice.actions;
+export const { newItem, reaset } = birdDetailSlice.actions;
 
 export type birdDetailSliceType = typeof birdDetailSlice;
 export default birdDetailSlice.reducer;

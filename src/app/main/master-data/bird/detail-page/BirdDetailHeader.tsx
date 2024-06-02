@@ -9,6 +9,7 @@ import _ from '@lodash';
 import { useEffect, useState } from 'react';
 import { createBird, saveBird } from '../store/birdDetailSlice';
 import { getValue } from '@mui/system';
+import { formatISO } from 'date-fns';
 
 
 export default function CageDetailHeader(prop) {
@@ -28,26 +29,42 @@ export default function CageDetailHeader(prop) {
         }
         , []
     )
+    const { name, thumbnailUrl } = watch();
     const formData = new FormData()
     const formSave = new FormData()
-    function handleSaveProduct() {
-        //     dispatch(saveBird(getValues().id, ));
+    async function handleSaveProduct() {
+        const formSave = new FormData()
+        formSave.append('code', getValues().code)
+        formSave.append('name', getValues().name)
+        if (thumbnailUrl instanceof File)
+        formSave.append('thumbnail', getValues().thumbnailUrl)
+        formSave.append('gender', getValues().gender)
+        formSave.append('characteristic', getValues().characteristic)
+        formSave.append('dayOfBirth', formatISO(new Date(getValues().dayOfBirth)))
+        formSave.append('categoryId', getValues().category.id)
+        formSave.append('cageId', getValues().cage.id)
+        formSave.append('speciesId', getValues().species.id)
+        formSave.append('careModeId', getValues().careMode.id)
+        const result = await dispatch(saveBird({ id, formSave }));
         navigate('/master-data/bird');
     }
-    const BCId = "3ABFB395-C6BE-48F3-AC74-4D247BBF8CBC";
-    const handleAdd = () => {
+    const handleAdd = async () => {
         formData.append('code', getValues().code)
         formData.append('name', getValues().name)
         formData.append('thumbnail', getValues().thumbnailUrl)
         formData.append('gender', getValues().gender)
         formData.append('characteristic', getValues().characteristic)
-        formData.append('dayOfBirth', getValues().dayOfBirth)
-        formData.append('categoryId', getValues().BCId)
-        formData.append('cageId', getValues().cageId.id)
-        formData.append('speciesId', getValues().speciesId.id)
-        formData.append('careModeId', getValues().careModeId.id)
-        console.log("formdata", formData)
-        dispatch(createBird(formData));
+        formData.append('dayOfBirth', formatISO(getValues().dayOfBirth))
+        formData.append('categoryId', getValues().category.id)
+        formData.append('cageId', getValues().cage.id)
+        formData.append('speciesId', getValues().species.id)
+        formData.append('careModeId', getValues().careMode.id)
+        // let formSaveObj = {};
+        // for (let [key, value] of formData.entries()) {
+        //     formSaveObj[key] = value;
+        // }
+        // console.log("formSaveObj", formSaveObj);
+        const result = await dispatch(createBird(formData));
         navigate('/master-data/bird');
     }
     return (<>

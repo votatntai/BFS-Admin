@@ -1,17 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getFoodCategories,createFoodCategory, updateFoodCategory } from "src/app/auth/services/api/callAPI";
-import {FoodCategory} from "src/app/main/type/food-category.type";
+import { getFoodCategories, createFoodCategory, updateFoodCategory } from "src/app/auth/services/api/callAPI";
+import { FoodCategory } from "src/app/main/type/food-category.type";
 
-export interface foodCategoryReducerState{
-	foodCategoryReducer:{
-		foodCategorySlice:{
+export interface foodCategoryReducerState {
+	foodCategoryReducer: {
+		foodCategorySlice: {
 			foodCategories: {
-				pagination:{
+				pagination: {
 					pageNumber: number
 					pageSize: number
 					totalRow: number
-				  },
-				data: FoodCategory[]	
+				},
+				data: FoodCategory[]
 			},
 			searchText: string
 		}
@@ -19,46 +19,47 @@ export interface foodCategoryReducerState{
 }
 export const getFoodCategoryData = createAsyncThunk('foodCategoryReducer/getFoodCategories', async (object: Object) => {
 	try {
-	  const response = await getFoodCategories(object);
-	  return response;
+		const response = await getFoodCategories(object);
+		return response;
 	} catch (error) {
-	  console.error(error);
+		console.error(error);
 	}
-  });
+});
 
-export const addFoodCategory = createAsyncThunk('foodCategoryReducer/addFoodCategory', async (formData: FormData) => {
+export const addFoodCategory = createAsyncThunk<any, any>('foodCategoryReducer/addFoodCategory',
+	async (data) => {
+		try {
+			await createFoodCategory(data);
+		} catch (error) {
+			console.error(error);
+		}
+	});
+export const editFoodCategory = createAsyncThunk<any, any>('foodCategoryReducer/editFoodCategory', async ({ id, data }: { id: string, data }) => {
 	try {
-	  await createFoodCategory(formData);
+		await updateFoodCategory(id, data);
 	} catch (error) {
-	  console.error(error);
+		console.error(error);
 	}
-  });
-export const editFoodCategory = createAsyncThunk('foodCategoryReducer/editFoodCategory', async ({id, formData}: {id: string, formData: FormData}) => {
-	try {
-	  await updateFoodCategory(id, formData);
-	} catch (error) {
-	  console.error(error);
-	}
-  });
+});
 
 const foodCategorySlice = createSlice({
 	name: 'foodCategoryReducer',
 	initialState: {
-        status: 'pending',
-		searchText:'',
-        foodCategories: {
-			pagination:{
+		status: 'pending',
+		searchText: '',
+		foodCategories: {
+			pagination: {
 				"pageNumber": 0,
 				"pageSize": 8,
 				"totalRow": 0
 			},
 			data: []
 		},
-    },
+	},
 	reducers: {
-		setSearchText: (state,action)=>{
-            state.searchText = action.payload as string
-        },
+		setSearchText: (state, action) => {
+			state.searchText = action.payload as string
+		},
 		setPaginPageNumber: (state, action) => {
 			state.foodCategories.pagination.pageNumber = action.payload as number
 		},
@@ -71,12 +72,12 @@ const foodCategorySlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder
-            .addCase(getFoodCategoryData.fulfilled, (state, action: any) => {
-                state.status = 'succeeded';
-                state.foodCategories = action.payload;
-            })
+			.addCase(getFoodCategoryData.fulfilled, (state, action: any) => {
+				state.status = 'succeeded';
+				state.foodCategories = action.payload;
+			})
 			.addCase(getFoodCategoryData.pending, (state) => {
-                state.status = 'inprogress';
+				state.status = 'inprogress';
 			})
 			.addCase(getFoodCategoryData.rejected, (state) => {
 				state.status = 'error';
@@ -90,6 +91,6 @@ const foodCategorySlice = createSlice({
 	}
 });
 
-export const {setSearchText,setPaginPageNumber,setPaginPageSize,setPaginTotalRow} = foodCategorySlice.actions
+export const { setSearchText, setPaginPageNumber, setPaginPageSize, setPaginTotalRow } = foodCategorySlice.actions
 const foodCategoryReducer = foodCategorySlice.reducer;
 export default foodCategoryReducer

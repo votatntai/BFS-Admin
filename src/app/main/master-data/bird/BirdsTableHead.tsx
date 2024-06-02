@@ -74,7 +74,7 @@ function BirdsTableHeader(prop: TableHeadPropType) {
 	const dispatch = useAppDispatch();
 	const createSortHandler = (event: MouseEvent<HTMLSpanElement>, property: string) => {
 		onRequestSort(event, property);
-	}
+	}   
     return  (
     <TableHead>
         <TableRow className="h-48">

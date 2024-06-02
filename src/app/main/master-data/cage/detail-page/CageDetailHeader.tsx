@@ -18,11 +18,12 @@ export default function CageDetailHeader(prop) {
     const { formState, watch, getValues } = methods;
     const { isValid, dirtyFields } = formState;
     const navigate = useNavigate();
-    const { itemId } = useParams();
+    const { id } = useParams();
+
     const [isAddButton, setIsAddButton] = useState(false);
     useEffect(
         () => {
-            if (itemId === 'new')
+            if (id == 'new')
                 setIsAddButton(true);
             console.log("isAddButtonis", isAddButton)
 
@@ -32,18 +33,41 @@ export default function CageDetailHeader(prop) {
     const formData = new FormData()
     const { name, thumbnailUrl } = watch();
     const formSave = new FormData()
-    function handleSaveProduct() {
-        // dispatch(saveCage(getValues().id,formSave ));
+    async function handleSaveProduct() {
+        formSave.append('code', getValues().code)
+        formSave.append('name', getValues().name)
+        formSave.append('material', getValues().material)
+        formSave.append('description', getValues().description)
+        formSave.append('height', getValues().height)
+        formSave.append('width', getValues().width)
+        formSave.append('depth', getValues().depth)
+        if (thumbnailUrl instanceof File)
+            formSave.append('thumbnail', getValues().thumbnailUrl)
+        formSave.append('areaId', getValues().area.id)
+
+        const result = await dispatch(saveCage({ id, formSave }));
         navigate('/master-data/cage');
     }
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
+        formData.append('code', getValues().code)
+        formData.append('name', getValues().name)
+        formData.append('material', getValues().material)
+        formData.append('description', getValues().description)
+        formData.append('height', getValues().height)
+        formData.append('width', getValues().width)
+        formData.append('depth', getValues().depth)
+        if (thumbnailUrl instanceof File)
+            formData.append('thumbnail', getValues().thumbnailUrl)
+        formData.append('areaId', getValues().area.id)
 
-        // dispatch(createCage(formData));
-        navigate('/master-data/cage');
+        const result = await dispatch(createCage(formData))
+        console.log("result", result)
+
+        navigate('/master-data/cage')
     }
     return (<>
-    
+
         <div className="flex flex-col sm:flex-row flex-1 w-full items-center justify-between space-y-8 sm:space-y-0 py-32 px-24 md:px-32">
             <div className="flex flex-col items-center sm:items-start space-y-8 sm:space-y-0 w-full sm:max-w-full min-w-0">
 

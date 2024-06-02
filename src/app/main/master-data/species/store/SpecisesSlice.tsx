@@ -8,7 +8,7 @@ import { SpeicesListType, SpeicesType } from '../type/SpeciesType';
 export type AppRootStateType = RootStateType<speciesListSliceType>;
 
 // get List
-export const getSpeciesList= createAppAsyncThunk<SpeicesListType>('birdCategoryReducer/getBirdCategories', async () => {
+export const getSpeciesList= createAppAsyncThunk<SpeicesListType>('speciesReducer/getSpecies', async () => {
 	const response = await axios.get('/species');
 	const data = (await response.data) ;
 	return data;
