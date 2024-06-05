@@ -63,8 +63,8 @@ const AccountHeader = () =>{
         >
             <Button
                 variant="contained" className='me-12'
-                color="secondary" onClick={()=>{
-                    dispatch(getUser({role: role, params:{pageNumber: pageNumber, pageSize: pageSize, name: searchValue}}))
+                color="secondary" onClick={async()=>{
+                    await dispatch(getUser({role: role, params:{pageNumber: pageNumber, pageSize: pageSize, name: searchValue}}))
                     dispatch(setSearchText(""))
                 }}
                 startIcon={<FuseSvgIcon>heroicons-outline:search</FuseSvgIcon>}

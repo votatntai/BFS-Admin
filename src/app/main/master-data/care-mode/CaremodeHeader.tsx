@@ -15,12 +15,12 @@ const AreaHeader = ()=>{
     const [openCreateSuccessNotify, setOpenCreateSuccessNotify] = useState(false);
     const [openCreateFailNotify, setOpenCreateFailNotify] = useState(false);
     const dispatch = useAppDispatch()
-    const [searchValue, setSearchValue] = useState('')
     const pageNumber  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.pageNumber)
     const pageSize  = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.caremodes.pagination.pageSize)
+    const searchValue = useAppSelector((state: caremodeReducerState) => state.caremodeReducer.caremodeSlice.searchText)
     const handleSearch = async()=>{
-        dispatch(setSearchText(searchValue))
-        dispatch(getCaremodeData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize}))        
+        await dispatch(getCaremodeData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize}))  
+        dispatch(setSearchText(""))  
     }
     return <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
     <motion.span
@@ -45,7 +45,7 @@ const AreaHeader = ()=>{
                 inputProps={{
                     'aria-label': 'Search'
                 }}
-                onChange={e => setSearchValue(e.target.value)}
+                onChange={e => dispatch(setSearchText(e.target.value))}
             />
 
         </Paper>

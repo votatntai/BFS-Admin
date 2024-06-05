@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useEffect, useState } from 'react';
 import instance from 'src/app/auth/services/api/customAxios';
@@ -28,10 +28,7 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
       "avatarUrl": object.avatarUrl,
       "email": object.email,
       "phone": object.phone,
-      "farm": {
-        "label": object.farm.name,
-        "value": object.farm.id
-      },
+      "farm": object.farm ? object.farm.name : "Not yet added to farm",
       "status": object.status
     })
     const [imageSend, setImageSend]=useState(object.avatarUrl)
@@ -151,11 +148,15 @@ const EditModal = ({show,handleClose,setOpenSuccessSnackbar, object})=>{
        onChange={e => setUserInfo({...userInfo, phone: e.target.value})} label='Phone' 
        placeholder='Enter phone' size='small' variant="outlined" />
 
-    <Autocomplete size='small'
+    {/* <Autocomplete size='small'
       disablePortal fullWidth disableClearable value={userInfo.farm} onChange={(event, value) => setUserInfo({...userInfo, farm: value})}
       options={farms} isOptionEqualToValue={(option, value) => option.value === value.value}
       renderInput={(params) => <TextField {...params} label="Farm" />}
-    />
+    /> */}
+    <Stack direction='row' spacing={1}>
+    <Typography className='font-semibold'>Farm:</Typography>
+    <Typography>{userInfo.farm}</Typography>
+    </Stack>
 
     <Autocomplete size='small'
       disablePortal fullWidth disableClearable value={userInfo.status} onChange={(event, value) => setUserInfo({...userInfo, status: value})}

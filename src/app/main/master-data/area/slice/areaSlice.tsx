@@ -45,13 +45,9 @@ const areaSlice = createSlice({
 	name: 'areaReducer',
 	initialState: {
         status: 'pending',
-		searchText:'',
         areas: [],
     },
 	reducers: {
-		setSearchText: (state,action)=>{
-            state.searchText = action.payload as string
-        },
 		setAreas: (state,action)=>{
             state.areas = action.payload
         },
@@ -67,6 +63,6 @@ const areaSlice = createSlice({
 	}
 });
 
-export const {setSearchText, setAreas} = areaSlice.actions
+export const {setAreas} = areaSlice.actions
 const areaReducer = areaSlice.reducer;
 export default areaReducer

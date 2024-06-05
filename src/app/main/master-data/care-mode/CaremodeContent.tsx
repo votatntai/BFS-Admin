@@ -38,7 +38,7 @@ const FarmContent = ()=>{
     <TableCell align="center"><span className='font-semibold'>Name</span></TableCell>
     {/* <TableCell align="left"><span className='font-semibold'>Priority</span></TableCell> */}
     <TableCell align="left"><span className='font-semibold'>Create at</span></TableCell>
-    <TableCell align="left"><span className='font-semibold'></span></TableCell>
+    <TableCell align="left"><span className='font-semibold'>Action</span></TableCell>
   </TableRow>
 </TableHead>
     {caremodes && caremodes.length > 0 && <TableBody>
@@ -46,7 +46,7 @@ const FarmContent = ()=>{
         <TableCell align='center'>{item.name}</TableCell>
         {/* <TableCell align='left'>{item.priority}</TableCell> */}
         <TableCell align='left'>{new Date(item.createAt).toLocaleDateString('en-Gb')}</TableCell>
-        <TableCell align='left'>
+        <TableCell>
         <FuseSvgIcon className="text-48" size={24} style={{cursor:'pointer'}} color="action" onClick={()=>{setShowEdit(true); setEditValue(item)}}>heroicons-solid:pencil-alt</FuseSvgIcon>
         </TableCell>
     </TableRow>))}
