@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { ChangeEvent } from 'react';
 import { selectBirdCategorySearchText, setBirdCategorySearchText } from './store/birdCategorySlice';
+import FusePageCarded from '@fuse/core/FusePageCarded';
 
 /**
  * The products header.

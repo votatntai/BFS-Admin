@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { createBird, saveBird } from '../store/birdDetailSlice';
 import { getValue } from '@mui/system';
 import { formatISO } from 'date-fns';
+import { showMessage } from 'app/store/fuse/messageSlice';
 
 
 export default function CageDetailHeader(prop) {
@@ -38,7 +39,7 @@ export default function CageDetailHeader(prop) {
         formSave.append('name', getValues().name)
         if (thumbnailUrl instanceof File)
         formSave.append('thumbnail', getValues().thumbnailUrl)
-        formSave.append('gender', getValues().gender)
+        formSave.append('gender', getValues().gender.value)
         formSave.append('characteristic', getValues().characteristic)
         formSave.append('dayOfBirth', formatISO(new Date(getValues().dayOfBirth)))
         formSave.append('categoryId', getValues().category.id)
@@ -46,13 +47,19 @@ export default function CageDetailHeader(prop) {
         formSave.append('speciesId', getValues().species.id)
         formSave.append('careModeId', getValues().careMode.id)
         const result = await dispatch(saveBird({ id, formSave }));
+        const msg = {
+            variant: 'success',
+            autoHideDuration: 2000,
+            message: `Update successfully`,
+        }
+        dispatch(showMessage(msg))
         navigate('/master-data/bird');
     }
     const handleAdd = async () => {
         formData.append('code', getValues().code)
         formData.append('name', getValues().name)
         formData.append('thumbnail', getValues().thumbnailUrl)
-        formData.append('gender', getValues().gender)
+        formData.append('gender', getValues().gender.value)
         formData.append('characteristic', getValues().characteristic)
         formData.append('dayOfBirth', formatISO(getValues().dayOfBirth))
         formData.append('categoryId', getValues().category.id)
@@ -64,7 +71,14 @@ export default function CageDetailHeader(prop) {
         //     formSaveObj[key] = value;
         // }
         // console.log("formSaveObj", formSaveObj);
-        const result = await dispatch(createBird(formData));
+        const result = await dispatch(createBird(formData))
+        const msg = {
+            variant: 'success',
+            autoHideDuration: 2000,
+            message: `Add successfully`,
+        }
+        dispatch(showMessage(msg))
+    
         navigate('/master-data/bird');
     }
     return (<>

@@ -9,6 +9,7 @@ import _ from '@lodash';
 import { createBirdCategory, saveBirdCategory } from '../store/birdCategoryDetailSlice';
 import { BirdCategoriesType, BirdCategoryType } from '../type/BirdCategoryType';
 import { useEffect, useState } from 'react';
+import { showMessage } from 'app/store/fuse/messageSlice';
 
 
 export default function BirdCategoryDetailHeader() {
@@ -35,12 +36,24 @@ export default function BirdCategoryDetailHeader() {
         formSave.append('name', getValues().name)
         formSave.append('thumbnail', getValues().thumbnailUrl)
         dispatch(saveBirdCategory({ id, formSave }))
+        const msg = {
+            variant: 'success',
+            autoHideDuration: 2000,
+            message: `Update successfully`,
+        }
+        dispatch(showMessage(msg))
         navigate('/master-data/bird-category');
     }
     const handleAdd = () => {
         formData.append('name', getValues().name)
         formData.append('thumbnail', getValues().thumbnailUrl)
         dispatch(createBirdCategory(formData));
+        const msg = {
+            variant: 'success',
+            autoHideDuration: 2000,
+            message: `Add successfully`,
+        }
+        dispatch(showMessage(msg))
         navigate('/master-data/bird-category');
     }
 
