@@ -6,13 +6,14 @@ import { useAppDispatch, useAppSelector } from 'app/store';
 import { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { getCaremodeData } from '../../care-mode/slice/caremodeSlice';
-import { getAreas, selectAreas } from '../../menu-sample/store/menusSlice';
+import { getAreas, getFarms, selectAreas, selectFarms } from '../../menu-sample/store/menusSlice';
 import { getSpeciesList, selectSpecieslist } from '../../species/store/SpecisesSlice';
 import FuseLoading from '@fuse/core/FuseLoading';
 export default function CageDetailContent(prop) {
 
     const { cage } = prop
     const areaList = useAppSelector(selectAreas)
+    const farmList = useAppSelector(selectFarms)
     const dispatch = useAppDispatch();
     const methods = useFormContext();
     const { reset, control, formState, watch } = methods;
@@ -20,6 +21,7 @@ export default function CageDetailContent(prop) {
     const { setValue } = useFormContext();
     useEffect(
         () => {
+            dispatch(getFarms());
             dispatch(getAreas());
         }
         , []
@@ -30,6 +32,9 @@ export default function CageDetailContent(prop) {
     const thumbnailUrl = watch('thumbnailUrl')
 
     const area = watch('area')
+    const selectedFarm = watch('farm'); // Watch the farm field for changes
+    console.log("area",area)
+    const isAreaAutocompleteDisabled = !selectedFarm; // Disable area autocomplete if no farm is selected
 
     return (
         <div className='flex'>
@@ -166,7 +171,34 @@ export default function CageDetailContent(prop) {
             </div>
             <div className='flex flex-col w-1/3'>
 
-
+                    {/* Farm selection */}
+            <Controller
+                name="farm"
+                control={control}
+                render={({ field }) => (
+                    <Autocomplete
+                        {...field}
+                        className="mt-8 mb-16"
+                        options={farmList ? farmList : []}
+                        getOptionLabel={(option) => option.name || ''}
+                        onChange={(event, newValue) => {
+                            field.onChange(newValue);
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                className="w-[300px] ml-48"
+                                placeholder="Select farm"
+                                label="Farm"
+                                variant="outlined"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        )}
+                    />
+                )}
+            />
                 <Controller
                     name="area"
                     control={control}
@@ -174,7 +206,8 @@ export default function CageDetailContent(prop) {
                         <Autocomplete
                             className="mt-8 mb-16"
                             freeSolo
-                            options={areaList ? areaList : []}
+                            disabled={isAreaAutocompleteDisabled} // Disable input as well
+                            options={selectedFarm?.areas ? selectedFarm?.areas : []}
                             value={area ? area : []}
                             getOptionLabel={(option: any) => option.name ? option.name : ""}
                             onChange={(event, newValue) => {
@@ -186,6 +219,7 @@ export default function CageDetailContent(prop) {
                                     className="w-[300px] ml-48"
                                     placeholder="Select area"
                                     label="Area"
+                                    disabled={isAreaAutocompleteDisabled} // Disable input as well
                                     variant="outlined"
                                     InputLabelProps={{
                                         shrink: true

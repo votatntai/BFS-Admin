@@ -9,6 +9,7 @@ import _ from '@lodash';
 import { useEffect, useState } from 'react';
 import { createCage, saveCage } from '../store/cageDetailSlice';
 import { getValue } from '@mui/system';
+import { showMessage } from 'app/store/fuse/messageSlice';
 
 
 export default function CageDetailHeader(prop) {
@@ -46,6 +47,12 @@ export default function CageDetailHeader(prop) {
         formSave.append('areaId', getValues().area.id)
 
         const result = await dispatch(saveCage({ id, formSave }));
+        const msg = {
+            variant: 'success',
+            autoHideDuration: 2000,
+            message: `Update successfully`,
+        }
+        dispatch(showMessage(msg))
         navigate('/master-data/cage');
     }
 
@@ -62,8 +69,12 @@ export default function CageDetailHeader(prop) {
         formData.append('areaId', getValues().area.id)
 
         const result = await dispatch(createCage(formData))
-        console.log("result", result)
-
+        const msg = {
+            variant: 'success',
+            autoHideDuration: 2000,
+            message: `Create successfully`,
+        }
+        dispatch(showMessage(msg))
         navigate('/master-data/cage')
     }
     return (<>
