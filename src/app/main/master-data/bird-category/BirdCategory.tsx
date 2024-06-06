@@ -17,7 +17,7 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 
 function BirdCategory() {
 
-	return (<FusePageCarded
+	return (<Root
 		header={<BirdCategoryHeader />}
 		content={<BirdCategoryTable />}
 

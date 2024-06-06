@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { createBird, saveBird } from '../store/birdDetailSlice';
 import { getValue } from '@mui/system';
 import { formatISO } from 'date-fns';
+import { showMessage } from 'app/store/fuse/messageSlice';
 
 
 export default function CageDetailHeader(prop) {
@@ -46,6 +47,12 @@ export default function CageDetailHeader(prop) {
         formSave.append('speciesId', getValues().species.id)
         formSave.append('careModeId', getValues().careMode.id)
         const result = await dispatch(saveBird({ id, formSave }));
+        const msg = {
+            variant: 'success',
+            autoHideDuration: 2000,
+            message: `Update successfully`,
+        }
+        dispatch(showMessage(msg))
         navigate('/master-data/bird');
     }
     const handleAdd = async () => {
@@ -64,7 +71,14 @@ export default function CageDetailHeader(prop) {
         //     formSaveObj[key] = value;
         // }
         // console.log("formSaveObj", formSaveObj);
-        const result = await dispatch(createBird(formData));
+        const result = await dispatch(createBird(formData))
+        const msg = {
+            variant: 'success',
+            autoHideDuration: 2000,
+            message: `Add successfully`,
+        }
+        dispatch(showMessage(msg))
+    
         navigate('/master-data/bird');
     }
     return (<>
