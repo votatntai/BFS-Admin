@@ -180,7 +180,7 @@ function BirdsTable(prop: BirdTableeProps) {
                                             component="th"
                                             scope="row"
                                         >
-                                            {(n.gender) ? (
+                                            {(!n.gender) ? (
                                                 <div>Male</div>
                                             ) : (<div>Female</div>)}
                                         </TableCell>

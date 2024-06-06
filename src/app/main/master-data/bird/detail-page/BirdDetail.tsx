@@ -20,9 +20,9 @@ const schema = yup.object().shape({
     code: yup
         .string()
         .required('You must enter a  code')
-        .min(5, 'At least 5 charactor'),
+        .min(3, 'At least 3 charactor'),
     gender: yup
-        .string()
+        .mixed()
         .required('You must enter a  gender'),
     characteristic: yup
         .string()
@@ -42,7 +42,6 @@ const schema = yup.object().shape({
 const BirdDetail = () => {
     const dispatch = useAppDispatch();
     const dataItem = useAppSelector(selectDetail)
-    console.log("dataItme",dataItem)
     const routeParams = useParams();
     const methods = useForm({
         mode: 'onChange',

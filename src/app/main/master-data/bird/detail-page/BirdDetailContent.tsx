@@ -33,12 +33,11 @@ export default function CageDetailContent() {
     )
     const thumbnailUrl = watch('thumbnailUrl')
     const category = watch('category')
-    console.log("category")
     const species = watch('species')
     const careMode = watch('careMode')
     const cage = watch('cage')
     const gender = watch('gender')
-
+    console.log("gender", gender)
     return (
         <div className='flex'>
             <div className='flex flex-col w-1/3'>
@@ -81,19 +80,38 @@ export default function CageDetailContent() {
                 <Controller
                     name="gender"
                     control={control}
-                    render={({ field }) => (
-                        <RadioGroup
-                            {...field}
-                            className='mb-16 ml-48'
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="radio-buttons-group"
-                            value={Boolean(gender)}
-                        >
-                            <FormControlLabel value={true} control={<Radio />} label="Female" />
-                            <FormControlLabel value={false} control={<Radio />} label="Male" />
-                        </RadioGroup>
+                    render={
+                        ({ field: { onChange, value } }) => (
+                            <Autocomplete
+                                className="mt-8 mb-16"
+                                freeSolo
+                                options={[
+                                    { label: 'Male', value: false },
+                                    { label: 'Female', value: true }
+                                ]}
+                                defaultValue={value ? { label: 'Female', value: true } : { label: 'Male', value: false }}
+                                getOptionLabel={(options) => {
+                                    return options.label || '';
+                                }
+                                }
+                                onChange={(event, newValue) => {
+                                    onChange(newValue);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        className="w-[300px] ml-48"
+                                        placeholder="Select one"
+                                        label="Gender"
+                                        variant="outlined"
+                                        InputLabelProps={{
+                                            shrink: true
+                                        }}
+                                    />
+                                )}
+                            />
 
-                    )}
+                        )}
                 />
 
             </div>
@@ -114,33 +132,34 @@ export default function CageDetailContent() {
                 {cagesList && <Controller
                     name="cage"
                     control={control}
-                    render={({ field: { onChange, value } }) => (
-                        <Autocomplete
-                            className="mt-8 mb-16"
-                            freeSolo
-                            options={cagesList}
-                            getOptionLabel={(options) => {
-                                return options.name || '';
-                            }
-                            }
-                            value={cage ? cage : []}
-                            onChange={(event, newValue) => {
-                                onChange(newValue);
-                            }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    className="w-[300px] ml-48"
-                                    placeholder="Select one"
-                                    label="Cage of bird"
-                                    variant="outlined"
-                                    InputLabelProps={{
-                                        shrink: true
-                                    }}
-                                />
-                            )}
-                        />
-                    )}
+                    render={
+                        ({ field: { onChange, value } }) => (
+                            <Autocomplete
+                                className="mt-8 mb-16"
+                                freeSolo
+                                options={cagesList}
+                                getOptionLabel={(options) => {
+                                    return options.name || '';
+                                }
+                                }
+                                value={cage ? cage : []}
+                                onChange={(event, newValue) => {
+                                    onChange(newValue);
+                                }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        className="w-[300px] ml-48"
+                                        placeholder="Select one"
+                                        label="Cage of bird"
+                                        variant="outlined"
+                                        InputLabelProps={{
+                                            shrink: true
+                                        }}
+                                    />
+                                )}
+                            />
+                        )}
                 />}
                 <h3 className="mt-8 mb-16 ml-48">Input Characteristic</h3>
                 <Controller
