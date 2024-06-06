@@ -41,7 +41,8 @@ const schema = yup.object().shape({
 
 const BirdDetail = () => {
     const dispatch = useAppDispatch();
-    const dataItem = useAppSelector(selectDetail);
+    const dataItem = useAppSelector(selectDetail)
+    console.log("dataItme",dataItem)
     const routeParams = useParams();
     const methods = useForm({
         mode: 'onChange',

@@ -24,7 +24,7 @@ export default function SpeciesDetailContent() {
 
     const thumbnailUrl = watch('thumbnailUrl')
     const birdCat = watch('birdCategory')
-    console.log("bitf",birdCat)
+        console.log("bird Category",birdCat)
     return (
         <div>
             <Controller
@@ -104,8 +104,8 @@ export default function SpeciesDetailContent() {
                     <Autocomplete
                         className="mt-8 mb-16"
                         options={options}
-                        getOptionLabel={(option) => option.name}
-                        value={value}
+                        getOptionLabel={(option) => option.name || ''}
+                        value={birdCat ? birdCat : []}
                         onChange={(event, newValue) => {
                             onChange(newValue);
                         }}

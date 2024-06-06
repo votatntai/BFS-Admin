@@ -42,7 +42,7 @@ export default function SpeciesDetailHeader() {
         formSave.append('thumbnail', getValues().thumbnailUrl)
   
         const result = await dispatch(saveSpecies({id,formSave}));
-        // navigate('/master-data/species');
+        navigate('/master-data/species');
     }
     const handleAdd = async () => {
         formData.append('birdCategoryId', getValues().birdCategory.id)
