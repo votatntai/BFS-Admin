@@ -24,7 +24,7 @@ const container = {
     return <motion.div
     className="items-center flex grid grid-cols-1  sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-32 mt-32 sm:mt-40 ms-32"
     variants={container} initial="hidden" animate="show" >
-    {farms.length>0 && farms.map(farm => <Card key={farm.id} className='cursor-pointer' onClick={()=>navigate(`/master-data/select-farm/area/${farm.id}`)}>
+    {farms.length>0 && farms.map(farm => <Card key={farm.id} className='cursor-pointer' onClick={()=>navigate(`/master-data/food/select-farm/foods/${farm.id}`)}>
       <CardHeader sx={{ maxWidth: 'fit-content' }} subheader={farm.name} />
     </Card>)}
     </motion.div>

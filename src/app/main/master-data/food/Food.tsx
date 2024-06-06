@@ -2,6 +2,7 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import { styled } from '@mui/material/styles';
 import FoodContent from './FoodContent'
 import FoodHeader from './FoodHeader';
+import { useParams } from 'react-router';
 
 const Root = styled(FusePageSimple)(({ theme }) => ({
 	'& .FusePageSimple-header': {
@@ -16,10 +17,11 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 }));
 
 function Food() {
+	const {id} = useParams()
 	return <Root
-	header={<FoodHeader/>}
+	header={<FoodHeader farmId={id}/>}
 	content={
-			<FoodContent />
+			<FoodContent farmId={id} />
 	}
 	/>  
 }

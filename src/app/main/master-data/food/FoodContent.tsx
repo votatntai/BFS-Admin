@@ -14,7 +14,7 @@ import { useAppDispatch,useAppSelector } from 'app/store';
 import EditModal from './EditModal';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-const FoodContent = ()=>{
+const FoodContent = ({farmId})=>{
     const [openEditSuccessNotify, setOpenEditSuccessNotify] = useState(false);
     const [openEditFailNotify, setOpenEditFailNotify] = useState(false);
 	const [showEdit, setShowEdit] =useState(false)
@@ -27,7 +27,8 @@ const FoodContent = ()=>{
     const searchValue =  useAppSelector((state: foodReducerState) => state.foodReducer.foodSlice.searchText)
     
     useEffect(()=>{
-        dispatch(getFoodData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize}))
+        console.log(farmId)
+        dispatch(getFoodData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize, farmId: farmId}))
     },[pageNumber, pageSize])
     
     return <div className="w-full flex flex-col min-h-full bg-white">
@@ -102,7 +103,7 @@ const FoodContent = ()=>{
           Edit failed
         </Alert>
       </Snackbar>
-    {showEdit && <EditModal setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
+    {showEdit && <EditModal farmId={farmId} setOpenFailSnackbar={setOpenEditFailNotify} setOpenSuccessSnackbar={setOpenEditSuccessNotify} object={editValue} show={showEdit} handleClose={() => setShowEdit(false)} />}
 </div>
 }
 export default FoodContent
