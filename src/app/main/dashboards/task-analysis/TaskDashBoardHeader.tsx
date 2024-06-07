@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import FuseSvgIcon from '@fuse/core/FuseSvgIcon';
 import { Menu, MenuItem } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useAppSelector } from 'app/store';
 import { selectFarms } from '../../master-data/menu-sample/store/menusSlice';
 import _ from 'lodash';
@@ -15,15 +15,25 @@ function TaskDashBoardHeader() {
 	const { farmId, setFarmId } = useContext(FarmContext);
 	const farms = useAppSelector(selectFarms)
 	const [selectedFarm, setSelectedFarm] = useState<{ id: string; menuEl: HTMLElement | null }>({
-		id: "d2f2494f-0182-4457-8920-2d15943a7a23",
+		id: farms[0]?.id,
 		menuEl: null
 	})
+	useEffect(
+		() => {
+			if (farms && farms.length > 0)
+				setSelectedFarm({
+					id: farms[0]?.id,
+					menuEl: null
+				})
+				setFarmId(farms[0]?.id);
+		}
+		, [farms])
 	function handleChangeFarm(id: string) {
 		setSelectedFarm({
 			id,
 			menuEl: null
 		});
-		setFarmId(id);  
+		setFarmId(id);
 	}
 	function handleOpenFarmMenu(event: React.MouseEvent<HTMLElement>) {
 		setSelectedFarm({

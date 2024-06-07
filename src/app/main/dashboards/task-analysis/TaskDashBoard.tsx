@@ -32,147 +32,145 @@ const item = {
  * The analytics dashboard app.
  */
 function AnalyticsDashboardApp() {
-    const [farmId, setFarmId] = useState("d2f2494f-0182-4457-8920-2d15943a7a23");  const dispatch = useAppDispatch()
-  
+    const [farmId, setFarmId] = useState("d2f2494f-0182-4457-8920-2d15943a7a23"); const dispatch = useAppDispatch()
+
     useEffect(() => {
         dispatch(getWidgets(farmId))
         dispatch(getBirds(farmId))
         dispatch(getTickets(farmId))
         dispatch(getFarms())
-    }, [dispatch,farmId])
+    }, [dispatch, farmId])
 
 
 
     return (
-        <FarmContext.Provider value={{farmId, setFarmId}}>
-        <FusePageSimple
-            header={<TaskDashBoardHeader />}
-            content={
-                <motion.div
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full p-24 md:p-32"
-                    variants={container}
-                    initial="hidden"
-                    animate="show"
-                >
+        <FarmContext.Provider value={{ farmId, setFarmId }}>
+            <FusePageSimple
+                header={<TaskDashBoardHeader />}
+                content={
                     <motion.div
-                        variants={item}
-                        className="sm:col-span-2 lg:col-span-4"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full p-24 md:p-32"
+                        variants={container}
+                        initial="hidden"
+                        animate="show"
                     >
-                        {/* <VisitorsOverviewWidget /> */}
-                    </motion.div>
-
-                    <motion.div
-                        variants={item}
-                        className="sm:col-span-2 lg:col-span-1 "
-                    >
-                        <TodoWidgets status="To do" />
-                    </motion.div>
-                    <motion.div
-                        variants={item}
-                        className="sm:col-span-2 lg:col-span-1 "
-                    >
-                        <TodoWidgets status="In progress" />
-                    </motion.div>
-
-                    <motion.div
-                        variants={item}
-                        className="sm:col-span-2 lg:col-span-1 "
-                    >
-                        <TodoWidgets status="Done" />
-                    </motion.div>
-
-                    <motion.div
-                        variants={item}
-                        className="sm:col-span-2 lg:col-span-1 "
-                    >
-                        <TodoWidgets status="Work finished" />
-                    </motion.div>
-
-
-
-                    <motion.div
-                        variants={item}
-                        className="sm:col-span-2 lg:col-span-3"
-                    >
-                        {/* <VisitorsVsPageViewsWidget /> */}
-                    </motion.div>
-
-                    <div className="w-full mt-16 sm:col-span-3">
-                        <Typography className="text-2xl font-semibold tracking-tight leading-6">
-                            Bird statistical
-                        </Typography>
-                        <Typography
-                            className="font-medium tracking-tight"
-                            color="text.secondary"
+                        <motion.div
+                            variants={item}
+                            className="sm:col-span-2 lg:col-span-4"
                         >
-                            Demographic properties of your birds
-                        </Typography>
-                    </div>
-                    {/* Bieu do Tron */}
-                    <div className="sm:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full">
-                        <motion.div
-                            className="sm:col-span-2 lg:col-span-1 "
-                            variants={item}>
-                            <CaremodeWidget />
+                            {/* <VisitorsOverviewWidget /> */}
                         </motion.div>
 
                         <motion.div
+                            variants={item}
                             className="sm:col-span-2 lg:col-span-1 "
-                            variants={item}>
-                            <GenderWidget />
+                        >
+                            <TodoWidgets status="To do" />
                         </motion.div>
                         <motion.div
+                            variants={item}
                             className="sm:col-span-2 lg:col-span-1 "
-                            variants={item}>
-                            <CategoryWidget />
+                        >
+                            <TodoWidgets status="In progress" />
                         </motion.div>
+
                         <motion.div
+                            variants={item}
                             className="sm:col-span-2 lg:col-span-1 "
-                            variants={item}>
-                            <SpeciesWidget />
+                        >
+                            <TodoWidgets status="Work finished" />
                         </motion.div>
 
-                    </div>
-                    {/* Ticket stalistical */}
-                    <div className="sm:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full">
-                        <Typography className="text-2xl font-semibold tracking-tight leading-6">
-                            Tickets statistical
-                        </Typography>
-                        <div className="sm:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full">
+                        <motion.div
+                            variants={item}
+                            className="sm:col-span-2 lg:col-span-1 "
+                        >
+                            <TodoWidgets status="Done" />
+                        </motion.div>
 
-                            <motion.div
-                                variants={item}
-                                className="sm:col-span-2 lg:col-span-1 "
-                            >
-                                <TicketWidget status="To do" />
-                            </motion.div>
-                            <motion.div
-                                variants={item}
-                                className="sm:col-span-2 lg:col-span-1 "
-                            >
-                                <TicketWidget status="In progress" />
-                            </motion.div>
 
-                            <motion.div
-                                variants={item}
-                                className="sm:col-span-2 lg:col-span-1 "
-                            >
-                                <TicketWidget status="Done" />
-                            </motion.div>
+                        <motion.div
+                            variants={item}
+                            className="sm:col-span-2 lg:col-span-3"
+                        >
+                            {/* <VisitorsVsPageViewsWidget /> */}
+                        </motion.div>
 
-                            <motion.div
-                                variants={item}
-                                className="sm:col-span-2 lg:col-span-1 "
+                        <div className="w-full mt-16 sm:col-span-3">
+                            <Typography className="text-2xl font-semibold tracking-tight leading-6">
+                                Bird statistical
+                            </Typography>
+                            <Typography
+                                className="font-medium tracking-tight"
+                                color="text.secondary"
                             >
-                                <TicketWidget status="Work finished" />
-                            </motion.div>
+                                Demographic properties of your birds
+                            </Typography>
                         </div>
+                        {/* Bieu do Tron */}
+                        <div className="sm:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full">
+                            <motion.div
+                                className="sm:col-span-2 lg:col-span-1 "
+                                variants={item}>
+                                <CaremodeWidget />
+                            </motion.div>
+
+                            <motion.div
+                                className="sm:col-span-2 lg:col-span-1 "
+                                variants={item}>
+                                <GenderWidget />
+                            </motion.div>
+                            <motion.div
+                                className="sm:col-span-2 lg:col-span-1 "
+                                variants={item}>
+                                <CategoryWidget />
+                            </motion.div>
+                            <motion.div
+                                className="sm:col-span-2 lg:col-span-1 "
+                                variants={item}>
+                                <SpeciesWidget />
+                            </motion.div>
+
+                        </div>
+                        {/* Ticket stalistical */}
+                        <div className="sm:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full">
+                            <Typography className="text-2xl font-semibold tracking-tight leading-6">
+                                Tickets statistical
+                            </Typography>
+                            <div className="sm:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-32 w-full">
+
+                                <motion.div
+                                    variants={item}
+                                    className="sm:col-span-2 lg:col-span-1 "
+                                >
+                                    <TicketWidget status="To do" />
+                                </motion.div>
+                                <motion.div
+                                    variants={item}
+                                    className="sm:col-span-2 lg:col-span-1 "
+                                >
+                                    <TicketWidget status="In progress" />
+                                </motion.div>
+
+                                <motion.div
+                                    variants={item}
+                                    className="sm:col-span-2 lg:col-span-1 "
+                                >
+                                    <TicketWidget status="Work finished" />
+                                </motion.div>
+                                <motion.div
+                                    variants={item}
+                                    className="sm:col-span-2 lg:col-span-1 "
+                                >
+                                    <TicketWidget status="Done" />
+                                </motion.div>
+                            </div>
 
 
-                    </div>
-                </motion.div>
-            }
-        />
+                        </div>
+                    </motion.div>
+                }
+            />
         </FarmContext.Provider>
     );
 }
