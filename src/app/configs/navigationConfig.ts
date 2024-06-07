@@ -62,7 +62,7 @@ const navigationConfig: FuseNavigationType = [
 						id: 'master-data-food',
 						title: 'Food',
 						type: 'item',
-						url: 'master-data/food',
+						url: 'master-data/food/select-farm',
 						end: true
 					},
 					{

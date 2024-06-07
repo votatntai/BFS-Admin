@@ -10,7 +10,10 @@ import { useAppDispatch, useAppSelector } from 'app/store';
 import { foodReducerState, getFoodData,setSearchText } from './slice/foodSlice';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-const FoodHeader = ()=>{
+import { useNavigate } from 'react-router';
+
+const FoodHeader = ({farmId})=>{
+    const navigate = useNavigate()
     const [showAdd, setShowAdd] =useState(false)
     const [openCreateSuccessNotify, setOpenCreateSuccessNotify] = useState(false);
     const [openCreateFailNotify, setOpenCreateFailNotify] = useState(false);
@@ -20,7 +23,7 @@ const FoodHeader = ()=>{
     const pageSize  = useAppSelector((state: foodReducerState) => state.foodReducer.foodSlice.foods.pagination.pageSize)
     const handleSearch = async()=>{
         dispatch(setSearchText(searchValue))
-        dispatch(getFoodData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize}))        
+        dispatch(getFoodData({name: searchValue, pageNumber: pageNumber, pageSize: pageSize, farmId: farmId}))        
     }
     return <div style={{background:'rgb(241, 245, 249)'}} className="flex flex-col sm:flex-row space-y-16 sm:space-y-0 flex-1 w-full items-center justify-between py-32 px-24 md:px-32">
     <motion.span
@@ -62,12 +65,20 @@ const FoodHeader = ()=>{
                 Search
             </Button>
             <Button
-                onClick={()=>setShowAdd(true)}
+                onClick={()=>setShowAdd(true)} className='me-12'
                 variant="contained"
                 color="secondary"
                 startIcon={<FuseSvgIcon>heroicons-outline:plus</FuseSvgIcon>}
             >
                 Add
+            </Button>
+            <Button
+                onClick={()=>navigate(-1)}
+                variant="contained"
+                color="secondary"
+                startIcon={<FuseSvgIcon>heroicons-outline:arrow-left</FuseSvgIcon>}
+            >
+                Back
             </Button>
         </motion.div>
 </div>
@@ -83,7 +94,7 @@ const FoodHeader = ()=>{
           Add failed
         </Alert>
       </Snackbar>
-    {showAdd && <CreateModal handleClose={()=> setShowAdd(false)} show={showAdd} setOpenFailSnackbar={setOpenCreateFailNotify} setOpenSuccessSnackbar={setOpenCreateSuccessNotify} />}
+    {showAdd && <CreateModal farmId={farmId} handleClose={()=> setShowAdd(false)} show={showAdd} setOpenFailSnackbar={setOpenCreateFailNotify} setOpenSuccessSnackbar={setOpenCreateSuccessNotify} />}
 </div>
 }
 export default FoodHeader

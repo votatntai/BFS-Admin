@@ -15,7 +15,7 @@ import { addFood, foodReducerState, getFoodData } from './slice/foodSlice';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'src/app/auth/services/api/customAxios';
 
-const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackbar})=>{
+const CreateModal=({farmId, handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackbar})=>{
     const [food, setFood] =useState<ObjectFoodToCreate>({
       "thumbnail": "",
       "name": "",
@@ -57,8 +57,9 @@ const CreateModal=({handleClose, show, setOpenFailSnackbar, setOpenSuccessSnackb
         formData.append('foodCategoryId',food.foodCategoryId.value)
         formData.append('quantity',food.quantity.toString())
         formData.append('unitOfMeasurementId',food.unitOfMeasurementId.value)
+        formData.append('farmId',farmId)
         await dispatch(addFood(formData))
-        await dispatch(getFoodData({pageNumber: pageNumber, pageSize: pageSize}))
+        await dispatch(getFoodData({pageNumber: pageNumber, pageSize: pageSize, farmId: farmId}))
         setOpenSuccessSnackbar(true)
         handleClose()
       } else setOpenFailSnackbar(true)

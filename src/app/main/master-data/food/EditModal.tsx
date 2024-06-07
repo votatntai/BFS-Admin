@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'src/app/auth/services/api/customAxios';
-const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFailSnackbar})=>{
+const EditModal = ({farmId, show,handleClose, object, setOpenSuccessSnackbar, setOpenFailSnackbar})=>{
   const [food, setFood] =useState<ObjectFoodToEdit>({
     "id": object.id,
     "thumbnail": "not empty",
@@ -64,7 +64,7 @@ const EditModal = ({show,handleClose, object, setOpenSuccessSnackbar, setOpenFai
         formData.append('unitOfMeasurementId',food.unitOfMeasurementId.value)
         formData.append('status',food.status)
         await dispatch(editFood({id, formData}))
-        await dispatch(getFoodData({pageNumber: pageNumber, pageSize: pageSize}))
+        await dispatch(getFoodData({pageNumber: pageNumber, pageSize: pageSize, farmId:farmId}))
         setOpenSuccessSnackbar(true)
         handleClose()
       }else setOpenFailSnackbar(true)
