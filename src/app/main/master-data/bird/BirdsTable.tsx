@@ -99,7 +99,7 @@ function BirdsTable(prop: BirdTableeProps) {
 
     return (
 
-        <div className="w-full flex flex-col min-h-full">
+        <div className="w-full flex flex-col min-h-full ">
             <FuseScrollbars className="grow overflow-x-auto">
                 <Table
                     stickyHeader
