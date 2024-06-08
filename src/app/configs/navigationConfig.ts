@@ -14,7 +14,7 @@ const navigationConfig: FuseNavigationType = [
 				id: 'dashboard',
 				title: 'Dashboard',
 				type: 'item',
-				icon: 'heroicons-solid:user-group',
+				icon: 'heroicons-solid:chart-bar',
 				url: 'dashboard'
 			},
 			{

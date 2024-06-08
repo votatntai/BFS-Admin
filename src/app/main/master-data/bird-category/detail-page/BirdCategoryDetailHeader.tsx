@@ -32,10 +32,10 @@ export default function BirdCategoryDetailHeader() {
     const formSave = new FormData()
     const { name, thumbnailUrl } = watch();
 
-    function handleSaveProduct() {
+    async function handleSaveProduct() {
         formSave.append('name', getValues().name)
         formSave.append('thumbnail', getValues().thumbnailUrl)
-        dispatch(saveBirdCategory({ id, formSave }))
+        const result = await dispatch(saveBirdCategory({ id, formSave }))
         const msg = {
             variant: 'success',
             autoHideDuration: 2000,
@@ -44,10 +44,10 @@ export default function BirdCategoryDetailHeader() {
         dispatch(showMessage(msg))
         navigate('/master-data/bird-category');
     }
-    const handleAdd = () => {
+    const handleAdd = async () => {
         formData.append('name', getValues().name)
         formData.append('thumbnail', getValues().thumbnailUrl)
-        dispatch(createBirdCategory(formData));
+        const result = await dispatch(createBirdCategory(formData));
         const msg = {
             variant: 'success',
             autoHideDuration: 2000,

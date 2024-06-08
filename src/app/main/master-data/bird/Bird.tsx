@@ -10,18 +10,19 @@ const Root = styled(FusePageSimple)(({ theme }) => ({
 		borderStyle: 'solid',
 		borderColor: theme.palette.divider
 	},
-	'& .FusePageSimple-content': {},
+	'& .FusePageSimple-content': {
+	},
 	'& .FusePageSimple-sidebarHeader': {},
 	'& .FusePageSimple-sidebarContent': {}
 }));
 
 function Bird() {
 	return (<Root
-	header={<BirdsHeader/>}
-	content={
+		header={<BirdsHeader />}
+		content={
 			<BirdsTable />
-	}
-/>)
+		}
+	/>)
 }
 
 export default Bird;

@@ -22,7 +22,7 @@ const EditModal = ({farmId, show,handleClose, object, setOpenSuccessSnackbar, se
     "foodCategoryId":{
       label: object.foodCategory.name, value: object.foodCategory.id
     },
-    "quantity": 0,
+    "quantity": object.quantity,
     "unitOfMeasurementId":{
       label: object.unitOfMeasurement.name, value: object.unitOfMeasurement.id
     },
@@ -121,7 +121,7 @@ const EditModal = ({farmId, show,handleClose, object, setOpenSuccessSnackbar, se
               error={checkFoodCategory ? true : false}/>}
             />}
       
-      <TextField  value={food.quantity} type="number" InputProps={{ inputProps: { min: 0 } }}
+      <TextField  value={food.quantity} type="number" InputProps={{ inputProps: { min: 1 } }}
       onChange={e => setFood(prev => ({...prev, quantity: parseInt(e.target.value)}))} label='Quantity' 
       placeholder='Enter name' size='small' variant="outlined" />
 
