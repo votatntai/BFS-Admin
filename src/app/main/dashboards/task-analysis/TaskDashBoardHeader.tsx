@@ -14,20 +14,12 @@ import { FarmContext } from './context/FarmContext';
 function TaskDashBoardHeader() {
 	const { farmId, setFarmId } = useContext(FarmContext);
 	const farms = useAppSelector(selectFarms)
+	const [isSetFirstFarm, setIsSetFirstFarm] = useState(false)
 	const [selectedFarm, setSelectedFarm] = useState<{ id: string; menuEl: HTMLElement | null }>({
 		id: farms[0]?.id,
 		menuEl: null
 	})
-	useEffect(
-		() => {
-			if (farms && farms.length > 0)
-				setSelectedFarm({
-					id: farms[0]?.id,
-					menuEl: null
-				})
-				setFarmId(farms[0]?.id);
-		}
-		, [farms])
+
 	function handleChangeFarm(id: string) {
 		setSelectedFarm({
 			id,
@@ -47,7 +39,14 @@ function TaskDashBoardHeader() {
 			menuEl: null
 		})
 	}
-
+	useEffect(
+		() => {
+			if (!isSetFirstFarm && farms && farms.length > 0) {
+				handleChangeFarm(farms[0].id)
+				setIsSetFirstFarm(true)
+			}
+		}
+		, [farms])
 	if (_.isEmpty(farms)) {
 		return null;
 	}

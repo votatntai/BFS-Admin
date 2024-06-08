@@ -18,7 +18,7 @@ function CagesHeader() {
 				initial={{ x: -20 }}
 				animate={{ x: 0, transition: { delay: 0.2 } }}
 			>
-				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Cages list</Typography>
+				<Typography className="text-24 md:text-32 font-extrabold tracking-tight">Cage list</Typography>
 			</motion.span>
 			<div className="flex flex-col w-full sm:w-auto sm:flex-row space-y-16 sm:space-y-0 flex-1 items-center justify-end space-x-8">
 				<Paper
