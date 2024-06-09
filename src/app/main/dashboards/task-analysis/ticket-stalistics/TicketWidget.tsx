@@ -23,22 +23,23 @@ function TicketWidget(props) {
     const [taskCount, setTaskCount] = useState([])
 
     useEffect(() => {
-        if (tasks ) {
+        if (tasks) {
             var todoTasks = _.filter(tasks, { status: status });
             let sortedTodoTask = _.orderBy(todoTasks, [(task) => new Date(task.createAt)], ['asc']);
             let startDate = new Date();
             startDate.setDate(startDate.getDate() - 90);
             let recentTasks = _.filter(sortedTodoTask, task => new Date(task.createAt) >= startDate)
+            console.log("recentTasks",recentTasks)
             let tasksByDate = recentTasks.map(task => {
                 return {
                     ...task,
-                    startAt: new Date(task.startAt).toLocaleDateString() // Chuyển đổi datetime thành định dạng ngày
+                    createAt: new Date(task.createAt).toLocaleDateString() // Chuyển đổi datetime thành định dạng ngày
                 }
             })
 
             let amount = _.size(recentTasks);
             setAmount(amount)
-            let grouped = _.groupBy(tasksByDate, 'startAt');
+            let grouped = _.groupBy(tasksByDate, 'createAt');
             let dateRanges = _.keys(grouped);
             setLabel(dateRanges)
             let taskCounts = _.map(grouped, group => group.length);
