@@ -32,8 +32,8 @@ export default function CageDetailContent(prop) {
     const thumbnailUrl = watch('thumbnailUrl')
 
     const area = watch('area')
-    const selectedFarm = watch('farm'); // Watch the farm field for changes
     console.log("area",area)
+    const selectedFarm = watch('farm'); // Watch the farm field for changes
     const isAreaAutocompleteDisabled = !selectedFarm; // Disable area autocomplete if no farm is selected
 
     return (

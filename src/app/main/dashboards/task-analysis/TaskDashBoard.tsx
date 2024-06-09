@@ -143,7 +143,7 @@ function AnalyticsDashboardApp() {
                                     variants={item}
                                     className="sm:col-span-2 lg:col-span-1 "
                                 >
-                                    <TicketWidget status="To do" />
+                                    <TicketWidget status="Rejected" />
                                 </motion.div>
                                 <motion.div
                                     variants={item}
